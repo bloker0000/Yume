@@ -1,26 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'The Last Shuriken';
+  src: url('/fonts/The Last Shuriken.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Japanese';
+  src: url('/fonts/japaneseFont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --yume-cream: #F5E6D3;
+  --yume-warm-white: #FAF7F2;
+  --yume-charcoal: #1A1A1A;
+  --yume-ink: #2D2D2D;
+  --yume-vermillion: #D64933;
+  --yume-gold: #C9A962;
+  --yume-deep-brown: #3D2B1F;
+  --yume-miso: #8B7355;
+  --yume-nori: #2F4538;
+  --yume-steam: rgba(255, 255, 255, 0.15);
+  
+  --background: var(--yume-warm-white);
+  --foreground: var(--yume-charcoal);
+  
+  --font-shuriken: 'The Last Shuriken', sans-serif;
+  --font-quicksand: 'Quicksand', sans-serif;
+  --font-japanese: 'Japanese', serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-yume-cream: var(--yume-cream);
+  --color-yume-warm-white: var(--yume-warm-white);
+  --color-yume-charcoal: var(--yume-charcoal);
+  --color-yume-ink: var(--yume-ink);
+  --color-yume-vermillion: var(--yume-vermillion);
+  --color-yume-gold: var(--yume-gold);
+  --color-yume-deep-brown: var(--yume-deep-brown);
+  --color-yume-miso: var(--yume-miso);
+  --color-yume-nori: var(--yume-nori);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-quicksand), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--yume-vermillion);
+  color: var(--yume-warm-white);
+}
+
+.font-header {
+  font-family: var(--font-shuriken);
+  line-height: 1.1;
+}
+
+.font-body {
+  font-family: var(--font-quicksand);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.font-japanese {
+  font-family: var(--font-japanese);
+}
+
+.japanese-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px var(--yume-charcoal);
+  text-stroke: 1px var(--yume-charcoal);
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
