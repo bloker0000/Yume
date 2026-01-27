@@ -55,16 +55,25 @@ const menuItems = [
 export default function FeaturedMenu() {
   return (
     <section className="relative py-24 lg:py-32 bg-[var(--yume-warm-white)] overflow-hidden">
+      <div 
+        className="absolute inset-0 opacity-20 blur-xkjuy6,hngxl"
+        style={{
+          backgroundImage: "url('/bg\\'s/circles2bg1.svg')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      />
+      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[var(--yume-warm-white)] to-transparent" />
       <AsanohaPattern className="absolute inset-0 w-full h-full text-[var(--yume-charcoal)] opacity-5" />
-      
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[var(--yume-cream)] to-transparent" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
@@ -90,10 +99,10 @@ export default function FeaturedMenu() {
           {menuItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
               className="group relative bg-[var(--yume-warm-white)] border border-[var(--yume-cream)] hover:shadow-2xl transition-all duration-500 overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[var(--yume-vermillion)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
@@ -165,10 +174,10 @@ export default function FeaturedMenu() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
           className="text-center mt-12"
         >
           <motion.a

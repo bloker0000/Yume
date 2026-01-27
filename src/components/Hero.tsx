@@ -15,10 +15,11 @@ export default function Hero() {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'left bottom',
-          maskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 50%, rgba(0,0,0,1) 80%, rgba(0,0,0,1) 100%)',
-          WebkitMaskImage: 'linear-gradient(135deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 50%, rgba(0,0,0,1) 80%, rgba(0,0,0,1) 100%)',
+          backgroundAttachment: 'fixed',
         }}
       />
+      
+      <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-b from-transparent to-[var(--yume-warm-white)] z-10" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-32">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -96,9 +97,9 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="lg:col-span-7 relative"
           >
             <div className="relative w-full max-w-2xl mx-auto">
@@ -116,31 +117,6 @@ export default function Hero() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--yume-charcoal)]/60 via-transparent to-transparent" />
                 </div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
-                  className="absolute -left-4 lg:-left-8 top-1/2 -translate-y-1/2"
-                >
-                  <div className="bg-[var(--yume-warm-white)] p-4 shadow-xl border border-[var(--yume-cream)]">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[var(--yume-gold)]">
-                        <Image
-                          src="/ramen/spicyMiso.jpg"
-                          alt="Spicy Miso"
-                          width={48}
-                          height={48}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-xs text-[var(--yume-miso)] font-body">Also try</p>
-                        <p className="text-sm font-bold text-[var(--yume-charcoal)] font-header">Spicy Miso</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
 
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -176,34 +152,6 @@ export default function Hero() {
                   <p className="text-sm font-bold text-[var(--yume-charcoal)] font-header">€14.99</p>
                 </motion.div>
               </div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.6 }}
-                className="absolute right-0 translate-x-full top-1/2 -translate-y-1/2 hidden lg:block pl-8"
-              >
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">12+</span>
-                    <span className="text-xs text-[var(--yume-miso)] font-body uppercase tracking-wide">Ramen</span>
-                  </div>
-                  
-                  <div className="w-8 h-[1px] bg-[var(--yume-miso)]/30 mx-auto" />
-                  
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">30</span>
-                    <span className="text-xs text-[var(--yume-miso)] font-body uppercase tracking-wide">Min</span>
-                  </div>
-                  
-                  <div className="w-8 h-[1px] bg-[var(--yume-miso)]/30 mx-auto" />
-                  
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">50K+</span>
-                    <span className="text-xs text-[var(--yume-miso)] font-body uppercase tracking-wide">Served</span>
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         </div>

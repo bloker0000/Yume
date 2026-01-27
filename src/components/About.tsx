@@ -48,10 +48,10 @@ export default function About() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
           >
             <h2 className="text-4xl lg:text-6xl font-bold text-[var(--yume-warm-white)] mb-6 font-header">
               The Art of
@@ -81,10 +81,10 @@ export default function About() {
             </div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
               className="mt-8 flex items-center gap-6"
             >
               <div className="flex -space-x-3">
@@ -109,19 +109,19 @@ export default function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="grid grid-cols-2 gap-4"
           >
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 + 0.3 }}
+                transition={{ duration: 0.3, delay: index * 0.08 + 0.3 }}
                 className="relative bg-[var(--yume-ink)] p-6"
               >
                 <div className="absolute top-0 right-0 text-4xl opacity-10 font-japanese text-[var(--yume-warm-white)]">
@@ -145,10 +145,10 @@ export default function About() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.6 }}
+          transition={{ duration: 0.4, delay: 0.5 }}
           className="mt-24 text-center"
         >
           <div className="inline-flex items-center gap-8 px-8 py-4 bg-[var(--yume-ink)] border border-[var(--yume-miso)]/20">

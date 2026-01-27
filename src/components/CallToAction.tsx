@@ -22,16 +22,16 @@ export default function CallToAction() {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
         >
           <motion.div
-            initial={{ scale: 0 }}
-            whileInView={{ scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2, type: "spring" }}
+            transition={{ duration: 0.4, delay: 0.2 }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--yume-warm-white)]/20 backdrop-blur-sm text-[var(--yume-warm-white)] mb-8"
           >
             <Award size={18} />
@@ -52,18 +52,17 @@ export default function CallToAction() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="secondary"
-                size="lg"
-                className="bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] hover:bg-[var(--yume-gold)] hover:text-[var(--yume-charcoal)] px-8"
-              >
-                <span className="flex items-center gap-2">
-                  Order Now
-                  <ArrowRight size={18} />
-                </span>
-              </Button>
-            </motion.div>
+            <Button
+              variant="secondary"
+              size="lg"
+              cornerColor="var(--yume-charcoal)"
+              className="bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] hover:bg-[var(--yume-warm-white)] hover:text-[var(--yume-charcoal)] px-8"
+            >
+              <span className="flex items-center gap-2">
+                Order Now
+                <ArrowRight size={18} />
+              </span>
+            </Button>
 
             <span className="text-[var(--yume-warm-white)]/60 text-base font-body">or</span>
 
@@ -76,10 +75,10 @@ export default function CallToAction() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
             className="mt-12 flex flex-wrap items-center justify-center gap-8 text-[var(--yume-warm-white)]/80"
           >
             <div className="flex items-center gap-2">
