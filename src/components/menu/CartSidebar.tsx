@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { X, Minus, Plus, ShoppingBag, Trash2, ChevronUp, Clock } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { X, Minus, Plus, ShoppingBag, Trash2, ChevronUp, Clock, ChevronRight, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import { toppings } from "@/data/menuData";
+import { toppings, brothRichness, noodleFirmness, spiceLevels } from "@/data/menuData";
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -13,8 +14,8 @@ interface CartSidebarProps {
 }
 
 export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
-  const { items, removeItem, updateQuantity, subtotal, deliveryFee, total, clearCart } = useCart();
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const router = useRouter();
+  const { items, removeItem, updateQuantity, subtotal, deliveryFee, total } = useCart();
 
   const freeDeliveryThreshold = 25;
   const amountUntilFreeDelivery = Math.max(0, freeDeliveryThreshold - subtotal);
@@ -26,14 +27,29 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
       .join(", ");
   };
 
+  const getCustomizationSummary = (customization: typeof items[0]["customization"]) => {
+    if (!customization) return null;
+    const parts: string[] = [];
+    
+    if (customization.brothRichness) {
+      const broth = brothRichness.find(b => b.id === customization.brothRichness);
+      if (broth && broth.id !== "medium") parts.push(`${broth.name} broth`);
+    }
+    if (customization.noodleFirmness) {
+      const noodle = noodleFirmness.find(n => n.id === customization.noodleFirmness);
+      if (noodle && noodle.id !== "medium") parts.push(`${noodle.name} noodles`);
+    }
+    if (customization.spiceLevel !== undefined && customization.spiceLevel > 0) {
+      const spice = spiceLevels.find(s => s.id === customization.spiceLevel);
+      if (spice) parts.push(spice.name);
+    }
+    
+    return parts.length > 0 ? parts.join(", ") : null;
+  };
+
   const handleCheckout = () => {
-    setIsCheckingOut(true);
-    setTimeout(() => {
-      alert("Thank you for your order! Your delicious ramen is being prepared.");
-      clearCart();
-      setIsCheckingOut(false);
-      onClose();
-    }, 1500);
+    onClose();
+    router.push("/checkout");
   };
 
   return (
@@ -124,6 +140,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 <div className="space-y-4">
                   {items.map((item) => {
                     const itemDetails = item.menuItem;
+                    const customSummary = getCustomizationSummary(item.customization);
 
                     return (
                       <motion.div
@@ -132,47 +149,63 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -100 }}
-                        className="flex gap-3 p-3 bg-[var(--yume-cream)]"
+                        className="bg-[var(--yume-cream)]"
                       >
-                        <div className="relative w-20 h-20 flex-shrink-0">
-                          <Image
-                            src={itemDetails.image}
-                            alt={itemDetails.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <h4 className="font-medium text-[var(--yume-charcoal)] font-header text-sm">
-                                {itemDetails.name}
-                              </h4>
-                              <p className="text-xs text-[var(--yume-miso)] font-japanese">
-                                {itemDetails.japanese}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() => removeItem(item.id)}
-                              className="p-1 text-[var(--yume-miso)] hover:text-[var(--yume-vermillion)] transition-colors"
-                            >
-                              <Trash2 size={16} />
-                            </button>
+                        <Link
+                          href={`/menu/${itemDetails.slug}`}
+                          onClick={() => {
+                            if (item.customization) {
+                              sessionStorage.setItem(
+                                `yume-preview-customization-${itemDetails.slug}`,
+                                JSON.stringify(item.customization)
+                              );
+                            }
+                            onClose();
+                          }}
+                          className="flex gap-3 p-3 hover:bg-[var(--yume-cream)]/80 transition-colors group"
+                        >
+                          <div className="relative w-20 h-20 flex-shrink-0">
+                            <Image
+                              src={itemDetails.image}
+                              alt={itemDetails.name}
+                              fill
+                              className="object-cover"
+                            />
                           </div>
 
-                          {item.customization && (
-                            <div className="mt-1 text-xs text-[var(--yume-miso)] font-body">
-                              {item.customization.toppings && item.customization.toppings.length > 0 && (
-                                <p>+ {getToppingNames(item.customization.toppings)}</p>
-                              )}
-                              {item.customization.specialInstructions && (
-                                <p className="italic truncate">"{item.customization.specialInstructions}"</p>
-                              )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <div className="flex items-center gap-1">
+                                  <h4 className="font-medium text-[var(--yume-charcoal)] font-header text-sm group-hover:text-[var(--yume-vermillion)] transition-colors">
+                                    {itemDetails.name}
+                                  </h4>
+                                  <ChevronRight size={14} className="text-[var(--yume-miso)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                                <p className="text-xs text-[var(--yume-miso)] font-japanese">
+                                  {itemDetails.japanese}
+                                </p>
+                              </div>
                             </div>
-                          )}
 
-                          <div className="flex items-center justify-between mt-2">
+                            {item.customization && (
+                              <div className="mt-1 text-xs text-[var(--yume-miso)] font-body space-y-0.5">
+                                {customSummary && (
+                                  <p>{customSummary}</p>
+                                )}
+                                {item.customization.toppings && item.customization.toppings.length > 0 && (
+                                  <p>+ {getToppingNames(item.customization.toppings)}</p>
+                                )}
+                                {item.customization.specialInstructions && (
+                                  <p className="italic truncate">"{item.customization.specialInstructions}"</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </Link>
+
+                        <div className="flex items-center justify-between px-3 pb-3">
+                          <div className="flex items-center gap-2">
                             <div className="flex items-center border border-[var(--yume-warm-white)]">
                               <button
                                 onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
@@ -190,10 +223,16 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                 <Plus size={14} />
                               </button>
                             </div>
-                            <p className="font-bold text-[var(--yume-vermillion)] font-header">
-                              €{item.totalPrice.toFixed(2)}
-                            </p>
+                            <button
+                              onClick={() => removeItem(item.id)}
+                              className="p-1 text-[var(--yume-miso)] hover:text-[var(--yume-vermillion)] transition-colors"
+                            >
+                              <Trash2 size={16} />
+                            </button>
                           </div>
+                          <p className="font-bold text-[var(--yume-vermillion)] font-header">
+                            €{item.totalPrice.toFixed(2)}
+                          </p>
                         </div>
                       </motion.div>
                     );
@@ -236,10 +275,10 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
                 <button
                   onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                  className="w-full py-4 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body flex items-center justify-center gap-2"
                 >
-                  {isCheckingOut ? "Processing..." : `Checkout • €${total.toFixed(2)}`}
+                  Checkout
+                  <ArrowRight size={18} />
                 </button>
               </div>
             )}

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { menuItems, MenuItem } from "@/data/menuData";
 import { useCart } from "@/context/CartContext";
@@ -27,7 +28,8 @@ function fuzzyMatch(text: string, query: string): boolean {
   return queryIndex === queryLower.length;
 }
 
-export default function MenuPage() {
+function MenuContent() {
+  const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("popular");
@@ -36,6 +38,13 @@ export default function MenuPage() {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
   const { isCartOpen, setIsCartOpen, totalItems } = useCart();
+
+  useEffect(() => {
+    const category = searchParams.get('category');
+    if (category && ['ramen', 'appetizers', 'drinks', 'desserts'].includes(category)) {
+      setActiveCategory(category);
+    }
+  }, [searchParams]);
 
   const filteredAndSortedItems = useMemo(() => {
     let filtered = [...menuItems];
@@ -195,5 +204,21 @@ export default function MenuPage() {
 
       <Footer />
     </main>
+  );
+}
+
+export default function MenuPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-[var(--yume-warm-white)]">
+        <Navigation variant="light" />
+        <div className="flex items-center justify-center h-96">
+          <div className="animate-pulse text-[var(--yume-miso)]">Loading menu...</div>
+        </div>
+        <Footer />
+      </main>
+    }>
+      <MenuContent />
+    </Suspense>
   );
 }
