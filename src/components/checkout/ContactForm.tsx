@@ -36,6 +36,19 @@ export default function ContactForm({ contactInfo, onContactInfoChange, onValida
         const parsed = JSON.parse(saved);
         onContactInfoChange(parsed);
         setSaveForLater(true);
+        
+        setTouched({
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+        });
+        
+        setTimeout(() => {
+          ['firstName', 'lastName', 'email', 'phone'].forEach((field) => {
+            validateField(field, parsed[field] || '');
+          });
+        }, 0);
       } catch (e) {
         console.error("Failed to load saved contact info");
       }
