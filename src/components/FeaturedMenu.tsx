@@ -15,7 +15,7 @@ const menuItems = [
     rating: 4.9,
     bestseller: true,
     spicy: false,
-    image: "/ramen/Tonkotsu.jpg",
+    image: "/items/Tonkotsu.jpg",
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const menuItems = [
     rating: 4.8,
     bestseller: false,
     spicy: true,
-    image: "/ramen/spicyMiso.jpg",
+    image: "/items/spicyMiso.jpg",
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const menuItems = [
     rating: 4.7,
     bestseller: false,
     spicy: false,
-    image: "/ramen/shoyu.jpg",
+    image: "/items/shoyu.jpg",
   },
   {
     id: 4,
@@ -48,7 +48,7 @@ const menuItems = [
     rating: 4.9,
     bestseller: true,
     spicy: true,
-    image: "/ramen/tantanmen.jpg",
+    image: "/items/tantanmen.jpg",
   },
 ];
 

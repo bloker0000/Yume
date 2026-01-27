@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Clock, Flame, Award } from "lucide-react";
 import Button from "./Button";
 import { CirclePattern } from "./JapanesePatterns";
+import Image from "next/image";
 
 export default function CallToAction() {
   return (
@@ -11,14 +12,14 @@ export default function CallToAction() {
       <CirclePattern className="absolute top-0 right-0 w-96 h-96 text-[var(--yume-warm-white)] opacity-10" />
       <CirclePattern className="absolute bottom-0 left-0 w-64 h-64 text-[var(--yume-warm-white)] opacity-10" />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.1 }}
-        viewport={{ once: true }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20rem] font-bold text-[var(--yume-warm-white)] font-japanese"
-      >
-        夢
-      </motion.div>
+      <div className="absolute inset-0 opacity-10" style={{ filter: 'blur(5px)' }}>
+        <Image
+          src="/items/Tonkotsu.jpg"
+          alt="Ramen"
+          fill
+          className="object-cover"
+        />
+      </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center">
         <motion.div

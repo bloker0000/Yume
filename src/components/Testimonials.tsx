@@ -37,7 +37,16 @@ const testimonials = [
 export default function Testimonials() {
   return (
     <section className="relative py-24 lg:py-32 bg-[var(--yume-cream)] overflow-hidden">
-      <SeigaihaPattern className="absolute inset-0 w-full h-full text-[var(--yume-miso)] opacity-10" />
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: "url('/bg\\'s/snowflakesbg0.svg')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div

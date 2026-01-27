@@ -108,7 +108,7 @@ export default function Hero() {
               <div className="relative aspect-[4/3] w-full">
                 <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl border border-[var(--yume-charcoal)]/10">
                   <Image
-                    src="/ramen/Tonkotsu.jpg"
+                    src="/items/Tonkotsu.jpg"
                     alt="Tonkotsu Ramen"
                     fill
                     className="object-cover"

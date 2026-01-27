@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
 
 export const metadata: Metadata = {
   title: "Yume Ramen | Authentic Japanese Ramen",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased" suppressHydrationWarning>
-        <div className="noise-overlay" />
-        {children}
+        <CartProvider>
+          <div className="noise-overlay" />
+          {children}
+        </CartProvider>
       </body>
     </html>
   );
