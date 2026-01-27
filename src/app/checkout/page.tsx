@@ -25,12 +25,6 @@ const CHECKOUT_STEPS = [
   { id: 3, title: "Review" },
 ];
 
-const PROMO_CODES: Record<string, { discount: number; type: "fixed" | "percent"; message: string }> = {
-  WELCOME10: { discount: 10, type: "percent", message: "10% off your first order!" },
-  YUME5: { discount: 5, type: "fixed", message: "EUR 5.00 off your order!" },
-  FREESHIP: { discount: 0, type: "fixed", message: "Free delivery on this order!" },
-};
-
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, updateQuantity, clearCart } = useCart();
@@ -66,9 +60,16 @@ export default function CheckoutPage() {
   });
   
   const [promoCode, setPromoCode] = useState<string | null>(null);
+  const [promoData, setPromoData] = useState<{
+    id: number;
+    discountType: string;
+    discountValue: number;
+    freeDelivery: boolean;
+  } | null>(null);
   const [discount, setDiscount] = useState(0);
   const [deliveryFee, setDeliveryFee] = useState(3.5);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
   const [orderSummaryExpanded, setOrderSummaryExpanded] = useState(true);
 
   const [contactValid, setContactValid] = useState(false);
@@ -92,24 +93,45 @@ export default function CheckoutPage() {
   };
 
   const handlePromoApply = async (code: string): Promise<{ valid: boolean; discount: number; message: string }> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    const promo = PROMO_CODES[code];
-    if (!promo) {
-      return { valid: false, discount: 0, message: "Invalid promo code" };
-    }
-    if (code === "FREESHIP") {
-      setDeliveryFee(0);
+    try {
+      const response = await fetch("/api/promo-codes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, orderTotal: subtotal }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { valid: false, discount: 0, message: data.error || "Invalid promo code" };
+      }
+
       setPromoCode(code);
-      return { valid: true, discount: 0, message: promo.message };
+      setPromoData(data.promoCode);
+      
+      if (data.promoCode.freeDelivery) {
+        setDeliveryFee(0);
+        setDiscount(0);
+        return { valid: true, discount: 0, message: "Free delivery on this order!" };
+      }
+      
+      const discountAmount = data.discountAmount;
+      setDiscount(discountAmount);
+      
+      const typeLabel = data.promoCode.discountType === "PERCENT" ? "%" : "EUR";
+      const valueLabel = data.promoCode.discountType === "PERCENT" 
+        ? `${data.promoCode.discountValue}% off` 
+        : `EUR ${data.promoCode.discountValue.toFixed(2)} off`;
+      
+      return { valid: true, discount: discountAmount, message: `${valueLabel} your order!` };
+    } catch {
+      return { valid: false, discount: 0, message: "Failed to apply promo code" };
     }
-    const discountAmount = promo.type === "percent" ? subtotal * (promo.discount / 100) : promo.discount;
-    setDiscount(discountAmount);
-    setPromoCode(code);
-    return { valid: true, discount: discountAmount, message: promo.message };
   };
 
   const handleRemovePromo = () => {
     setPromoCode(null);
+    setPromoData(null);
     setDiscount(0);
     setDeliveryFee(3.5);
   };
@@ -129,32 +151,59 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    const orderId = "YUM-" + Date.now().toString(36).toUpperCase();
-    sessionStorage.setItem(
-      "lastOrder",
-      JSON.stringify({
-        orderId,
-        items,
-        orderType,
-        contactInfo,
-        addressInfo: orderType === "delivery" ? address : null,
-        deliveryTime: {
-          type: deliveryTimeType,
-          date: scheduledDate,
-          time: scheduledTime,
-        },
-        paymentInfo: { method: paymentInfo.method },
-        subtotal,
-        deliveryFee: orderType === "delivery" ? deliveryFee : 0,
-        discount,
-        tax,
-        total,
-        createdAt: new Date().toISOString(),
-      })
-    );
-    clearCart();
-    router.push("/order/" + orderId + "/confirmation");
+    setOrderError(null);
+
+    try {
+      const orderData = {
+        orderType: orderType.toUpperCase(),
+        customerFirstName: contactInfo.firstName,
+        customerLastName: contactInfo.lastName,
+        customerEmail: contactInfo.email,
+        customerPhone: contactInfo.phone,
+        deliveryStreet: orderType === "delivery" ? address.street : null,
+        deliveryApartment: orderType === "delivery" ? address.apartment : null,
+        deliveryCity: orderType === "delivery" ? address.city : null,
+        deliveryPostalCode: orderType === "delivery" ? address.postalCode : null,
+        deliveryInstructions: orderType === "delivery" ? address.instructions : null,
+        deliveryTimeType: deliveryTimeType.toUpperCase(),
+        scheduledDate: deliveryTimeType === "scheduled" ? scheduledDate : null,
+        scheduledTime: deliveryTimeType === "scheduled" ? scheduledTime : null,
+        promoCode: promoCode || undefined,
+        paymentMethod: paymentInfo.method,
+        items: items.map((item) => ({
+          menuItemId: item.menuItem.id,
+          name: item.menuItem.name,
+          price: item.totalPrice / item.quantity,
+          quantity: item.quantity,
+          specialInstructions: item.customization?.specialInstructions,
+          toppings: item.customization?.toppings,
+        })),
+      };
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create order");
+      }
+
+      if (data.paymentUrl) {
+        clearCart();
+        window.location.href = data.paymentUrl;
+      } else {
+        clearCart();
+        router.push(`/order/${data.order.id}/confirmation`);
+      }
+    } catch (error) {
+      console.error("Order error:", error);
+      setOrderError(error instanceof Error ? error.message : "Failed to place order. Please try again.");
+      setIsProcessing(false);
+    }
   };
 
   if (items.length === 0) {
@@ -443,6 +492,12 @@ export default function CheckoutPage() {
                         <span className="font-bold text-[var(--yume-charcoal)] font-body">Total</span>
                         <span className="text-xl font-bold text-[var(--yume-vermillion)] font-body">EUR {total.toFixed(2)}</span>
                       </div>
+
+                      {orderError && (
+                        <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm font-body">
+                          {orderError}
+                        </div>
+                      )}
 
                       <motion.button
                         whileHover={{ scale: 1.02 }}

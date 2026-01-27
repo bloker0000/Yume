@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model MenuItem {
+  id              Int         @id @default(autoincrement())
+  slug            String      @unique
+  name            String
+  japanese        String
+  description     String
+  longDescription String      @db.Text
+  price           Decimal     @db.Decimal(10, 2)
+  rating          Decimal     @db.Decimal(2, 1)
+  reviewCount     Int         @default(0)
+  image           String
+  images          String[]
+  category        String
+  bestseller      Boolean     @default(false)
+  isNew           Boolean     @default(false)
+  spicy           Int         @default(0)
+  vegetarian      Boolean     @default(false)
+  vegan           Boolean     @default(false)
+  glutenFree      Boolean     @default(false)
+  prepTime        Int
+  calories        Int
+  customizable    Boolean     @default(false)
+  serves          Int         @default(1)
+  ingredients     String[]
+  allergens       String[]
+  nutrition       Json
+  pairings        Int[]
+  reviews         Json
+  available       Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  orderItems      OrderItem[]
+
+  @@map("menu_items")
+}
+
+model Topping {
+  id       Int     @id @default(autoincrement())
+  toppingId String @unique
+  name     String
+  japanese String
+  price    Decimal @db.Decimal(10, 2)
+  available Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("toppings")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  status          OrderStatus @default(PENDING)
+  orderType       OrderType
+  
+  customerFirstName String
+  customerLastName  String
+  customerEmail     String
+  customerPhone     String
+  
+  deliveryStreet       String?
+  deliveryApartment    String?
+  deliveryCity         String?
+  deliveryPostalCode   String?
+  deliveryInstructions String?
+  
+  deliveryTimeType  String
+  scheduledDate     String?
+  scheduledTime     String?
+  
+  paymentMethod   String
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentId       String?
+  
+  subtotal        Decimal     @db.Decimal(10, 2)
+  deliveryFee     Decimal     @db.Decimal(10, 2) @default(0)
+  discount        Decimal     @db.Decimal(10, 2) @default(0)
+  tax             Decimal     @db.Decimal(10, 2)
+  total           Decimal     @db.Decimal(10, 2)
+  
+  promoCode       String?
+  
+  estimatedTime   Int?
+  actualDeliveryTime DateTime?
+  
+  notes           String?
+  
+  items           OrderItem[]
+  statusHistory   OrderStatusHistory[]
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId  Int
+  menuItem    MenuItem @relation(fields: [menuItemId], references: [id])
+  
+  name        String
+  price       Decimal  @db.Decimal(10, 2)
+  quantity    Int
+  
+  toppings    Json?
+  brothRichness String?
+  noodleFirmness String?
+  spiceLevel  Int?
+  specialInstructions String?
+  
+  createdAt   DateTime @default(now())
+
+  @@map("order_items")
+}
+
+model OrderStatusHistory {
+  id        Int         @id @default(autoincrement())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+
+  @@map("order_status_history")
+}
+
+model PromoCode {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique
+  discountType DiscountType
+  discountValue Decimal @db.Decimal(10, 2)
+  description String
+  minOrder    Decimal?  @db.Decimal(10, 2)
+  maxDiscount Decimal?  @db.Decimal(10, 2)
+  usageLimit  Int?
+  usageCount  Int       @default(0)
+  validFrom   DateTime  @default(now())
+  validUntil  DateTime?
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("promo_codes")
+}
+
+model DeliveryZone {
+  id          Int     @id @default(autoincrement())
+  postalCode  String  @unique
+  fee         Decimal @db.Decimal(10, 2)
+  minOrder    Decimal? @db.Decimal(10, 2)
+  estimatedTime Int
+  active      Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("delivery_zones")
+}
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  role      AdminRole @default(STAFF)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  DELIVERED
+  PICKED_UP
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum OrderType {
+  DELIVERY
+  PICKUP
+}
+
+enum DiscountType {
+  PERCENT
+  FIXED
+  FREE_DELIVERY
+}
+
+enum AdminRole {
+  ADMIN
+  STAFF
+}

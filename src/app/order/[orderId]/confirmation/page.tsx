@@ -1,10 +1,8 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { 
   CheckCircle, 
   Clock, 
@@ -19,54 +17,69 @@ import {
   Home,
   ArrowRight,
   Copy,
-  Check
+  Check,
+  AlertCircle,
+  Loader2
 } from "lucide-react";
 
-interface OrderData {
-  orderId: string;
-  items: Array<{
-    id: string;
-    menuItem: {
-      id: string;
-      name: string;
-      price: number;
-      image: string;
-    };
-    quantity: number;
-    totalPrice: number;
-    customization?: {
-      spiceLevel?: number;
-      toppings?: string[];
-    };
-  }>;
-  orderType: "delivery" | "pickup";
-  contactInfo: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-  };
-  addressInfo: {
-    street: string;
-    apartment?: string;
-    city: string;
-    postalCode: string;
+interface OrderItem {
+  id: number;
+  name: string;
+  quantity: number;
+  price: string;
+  customizations: string | null;
+  menuItem: {
+    id: number;
+    name: string;
+    image: string | null;
   } | null;
-  deliveryTime: {
-    type: "asap" | "scheduled";
-    date?: string;
-    time?: string;
-  };
-  paymentInfo: {
-    method: "card" | "ideal" | "cash";
-  };
-  subtotal: number;
-  deliveryFee: number;
-  discount: number;
-  tax: number;
-  total: number;
+}
+
+interface StatusHistoryEntry {
+  id: number;
+  status: string;
+  note: string | null;
   createdAt: string;
 }
+
+interface OrderData {
+  id: string;
+  orderNumber: string;
+  status: string;
+  paymentStatus: string;
+  orderType: string;
+  customerFirstName: string;
+  customerLastName: string;
+  customerEmail: string;
+  customerPhone: string;
+  deliveryStreet: string | null;
+  deliveryApartment: string | null;
+  deliveryCity: string | null;
+  deliveryPostalCode: string | null;
+  deliveryInstructions: string | null;
+  deliveryTimeType: string;
+  scheduledDate: string | null;
+  scheduledTime: string | null;
+  estimatedTime: number | null;
+  subtotal: string;
+  deliveryFee: string;
+  discount: string;
+  tax: string;
+  total: string;
+  createdAt: string;
+  items: OrderItem[];
+  statusHistory: StatusHistoryEntry[];
+}
+
+const STATUS_MAP: Record<string, number> = {
+  PENDING: 0,
+  CONFIRMED: 1,
+  PREPARING: 2,
+  READY: 3,
+  OUT_FOR_DELIVERY: 3,
+  DELIVERED: 4,
+  PICKED_UP: 4,
+};
 
 const ORDER_STEPS = [
   { id: "confirmed", label: "Order Confirmed", icon: CheckCircle },
@@ -87,55 +100,78 @@ export default function OrderConfirmationPage({
   params: Promise<{ orderId: string }> 
 }) {
   const { orderId } = use(params);
-  const router = useRouter();
   const [order, setOrder] = useState<OrderData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    const savedOrder = sessionStorage.getItem("lastOrder");
-    if (savedOrder) {
-      const parsed = JSON.parse(savedOrder);
-      if (parsed.orderId === orderId) {
-        setOrder(parsed);
-      } else {
-        router.push("/");
+    const fetchOrder = async () => {
+      try {
+        const response = await fetch(`/api/orders?id=${orderId}`);
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "Order not found");
+        }
+        const data = await response.json();
+        setOrder(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load order");
+      } finally {
+        setLoading(false);
       }
-    } else {
-      router.push("/");
-    }
-  }, [orderId, router]);
-
-  useEffect(() => {
-    if (!order) return;
-
-    const timer1 = setTimeout(() => setCurrentStep(1), 3000);
-    const timer2 = setTimeout(() => setCurrentStep(2), 8000);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
     };
-  }, [order]);
+
+    fetchOrder();
+    
+    const pollInterval = setInterval(fetchOrder, 10000);
+    return () => clearInterval(pollInterval);
+  }, [orderId]);
 
   const copyOrderId = () => {
-    navigator.clipboard.writeText(orderId);
+    navigator.clipboard.writeText(order?.orderNumber || orderId);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  if (!order) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[var(--yume-warm-white)] flex items-center justify-center">
-        <div className="animate-pulse text-[var(--yume-miso)]">Loading order...</div>
+        <Loader2 className="animate-spin text-[var(--yume-vermillion)]" size={32} />
       </div>
     );
   }
 
-  const steps = order.orderType === "delivery" ? ORDER_STEPS : PICKUP_STEPS;
-  const estimatedTime = order.deliveryTime.type === "asap"
-    ? order.orderType === "delivery" ? "25-35 minutes" : "15-20 minutes"
-    : `${order.deliveryTime.date} at ${order.deliveryTime.time}`;
+  if (error || !order) {
+    return (
+      <div className="min-h-screen bg-[var(--yume-warm-white)] flex flex-col items-center justify-center px-4">
+        <AlertCircle size={48} className="text-[var(--yume-vermillion)] mb-4" />
+        <h1 className="text-xl font-bold text-[var(--yume-charcoal)] mb-2 font-header">
+          {error || "Order Not Found"}
+        </h1>
+        <p className="text-[var(--yume-miso)] mb-6 font-body text-center">
+          We couldn&apos;t find your order. Please check your order number or contact support.
+        </p>
+        <Link
+          href="/"
+          className="px-6 py-3 bg-[var(--yume-vermillion)] text-white font-bold hover:bg-[var(--yume-vermillion)]/90 transition-colors font-body"
+        >
+          Back to Home
+        </Link>
+      </div>
+    );
+  }
+
+  const steps = order.orderType === "DELIVERY" ? ORDER_STEPS : PICKUP_STEPS;
+  const currentStep = STATUS_MAP[order.status] ?? 0;
+  
+  const estimatedTime = order.deliveryTimeType === "ASAP"
+    ? order.estimatedTime 
+      ? `${order.estimatedTime} minutes` 
+      : order.orderType === "DELIVERY" ? "25-35 minutes" : "15-20 minutes"
+    : order.scheduledDate && order.scheduledTime 
+      ? `${order.scheduledDate} at ${order.scheduledTime}`
+      : "Scheduled";
 
   return (
     <div className="min-h-screen bg-[var(--yume-warm-white)]">
@@ -179,7 +215,7 @@ export default function OrderConfirmationPage({
             transition={{ delay: 0.5 }}
             className="text-[var(--yume-miso)] font-body"
           >
-            Thank you for your order, {order.contactInfo.firstName}!
+            Thank you for your order, {order.customerFirstName}!
           </motion.p>
 
           <motion.div
@@ -189,7 +225,7 @@ export default function OrderConfirmationPage({
             className="mt-4 flex items-center justify-center gap-2"
           >
             <span className="text-sm text-[var(--yume-miso)] font-body">Order ID:</span>
-            <span className="font-bold text-[var(--yume-charcoal)] font-body">{orderId}</span>
+            <span className="font-bold text-[var(--yume-charcoal)] font-body">{order.orderNumber}</span>
             <button
               onClick={copyOrderId}
               className="p-1 hover:bg-[var(--yume-cream)] rounded transition-colors"
@@ -212,7 +248,7 @@ export default function OrderConfirmationPage({
           <div className="flex items-center gap-2 mb-6">
             <Clock size={20} className="text-[var(--yume-vermillion)]" />
             <span className="font-bold text-[var(--yume-charcoal)] font-body">
-              Estimated {order.orderType === "delivery" ? "Delivery" : "Pickup"}: {estimatedTime}
+              Estimated {order.orderType === "DELIVERY" ? "Delivery" : "Pickup"}: {estimatedTime}
             </span>
           </div>
 
@@ -268,7 +304,7 @@ export default function OrderConfirmationPage({
             className="bg-white border border-[var(--yume-cream)] p-6"
           >
             <h2 className="font-bold text-[var(--yume-charcoal)] mb-4 font-header flex items-center gap-2">
-              {order.orderType === "delivery" ? (
+              {order.orderType === "DELIVERY" ? (
                 <>
                   <Truck size={18} className="text-[var(--yume-vermillion)]" />
                   Delivery Details
@@ -284,14 +320,14 @@ export default function OrderConfirmationPage({
             <div className="space-y-3 text-sm font-body">
               <div className="flex items-start gap-2">
                 <MapPin size={16} className="text-[var(--yume-miso)] mt-0.5 flex-shrink-0" />
-                {order.orderType === "delivery" && order.addressInfo ? (
+                {order.orderType === "DELIVERY" && order.deliveryStreet ? (
                   <div>
                     <p className="text-[var(--yume-charcoal)]">
-                      {order.addressInfo.street}
-                      {order.addressInfo.apartment && `, ${order.addressInfo.apartment}`}
+                      {order.deliveryStreet}
+                      {order.deliveryApartment && `, ${order.deliveryApartment}`}
                     </p>
                     <p className="text-[var(--yume-miso)]">
-                      {order.addressInfo.postalCode} {order.addressInfo.city}
+                      {order.deliveryPostalCode} {order.deliveryCity}
                     </p>
                   </div>
                 ) : (
@@ -304,12 +340,12 @@ export default function OrderConfirmationPage({
 
               <div className="flex items-center gap-2">
                 <Phone size={16} className="text-[var(--yume-miso)]" />
-                <span className="text-[var(--yume-charcoal)]">{order.contactInfo.phone}</span>
+                <span className="text-[var(--yume-charcoal)]">{order.customerPhone}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <Mail size={16} className="text-[var(--yume-miso)]" />
-                <span className="text-[var(--yume-charcoal)]">{order.contactInfo.email}</span>
+                <span className="text-[var(--yume-charcoal)]">{order.customerEmail}</span>
               </div>
             </div>
           </motion.div>
@@ -326,13 +362,9 @@ export default function OrderConfirmationPage({
             </h2>
 
             <div className="space-y-2 text-sm font-body">
-              <p className="text-[var(--yume-charcoal)]">
-                {order.paymentInfo.method === "card" && "Credit/Debit Card"}
-                {order.paymentInfo.method === "ideal" && "iDEAL Bank Transfer"}
-                {order.paymentInfo.method === "cash" && "Cash on Delivery"}
-              </p>
-              <p className="text-[var(--yume-nori)] font-bold">
-                {order.paymentInfo.method === "cash" ? "Pay on delivery" : "Paid"}
+              <p className="text-[var(--yume-charcoal)]">Online Payment</p>
+              <p className={`font-bold ${order.paymentStatus === "PAID" ? "text-[var(--yume-nori)]" : "text-[var(--yume-vermillion)]"}`}>
+                {order.paymentStatus === "PAID" ? "Paid" : order.paymentStatus === "PENDING" ? "Payment Pending" : "Payment " + order.paymentStatus}
               </p>
             </div>
           </motion.div>
@@ -349,32 +381,19 @@ export default function OrderConfirmationPage({
           <div className="space-y-3 mb-4">
             {order.items.map((item) => (
               <div key={item.id} className="flex gap-3">
-                <div className="relative w-16 h-16 flex-shrink-0 bg-[var(--yume-cream)]">
-                  <Image
-                    src={item.menuItem.image}
-                    alt={item.menuItem.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
                 <div className="flex-1">
                   <div className="flex justify-between">
                     <h3 className="font-bold text-[var(--yume-charcoal)] text-sm font-body">
-                      {item.menuItem.name}
+                      {item.name}
                     </h3>
                     <span className="font-bold text-[var(--yume-charcoal)] text-sm font-body">
-                      EUR {item.totalPrice.toFixed(2)}
+                      EUR {(parseFloat(item.price) * item.quantity).toFixed(2)}
                     </span>
                   </div>
                   <p className="text-xs text-[var(--yume-miso)] font-body">Qty: {item.quantity}</p>
-                  {item.customization && (
+                  {item.customizations && (
                     <div className="text-xs text-[var(--yume-miso)] font-body">
-                      {item.customization.spiceLevel !== undefined && (
-                        <span>Spice Level {item.customization.spiceLevel}</span>
-                      )}
-                      {item.customization.toppings && item.customization.toppings.length > 0 && (
-                        <span> +{item.customization.toppings.length} extras</span>
-                      )}
+                      {item.customizations}
                     </div>
                   )}
                 </div>
@@ -385,27 +404,27 @@ export default function OrderConfirmationPage({
           <div className="border-t border-[var(--yume-cream)] pt-4 space-y-2 text-sm font-body">
             <div className="flex justify-between text-[var(--yume-miso)]">
               <span>Subtotal</span>
-              <span>EUR {order.subtotal.toFixed(2)}</span>
+              <span>EUR {parseFloat(order.subtotal).toFixed(2)}</span>
             </div>
-            {order.orderType === "delivery" && (
+            {order.orderType === "DELIVERY" && (
               <div className="flex justify-between text-[var(--yume-miso)]">
                 <span>Delivery</span>
-                <span>{order.deliveryFee > 0 ? `EUR ${order.deliveryFee.toFixed(2)}` : "Free"}</span>
+                <span>{parseFloat(order.deliveryFee) > 0 ? `EUR ${parseFloat(order.deliveryFee).toFixed(2)}` : "Free"}</span>
               </div>
             )}
-            {order.discount > 0 && (
+            {parseFloat(order.discount) > 0 && (
               <div className="flex justify-between text-[var(--yume-nori)]">
                 <span>Discount</span>
-                <span>-EUR {order.discount.toFixed(2)}</span>
+                <span>-EUR {parseFloat(order.discount).toFixed(2)}</span>
               </div>
             )}
             <div className="flex justify-between text-[var(--yume-miso)]">
               <span>Tax (9%)</span>
-              <span>EUR {order.tax.toFixed(2)}</span>
+              <span>EUR {parseFloat(order.tax).toFixed(2)}</span>
             </div>
             <div className="flex justify-between font-bold text-[var(--yume-charcoal)] pt-2 border-t border-[var(--yume-cream)]">
               <span>Total</span>
-              <span className="text-[var(--yume-vermillion)]">EUR {order.total.toFixed(2)}</span>
+              <span className="text-[var(--yume-vermillion)]">EUR {parseFloat(order.total).toFixed(2)}</span>
             </div>
           </div>
         </motion.div>
@@ -417,7 +436,7 @@ export default function OrderConfirmationPage({
           className="text-center space-y-4"
         >
           <p className="text-sm text-[var(--yume-miso)] font-body">
-            A confirmation email has been sent to {order.contactInfo.email}
+            A confirmation email has been sent to {order.customerEmail}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
