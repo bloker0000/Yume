@@ -191,6 +191,13 @@ export async function POST(request: Request) {
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
+    if (!mollieClient) {
+      return NextResponse.json(
+        { error: "Payment processing is not configured" },
+        { status: 503 }
+      );
+    }
+
     const payment = await mollieClient.payments.create({
       amount: {
         value: total.toFixed(2),

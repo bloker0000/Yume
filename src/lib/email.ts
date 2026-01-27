@@ -1,10 +1,14 @@
 import { Resend } from "resend";
 
-if (!process.env.RESEND_API_KEY) {
-  throw new Error("RESEND_API_KEY is not defined");
-}
+const getResendClient = () => {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY is not defined - email sending will be disabled");
+    return null;
+  }
+  return new Resend(process.env.RESEND_API_KEY);
+};
 
-export const resend = new Resend(process.env.RESEND_API_KEY);
+export const resend = getResendClient();
 
 export const emailFrom = process.env.EMAIL_FROM || "Yume <noreply@yumeramen.nl>";
 
@@ -120,6 +124,11 @@ export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailPr
 </body>
 </html>`;
 
+  if (!resend) {
+    console.warn(`Email sending disabled - Order confirmation for ${orderNumber} not sent`);
+    return { data: null, error: null };
+  }
+
   return resend.emails.send({
     from: emailFrom,
     to: customerEmail,
@@ -184,6 +193,11 @@ export async function sendOrderStatusUpdateEmail(props: OrderStatusUpdateEmailPr
   </div>
 </body>
 </html>`;
+
+  if (!resend) {
+    console.warn(`Email sending disabled - Status update for ${orderNumber} not sent`);
+    return { data: null, error: null };
+  }
 
   return resend.emails.send({
     from: emailFrom,

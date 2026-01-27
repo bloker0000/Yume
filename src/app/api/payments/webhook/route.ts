@@ -12,6 +12,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Payment ID required" }, { status: 400 });
     }
 
+    if (!mollieClient) {
+      console.warn("Mollie client not configured - skipping webhook processing");
+      return NextResponse.json({ success: false, message: "Payment processing not configured" }, { status: 503 });
+    }
+
     const payment = await mollieClient.payments.get(paymentId);
     const metadata = payment.metadata as { orderId?: string; orderNumber?: string } | null;
     const orderId = metadata?.orderId;
