@@ -10,6 +10,7 @@ interface ButtonProps {
   onClick?: () => void;
   href?: string;
   cornerColor?: string;
+  showCorners?: boolean;
 }
 
 export default function Button({
@@ -20,6 +21,7 @@ export default function Button({
   onClick,
   href,
   cornerColor = "var(--yume-gold)",
+  showCorners = true,
 }: ButtonProps) {
   const baseStyles = "relative inline-flex items-center justify-center font-medium transition-all duration-300 overflow-hidden group font-body";
   
@@ -36,14 +38,22 @@ export default function Button({
   };
 
   const combinedStyles = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+  
+  // Outline buttons have a border, so brackets appear more inset visually
+  // Adjust non-outline buttons to match
+  const cornerInset = variant === "outline" ? "4px" : "6px";
 
   const content = (
     <>
       {/* Corner Brackets */}
-      <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor }} />
-      <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor }} />
-      <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor }} />
-      <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor }} />
+      {showCorners && (
+        <>
+          <span className="absolute border-t-2 border-l-2 w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor, top: cornerInset, left: cornerInset }} />
+          <span className="absolute border-t-2 border-r-2 w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor, top: cornerInset, right: cornerInset }} />
+          <span className="absolute border-b-2 border-l-2 w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor, bottom: cornerInset, left: cornerInset }} />
+          <span className="absolute border-b-2 border-r-2 w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ borderColor: cornerColor, bottom: cornerInset, right: cornerInset }} />
+        </>
+      )}
       
       <span className="relative z-10">{children}</span>
     </>

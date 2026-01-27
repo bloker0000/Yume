@@ -66,7 +66,7 @@ export default function FeaturedMenu() {
         }}
       />
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[var(--yume-warm-white)] to-transparent" />
-      <AsanohaPattern className="absolute inset-0 w-full h-full text-[var(--yume-charcoal)] opacity-5" />
+
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
