@@ -238,7 +238,7 @@ export default function TrackingPage({
   const isOutForDelivery = tracking.status === "OUT_FOR_DELIVERY";
 
   return (
-    <div className="min-h-screen bg-[var(--yume-warm-white)]">
+    <div className="min-h-screen bg-[var(--yume-warm-white)] pb-20 sm:pb-24">
       <header className="bg-white border-b border-[var(--yume-cream)] sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16">
