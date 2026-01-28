@@ -198,14 +198,18 @@ export async function POST(request: Request) {
       );
     }
 
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}`
+      : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
     const payment = await mollieClient.payments.create({
       amount: {
         value: total.toFixed(2),
         currency: "EUR",
       },
       description: `Yume Ramen - Order ${orderNumber}`,
-      redirectUrl: `${appUrl}/order/confirmation?orderId=${order.id}`,
-      webhookUrl: `${appUrl}/api/payments/webhook`,
+      redirectUrl: `${baseUrl}/order/confirmation?orderId=${order.id}`,
+      webhookUrl: `${baseUrl}/api/payments/webhook`,
       metadata: {
         orderId: order.id,
         orderNumber,
