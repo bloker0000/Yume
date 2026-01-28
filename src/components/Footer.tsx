@@ -6,11 +6,11 @@ import Image from "next/image";
 
 const footerLinks = {
   menu: [
-    { name: "Tonkotsu Ramen", href: "/menu/tonkotsu" },
-    { name: "Miso Ramen", href: "/menu/miso" },
-    { name: "Shoyu Ramen", href: "/menu/shoyu" },
-    { name: "Sides & Appetizers", href: "/menu/sides" },
-    { name: "Drinks", href: "/menu/drinks" },
+    { name: "Tonkotsu Ramen", href: "/menu/tonkotsu-ramen" },
+    { name: "Miso Ramen", href: "/menu/spicy-miso-ramen" },
+    { name: "Shoyu Ramen", href: "/menu/shoyu-ramen" },
+    { name: "Sides & Appetizers", href: "/menu?category=appetizers" },
+    { name: "Drinks", href: "/menu?category=drinks" },
   ],
   company: [
     { name: "Our Story", href: "/about" },
