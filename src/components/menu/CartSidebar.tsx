@@ -245,7 +245,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             </div>
 
             {items.length > 0 && (
-              <div className="border-t border-[var(--yume-cream)] p-4 pb-safe bg-[var(--yume-warm-white)]">
+              <div className="border-t border-[var(--yume-cream)] p-4 pb-6 mb-safe bg-[var(--yume-warm-white)] mt-auto flex-shrink-0">
                 <div className="flex items-center gap-4 mb-4 p-3 bg-[var(--yume-cream)]">
                   <Clock size={18} className="text-[var(--yume-miso)]" />
                   <div>

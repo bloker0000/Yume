@@ -441,15 +441,22 @@ export default function OrderConfirmationPage({
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
+              href={`/track/${order.id}`}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] bg-[var(--yume-vermillion)] text-white font-bold hover:bg-[var(--yume-vermillion)]/90 transition-colors font-body"
+            >
+              <MapPin size={18} />
+              Track Order
+            </Link>
+            <Link
               href="/menu"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-white font-bold hover:bg-[var(--yume-vermillion)]/90 transition-colors font-body"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] bg-[var(--yume-charcoal)] text-white font-bold hover:bg-[var(--yume-charcoal)]/90 transition-colors font-body"
             >
               Order More
               <ArrowRight size={18} />
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] font-bold hover:bg-[var(--yume-charcoal)] hover:text-white transition-colors font-body"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[48px] border-2 border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] font-bold hover:bg-[var(--yume-charcoal)] hover:text-white transition-colors font-body"
             >
               Back to Home
             </Link>

@@ -73,6 +73,8 @@ model Order {
   deliveryCity         String?
   deliveryPostalCode   String?
   deliveryInstructions String?
+  deliveryLat          Float?
+  deliveryLng          Float?
   
   deliveryTimeType  String
   scheduledDate     String?
@@ -93,10 +95,17 @@ model Order {
   estimatedTime   Int?
   actualDeliveryTime DateTime?
   
+  driverId        String?
+  driverAssignedAt DateTime?
+  driverLat       Float?
+  driverLng       Float?
+  driverUpdatedAt DateTime?
+  
   notes           String?
   
   items           OrderItem[]
   statusHistory   OrderStatusHistory[]
+  trackingUpdates OrderTrackingUpdate[]
   internalNotes   OrderNote[]
   
   deletedAt       DateTime?
@@ -138,6 +147,38 @@ model OrderStatusHistory {
   createdAt DateTime    @default(now())
 
   @@map("order_status_history")
+}
+
+model OrderTrackingUpdate {
+  id              Int      @id @default(autoincrement())
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  driverLat       Float?
+  driverLng       Float?
+  estimatedMinutes Int?
+  message         String?
+  createdAt       DateTime @default(now())
+
+  @@map("order_tracking_updates")
+}
+
+model Driver {
+  id          String   @id @default(cuid())
+  name        String
+  photo       String
+  phone       String
+  vehicle     String
+  vehicleColor String
+  licensePlate String
+  rating      Decimal  @db.Decimal(2, 1)
+  totalDeliveries Int  @default(0)
+  available   Boolean  @default(true)
+  currentLat  Float?
+  currentLng  Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("drivers")
 }
 
 model OrderNote {

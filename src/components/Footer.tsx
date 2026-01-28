@@ -19,6 +19,7 @@ const footerLinks = {
     { name: "Contact", href: "/contact" },
   ],
   support: [
+    { name: "Track Order", href: "/track" },
     { name: "FAQ", href: "/faq" },
     { name: "Delivery Info", href: "/delivery" },
     { name: "Allergen Info", href: "/allergens" },
