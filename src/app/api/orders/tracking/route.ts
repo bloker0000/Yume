@@ -3,6 +3,22 @@ import { prisma } from "@/lib/prisma";
 import { simulateOrderTracking, getEstimatedDeliveryTime } from "@/lib/trackingSimulation";
 import { RESTAURANT_LOCATION } from "@/data/driversData";
 
+function normalizePhoneNumber(phone: string): string {
+  let normalized = phone.replace(/[\s\-\(\)\.]/g, "");
+  
+  if (normalized.startsWith("+31")) {
+    normalized = "0" + normalized.slice(3);
+  } else if (normalized.startsWith("31")) {
+    normalized = "0" + normalized.slice(2);
+  }
+  
+  if (normalized.startsWith("00")) {
+    normalized = "0" + normalized.slice(2);
+  }
+  
+  return normalized;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -40,15 +56,11 @@ export async function GET(request: Request) {
         },
       });
     } else {
-      const cleanPhone = phone!.replace(/\s/g, "").replace(/^\+31/, "0");
+      const normalizedInputPhone = normalizePhoneNumber(phone!);
       
-      order = await prisma.order.findFirst({
+      const orders = await prisma.order.findMany({
         where: {
           orderNumber: orderNumber!.toUpperCase(),
-          OR: [
-            { customerPhone: { contains: cleanPhone.slice(-9) } },
-            { customerPhone: phone! },
-          ],
         },
         include: {
           items: {
@@ -67,6 +79,11 @@ export async function GET(request: Request) {
           },
         },
       });
+      
+      order = orders.find((o) => {
+        const normalizedDbPhone = normalizePhoneNumber(o.customerPhone);
+        return normalizedDbPhone === normalizedInputPhone;
+      }) || null;
     }
 
     if (!order) {
