@@ -397,7 +397,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex items-center gap-2 lg:hidden">
                   <span className="text-[var(--yume-vermillion)] font-bold font-body text-sm sm:text-base">EUR {total.toFixed(2)}</span>
-                  {orderSummaryExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}}
+                  {orderSummaryExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </div>
               </button>
 
