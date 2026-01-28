@@ -69,11 +69,11 @@ export default function Footer() {
                   <span>+31 6 12345678</span>
                 </a>
                 <a
-                  href="mailto:hello@yumeramen.nl"
+                  href="mailto:bingbingchingcong@gmail.com"
                   className="flex items-center gap-3 text-base text-[var(--yume-ink)] hover:text-[var(--yume-vermillion)] transition-colors font-body"
                 >
                   <Mail size={18} />
-                  <span>hello@yumeramen.nl</span>
+                  <span>bingbingchingcong@gmail.com</span>
                 </a>
                 <div className="flex items-center gap-3 text-base text-[var(--yume-ink)] font-body">
                   <MapPin size={18} />

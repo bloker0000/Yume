@@ -187,7 +187,7 @@ export async function sendOrderStatusUpdateEmail(props: OrderStatusUpdateEmailPr
       <p style="color: #333; line-height: 1.6;">${message}</p>
       
       <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #999; font-size: 12px;">
-        <p>Questions about your order? Contact us at info@yumeramen.nl</p>
+        <p>Questions about your order? Contact us at bingbingchingcong@gmail.com</p>
         <p>Yume Ramen. All rights reserved.</p>
       </div>
     </div>
@@ -313,7 +313,7 @@ export async function sendContactNotificationEmail(props: ContactNotificationEma
 
   return resend.emails.send({
     from: "Yume Ramen Contact <noreply@yumeramen.nl>",
-    to: "hello@yumeramen.nl",
+    to: "bingbingchingcong@gmail.com",
     replyTo: email,
     subject: `New Contact Form: ${inquiryType} - ${subject}`,
     html,
@@ -367,7 +367,7 @@ export async function sendOrderOnItsWayEmail(props: OrderOnItsWayEmailProps) {
       <p style="color: #666; font-size: 14px; text-align: center;">Tip: Have your phone nearby - the driver may call when they arrive!</p>
       
       <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #999; font-size: 12px;">
-        <p>Questions? Contact us at info@yumeramen.nl</p>
+        <p>Questions? Contact us at bingbingchingcong@gmail.com</p>
         <p>Yume Ramen. All rights reserved.</p>
       </div>
     </div>

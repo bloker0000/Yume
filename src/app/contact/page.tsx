@@ -66,7 +66,7 @@ const faqItems = [
   },
   {
     question: "Can I order for large groups/catering?",
-    answer: "Yes! We offer catering for events and large group orders. Contact us at catering@yumeramen.nl or call for custom menu options.",
+    answer: "Yes! We offer catering for events and large group orders. Contact us at bingbingchingcong@gmail.com or call for custom menu options.",
     icon: Users
   },
   {
@@ -106,7 +106,7 @@ const contactMethods = [
     title: "Email Us",
     japanese: "メール",
     icon: Mail,
-    primary: "hello@yumeramen.nl",
+    primary: "bingbingchingcong@gmail.com",
     secondary: "We reply within 24 hours",
     action: "Send Email",
     actionIcon: Mail,
@@ -230,7 +230,7 @@ export default function ContactPage() {
     } catch (error) {
       console.error("Network error:", error);
       setFormStatus("error");
-      setErrorMessage("Unable to connect. Please check your internet connection or contact us directly at hello@yumeramen.nl");
+      setErrorMessage("Unable to connect. Please check your internet connection or contact us directly at bingbingchingcong@gmail.com");
       setShowFallbackContact(true);
     }
   };
@@ -321,7 +321,7 @@ export default function ContactPage() {
                     } else if (method.title === "Call Us") {
                       window.location.href = "tel:+31201234567";
                     } else if (method.title === "Email Us") {
-                      window.location.href = "mailto:hello@yumeramen.nl";
+                      window.location.href = "mailto:bingbingchingcong@gmail.com";
                     } else if (method.title === "Order Online") {
                       window.location.href = "/menu";
                     }
@@ -762,7 +762,7 @@ export default function ContactPage() {
                           {showFallbackContact && (
                             <div className="mt-3 flex flex-wrap gap-2">
                               <a
-                                href="mailto:hello@yumeramen.nl"
+                                href="mailto:bingbingchingcong@gmail.com"
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-red-200 rounded text-sm text-red-700 hover:bg-red-50 transition-colors"
                               >
                                 <Mail size={14} />

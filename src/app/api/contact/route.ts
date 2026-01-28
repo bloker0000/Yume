@@ -17,10 +17,10 @@ interface ContactResponse {
 function getErrorResponse(code: ErrorCode, details?: string): ContactResponse {
   const messages: Record<ErrorCode, string> = {
     VALIDATION_ERROR: "Please fill in all required fields correctly.",
-    DATABASE_ERROR: "We're experiencing technical difficulties. Your message could not be saved, but you can reach us directly at hello@yumeramen.nl or call +31 20 123 4567.",
+    DATABASE_ERROR: "We're experiencing technical difficulties. Your message could not be saved, but you can reach us directly at bingbingchingcong@gmail.com or call +31 20 123 4567.",
     EMAIL_ERROR: "Your message was saved, but we couldn't send confirmation emails. We'll still respond within 24 hours.",
     RATE_LIMIT: "Too many requests. Please wait a moment before trying again.",
-    UNKNOWN_ERROR: "Something went wrong. Please try again or contact us directly at hello@yumeramen.nl",
+    UNKNOWN_ERROR: "Something went wrong. Please try again or contact us directly at bingbingchingcong@gmail.com",
   };
 
   console.error(`[Contact API] ${code}:`, details);
