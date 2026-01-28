@@ -14,13 +14,24 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const date = searchParams.get("date");
+    const search = searchParams.get("search");
+    const orderType = searchParams.get("orderType");
     const limit = parseInt(searchParams.get("limit") || "50");
     const offset = parseInt(searchParams.get("offset") || "0");
+    const includeDeleted = searchParams.get("includeDeleted") === "true";
 
     const where: Record<string, unknown> = {};
 
+    if (!includeDeleted) {
+      where.deletedAt = null;
+    }
+
     if (status && status !== "all") {
       where.status = status;
+    }
+
+    if (orderType && orderType !== "all") {
+      where.orderType = orderType;
     }
 
     if (date) {
@@ -32,6 +43,16 @@ export async function GET(request: Request) {
         gte: startOfDay,
         lte: endOfDay,
       };
+    }
+
+    if (search) {
+      where.OR = [
+        { orderNumber: { contains: search, mode: "insensitive" } },
+        { customerFirstName: { contains: search, mode: "insensitive" } },
+        { customerLastName: { contains: search, mode: "insensitive" } },
+        { customerEmail: { contains: search, mode: "insensitive" } },
+        { customerPhone: { contains: search } },
+      ];
     }
 
     const [orders, total] = await Promise.all([
@@ -46,6 +67,10 @@ export async function GET(request: Request) {
           statusHistory: {
             orderBy: { createdAt: "desc" },
             take: 5,
+          },
+          internalNotes: {
+            orderBy: { createdAt: "desc" },
+            take: 3,
           },
         },
         orderBy: { createdAt: "desc" },

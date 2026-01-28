@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -8,8 +8,49 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [autoLoginAttempted, setAutoLoginAttempted] = useState(false);
+
+  useEffect(() => {
+    const savedCredentials = localStorage.getItem("yume_admin_remember");
+    if (savedCredentials && !autoLoginAttempted) {
+      try {
+        const { email: savedEmail, password: savedPassword } = JSON.parse(atob(savedCredentials));
+        setEmail(savedEmail);
+        setPassword(savedPassword);
+        setRememberMe(true);
+        setAutoLoginAttempted(true);
+        handleAutoLogin(savedEmail, savedPassword);
+      } catch {
+        localStorage.removeItem("yume_admin_remember");
+      }
+    }
+  }, [autoLoginAttempted]);
+
+  const handleAutoLogin = async (savedEmail: string, savedPassword: string) => {
+    setLoading(true);
+    try {
+      const result = await signIn("credentials", {
+        email: savedEmail,
+        password: savedPassword,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        localStorage.removeItem("yume_admin_remember");
+        setLoading(false);
+        return;
+      }
+
+      router.push("/admin");
+      router.refresh();
+    } catch {
+      localStorage.removeItem("yume_admin_remember");
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +68,13 @@ export default function AdminLoginPage() {
         setError("Invalid email or password");
         setLoading(false);
         return;
+      }
+
+      if (rememberMe) {
+        const credentials = btoa(JSON.stringify({ email, password }));
+        localStorage.setItem("yume_admin_remember", credentials);
+      } else {
+        localStorage.removeItem("yume_admin_remember");
       }
 
       router.push("/admin");
@@ -83,6 +131,19 @@ export default function AdminLoginPage() {
                 placeholder="Enter password"
                 required
               />
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 bg-zinc-800 border-zinc-700 rounded text-red-500 focus:ring-red-500 focus:ring-offset-zinc-900"
+              />
+              <label htmlFor="rememberMe" className="ml-2 text-sm text-zinc-400">
+                Remember me
+              </label>
             </div>
 
             <button
