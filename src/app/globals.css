@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @font-face {
   font-family: 'The Last Shuriken';
-  src: url('/fonts/The Last Shuriken.otf') format('opentype');
+  src: url('/fonts/TheLastShuriken.woff2') format('woff2'),
+       url('/fonts/The Last Shuriken.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,8 @@
 
 @font-face {
   font-family: 'Japanese';
-  src: url('/fonts/japaneseFont.ttf') format('truetype');
+  src: url('/fonts/japaneseFont.woff2') format('woff2'),
+       url('/fonts/japaneseFont.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -33,7 +34,7 @@
   --foreground: var(--yume-charcoal);
   
   --font-shuriken: 'The Last Shuriken', sans-serif;
-  --font-quicksand: 'Quicksand', sans-serif;
+  --font-quicksand: var(--font-quicksand), 'Quicksand', system-ui, sans-serif;
   --font-japanese: 'Japanese', serif;
 }
 

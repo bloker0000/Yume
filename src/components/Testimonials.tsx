@@ -110,9 +110,9 @@ export default function Testimonials() {
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <h4 className="font-bold text-[var(--yume-charcoal)] font-header">
+                    <h3 className="font-bold text-[var(--yume-charcoal)] font-header text-base">
                       {testimonial.name}
-                    </h4>
+                    </h3>
                     <p className="text-base text-[var(--yume-miso)] font-body">
                       {testimonial.location}
                     </p>
@@ -166,7 +166,7 @@ export default function Testimonials() {
             <span className="text-[var(--yume-charcoal)] font-medium">
               4.9 out of 5
             </span>
-            <span className="text-[var(--yume-miso)]">
+            <span className="text-[var(--yume-ink)]">
               based on 2,000+ reviews
             </span>
           </div>

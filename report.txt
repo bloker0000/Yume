@@ -1,0 +1,562 @@
+https://yume-ebon.vercel.app/
+
+69
+Performance
+85
+Accessibility
+96
+Best Practices
+100
+SEO
+There were issues affecting this run of Lighthouse:
+
+Chrome extensions negatively affected this page's load performance. Try auditing the page in incognito mode or from a Chrome profile without extensions.
+69
+FCP
++6
+LCP
++0
+TBT
++30
+CLS
++25
+SI
++8
+Performance
+Values are estimated and may vary. The performance score is calculated directly from these metrics.See calculator.
+0–49
+50–89
+90–100
+Final Screenshot
+
+Metrics
+Expand view
+First Contentful Paint
+2.7 s
+Largest Contentful Paint
+16.6 s
+Total Blocking Time
+50 ms
+Cumulative Layout Shift
+0
+Speed Index
+4.1 s
+View Treemap
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Screenshot
+Show audits relevant to:
+
+All
+
+FCP
+
+LCP
+
+TBT
+Insights
+Render blocking requests Est savings of 1,630 ms
+Requests are blocking the page's initial render, which may delay LCP. Deferring or inlining can move these network requests out of the critical path.FCPLCPUnscored
+URL
+Transfer Size
+Duration
+vercel.app 1st party
+13.0 KiB	150 ms
+…chunks/c616….css(yume-ebon.vercel.app)
+13.0 KiB
+150 ms
+Google Fonts cdn 
+1.0 KiB	770 ms
+/css2?family=Quicksand:wght@300;400;500;600;700&display=swap(fonts.googleapis.com)
+1.0 KiB
+770 ms
+LCP breakdown
+Each subpart has specific improvement strategies. Ideally, most of the LCP time should be spent on loading the resources, not within delays.LCPUnscored
+Subpart
+Duration
+Time to first byte
+40 ms
+Resource load delay
+30 ms
+Resource load duration
+190 ms
+Element render delay
+2,450 ms
+Tonkotsu Ramen
+<img alt="Tonkotsu Ramen" decoding="async" data-nimg="fill" class="object-cover" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fitems%2FTonkotsu.jpg&amp;w=640&amp;q=75 640w, /_next/image?url…" src="https://yume-ebon.vercel.app/_next/image?url=%2Fitems%2FTonkotsu.jpg&amp;w=750…">
+LCP request discovery
+Optimize LCP by making the LCP image discoverable from the HTML immediately, and avoiding lazy-loadingLCPUnscored
+fetchpriority=high should be applied
+Request is discoverable in initial document
+lazy load not applied
+Tonkotsu Ramen
+<img alt="Tonkotsu Ramen" decoding="async" data-nimg="fill" class="object-cover" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fitems%2FTonkotsu.jpg&amp;w=640&amp;q=75 640w, /_next/image?url…" src="https://yume-ebon.vercel.app/_next/image?url=%2Fitems%2FTonkotsu.jpg&amp;w=750…">
+Network dependency tree
+Avoid chaining critical requests by reducing the length of chains, reducing the download size of resources, or deferring the download of unnecessary resources to improve page load.LCPUnscored
+Maximum critical path latency: 1,473 ms
+Initial Navigation
+https://yume-ebon.vercel.app - 75 ms, 10.79 KiB
+…chunks/c616….css(yume-ebon.vercel.app) - 243 ms, 13.03 KiB
+/fonts/japaneseFont.ttf(yume-ebon.vercel.app) - 1,473 ms, 2,377.52 KiB
+/fonts/The%20Last%20Shuriken.otf(yume-ebon.vercel.app) - 640 ms, 9.64 KiB
+/css2?family=Quicksand:wght@300;400;500;600;700&display=swap(fonts.googleapis.com) - 270 ms, 1.01 KiB
+…v37/6xKtdSZaM….woff2(fonts.gstatic.com) - 440 ms, 27.70 KiB
+Preconnected origins
+preconnect hints help the browser establish a connection earlier in the page load, saving time when the first request for that origin is made. The following are the origins that the page preconnected to.
+no origins were preconnected
+Preconnect candidates
+Add preconnect hints to your most important origins, but try to use no more than 4.
+No additional origins are good candidates for preconnecting
+Improve image delivery Est savings of 200 KiB
+Reducing the download time of images can improve the perceived load time of the page and LCP. Learn more about optimizing image sizeFCPLCPUnscored
+URL
+Resource Size
+Est Savings
+vercel.app 1st party
+325.3 KiB	200.3 KiB
+Shoyu Ramen
+<img alt="Shoyu Ramen" loading="lazy" decoding="async" data-nimg="fill" class="object-cover group-hover:scale-110 transition-transform duration-700" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fitems%2Fshoyu.jpg&amp;w=640&amp;q=75 640w, /_next/image?url=%2…" src="https://yume-ebon.vercel.app/_next/image?url=%2Fitems%2Fshoyu.jpg&amp;w=750&amp;q=…">
+/_next/image?url=%2Fitems%2Fshoyu.jpg&w=750&q=75(yume-ebon.vercel.app)
+95.4 KiB
+65.1 KiB
+Increasing the image compression factor could improve this image's download size.
+33.4 KiB
+This image file is larger than it needs to be (750x508) for its displayed dimensions (432x432). Use responsive images to reduce the image download size.
+48.7 KiB
+Tantanmen
+<img alt="Tantanmen" loading="lazy" decoding="async" data-nimg="fill" class="object-cover group-hover:scale-110 transition-transform duration-700" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fitems%2Ftantanmen.jpg&amp;w=640&amp;q=75 640w, /_next/image?ur…" src="https://yume-ebon.vercel.app/_next/image?url=%2Fitems%2Ftantanmen.jpg&amp;w=75…">
+/_next/image?url=%2Fitems%2Ftantanmen.jpg&w=750&q=75(yume-ebon.vercel.app)
+91.0 KiB
+51.4 KiB
+Increasing the image compression factor could improve this image's download size.
+29.0 KiB
+This image file is larger than it needs to be (750x508) for its displayed dimensions (432x564). Use responsive images to reduce the image download size.
+32.8 KiB
+Ramen
+<img alt="Ramen" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fitems%2FTonkotsu.jpg&amp;w=640&amp;q=75 640w, /_next/image?url…" src="https://yume-ebon.vercel.app/_next/image?url=%2Fitems%2FTonkotsu.jpg&amp;w=750…">
+/_next/image?url=%2Fitems%2FTonkotsu.jpg&w=750&q=75(yume-ebon.vercel.app)
+67.2 KiB
+42.5 KiB
+Increasing the image compression factor could improve this image's download size.
+42.5 KiB
+Spicy Miso Ramen
+<img alt="Spicy Miso Ramen" loading="lazy" decoding="async" data-nimg="fill" class="object-cover group-hover:scale-110 transition-transform duration-700" style="position: absolute; height: 100%; width: 100%; inset: 0px;" sizes="100vw" srcset="/_next/image?url=%2Fitems%2FspicyMiso.jpg&amp;w=640&amp;q=75 640w, /_next/image?ur…" src="https://yume-ebon.vercel.app/_next/image?url=%2Fitems%2FspicyMiso.jpg&amp;w=75…">
+/_next/image?url=%2Fitems%2FspicyMiso.jpg&w=750&q=75(yume-ebon.vercel.app)
+71.7 KiB
+41.3 KiB
+Increasing the image compression factor could improve this image's download size.
+9.7 KiB
+This image file is larger than it needs to be (750x508) for its displayed dimensions (432x432). Use responsive images to reduce the image download size.
+36.6 KiB
+Legacy JavaScript Est savings of 14 KiB
+Polyfills and transforms enable older browsers to use new JavaScript features. However, many aren't necessary for modern browsers. Consider modifying your JavaScript build process to not transpile Baseline features, unless you know you must support older browsers. Learn why most sites can deploy ES6+ code without transpilingFCPLCPUnscored
+URL
+Wasted bytes
+vercel.app 1st party
+13.6 KiB
+…chunks/773abe17875a49cc.js(yume-ebon.vercel.app)
+13.6 KiB
+…chunks/773abe17875a49cc.js:1:6066(yume-ebon.vercel.app)
+Array.prototype.at
+…chunks/773abe17875a49cc.js:1:5454(yume-ebon.vercel.app)
+Array.prototype.flat
+…chunks/773abe17875a49cc.js:1:5567(yume-ebon.vercel.app)
+Array.prototype.flatMap
+…chunks/773abe17875a49cc.js:1:5943(yume-ebon.vercel.app)
+Object.fromEntries
+…chunks/773abe17875a49cc.js:1:6201(yume-ebon.vercel.app)
+Object.hasOwn
+…chunks/773abe17875a49cc.js:1:5196(yume-ebon.vercel.app)
+String.prototype.trimEnd
+…chunks/773abe17875a49cc.js:1:5111(yume-ebon.vercel.app)
+String.prototype.trimStart
+Optimize DOM size
+A large DOM can increase the duration of style calculations and layout reflows, impacting page responsiveness. A large DOM will also increase memory usage. Learn how to avoid an excessive DOM size.Unscored
+Statistic
+Element
+Value
+Total elements
+673
+DOM depth
+#1
+<span class="text-[var(--yume-warm-white)] text-2xl font-bold font-header">
+13
+Most children
+body.antialiased
+<body class="antialiased" inject_vt_svd="true" cz-shortcut-listen="true">
+14
+3rd parties
+3rd party code can significantly impact load performance. Reduce and defer loading of 3rd party code to prioritize your page's content.Unscored
+3rd party
+Transfer size
+Main thread time
+penndbmahnpapepljikkjmakcobdahne
+0 KiB	62 ms
+chrome-extension://penndbmahnpapepljikkjmakcobdahne/js/content-script-vimeo.js
+0 KiB
+62 ms
+gabfmnliflodkdafenbcpjdlppllnemd
+0 KiB	60 ms
+chrome-extension://gabfmnliflodkdafenbcpjdlppllnemd/inject.js
+0 KiB
+60 ms
+majdfhpaihoncoakbjgbdhglocklcgno
+0 KiB	1 ms
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/main.tsx-loader-DI4Iy2nJ.js
+0 KiB
+1 ms
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/main.tsx-G6OnOoYv.js
+0 KiB
+0 ms
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/index-DA4uJ5Kf.js
+0 KiB
+0 ms
+kfokdmfpdnokpmpbjhjbcabgligoelgp
+0 KiB	1 ms
+chrome-extension://kfokdmfpdnokpmpbjhjbcabgligoelgp/main.js
+0 KiB
+1 ms
+bhlhnicpbhignbdhedgjhgdocnmhomnp
+0 KiB	1 ms
+chrome-extension://bhlhnicpbhignbdhedgjhgdocnmhomnp/js/global-shortcut.js
+0 KiB
+1 ms
+Google Fonts cdn 
+29 KiB	0 ms
+…v37/6xKtdSZaM….woff2(fonts.gstatic.com)
+28 KiB
+0 ms
+/css2?family=Quicksand:wght@300;400;500;600;700&display=swap(fonts.googleapis.com)
+1 KiB
+0 ms
+These insights are also available in the Chrome DevTools Performance Panel - record a trace to view more detailed information.
+Diagnostics
+Reduce JavaScript execution time 3.1 s
+Consider reducing the time spent parsing, compiling, and executing JS. You may find delivering smaller JS payloads helps with this. Learn how to reduce Javascript execution time.TBTUnscored
+URL
+Total CPU Time
+Script Evaluation
+Script Parse
+vercel.app 1st party
+4,374 ms	2,400 ms	60 ms
+…chunks/773abe17875a49cc.js(yume-ebon.vercel.app)
+2,268 ms
+1,818 ms
+18 ms
+https://yume-ebon.vercel.app
+1,083 ms
+113 ms
+13 ms
+…chunks/3b91c3293c0133ae.js(yume-ebon.vercel.app)
+770 ms
+244 ms
+10 ms
+…chunks/turbopack-d050ad7153465ccd.js(yume-ebon.vercel.app)
+139 ms
+137 ms
+2 ms
+…chunks/70db4e7b5c9f93d1.js(yume-ebon.vercel.app)
+62 ms
+54 ms
+7 ms
+…chunks/2d67c5fb9d2cf758.js(yume-ebon.vercel.app)
+52 ms
+34 ms
+9 ms
+Unattributable
+984 ms	171 ms	93 ms
+Unattributable
+738 ms
+26 ms
+0 ms
+chrome-extension://gabfmnliflodkdafenbcpjdlppllnemd/inject.js
+246 ms
+146 ms
+93 ms
+Video Downloader Pro Chrome Extension 
+254 ms	161 ms	85 ms
+chrome-extension://penndbmahnpapepljikkjmakcobdahne/js/content-script-vimeo.js
+254 ms
+161 ms
+85 ms
+Free VPN for Chrome - VPN Proxy VeePN Chrome Extension 
+127 ms	87 ms	1 ms
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/main.tsx-G6OnOoYv.js
+127 ms
+87 ms
+1 ms
+Minimize main-thread work 5.8 s
+Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this. Learn how to minimize main-thread workTBTUnscored
+Category
+Time Spent
+Script Evaluation
+2,839 ms
+Other
+1,654 ms
+Style & Layout
+678 ms
+Script Parsing & Compilation
+257 ms
+Rendering
+189 ms
+Garbage Collection
+152 ms
+Parse HTML & CSS
+32 ms
+Reduce unused JavaScript Est savings of 551 KiB
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity. Learn how to reduce unused JavaScript.FCPLCPUnscored
+URL
+Transfer Size
+Est Savings
+Free VPN for Chrome - VPN Proxy VeePN Chrome Extension 
+428.9 KiB	326.0 KiB
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/client-Da0e5-BC.js
+188.3 KiB
+166.8 KiB
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/main.tsx-G6OnOoYv.js
+134.7 KiB
+96.2 KiB
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/index-DkxrTVBi.js
+105.9 KiB
+63.0 KiB
+Unattributable
+151.0 KiB	103.3 KiB
+chrome-extension://gabfmnliflodkdafenbcpjdlppllnemd/inject.js
+151.0 KiB
+103.3 KiB
+Video Downloader Pro Chrome Extension 
+148.5 KiB	97.5 KiB
+chrome-extension://penndbmahnpapepljikkjmakcobdahne/js/content-script-vimeo.js
+148.5 KiB
+97.5 KiB
+vercel.app 1st party
+66.7 KiB	23.9 KiB
+…chunks/773abe17875a49cc.js(yume-ebon.vercel.app)
+66.7 KiB
+23.9 KiB
+Avoid enormous network payloads Total size was 3,133 KiB
+Large network payloads cost users real money and are highly correlated with long load times. Learn how to reduce payload sizes.Unscored
+URL
+Transfer Size
+vercel.app 1st party
+3,011.0 KiB
+/fonts/japaneseFont.ttf(yume-ebon.vercel.app)
+2,377.5 KiB
+/bg's/snowflakesbg0.svg(yume-ebon.vercel.app)
+132.8 KiB
+/_next/image?url=%2Fitems%2Fshoyu.jpg&w=750&q=75(yume-ebon.vercel.app)
+95.6 KiB
+/_next/image?url=%2Fitems%2Ftantanmen.jpg&w=750&q=75(yume-ebon.vercel.app)
+91.2 KiB
+/_next/image?url=%2Fitems%2FspicyMiso.jpg&w=750&q=75(yume-ebon.vercel.app)
+71.9 KiB
+…chunks/773abe17875a49cc.js(yume-ebon.vercel.app)
+69.9 KiB
+/_next/image?url=%2Fitems%2FTonkotsu.jpg&w=750&q=75(yume-ebon.vercel.app)
+67.3 KiB
+…chunks/3b91c3293c0133ae.js(yume-ebon.vercel.app)
+43.4 KiB
+…chunks/2d67c5fb9d2cf758.js(yume-ebon.vercel.app)
+31.9 KiB
+…chunks/70db4e7b5c9f93d1.js(yume-ebon.vercel.app)
+29.4 KiB
+Avoid long main-thread tasks 11 long tasks found
+Lists the longest tasks on the main thread, useful for identifying worst contributors to input delay. Learn how to avoid long main-thread tasksTBTUnscored
+URL
+Start Time
+Duration
+vercel.app 1st party
+584 ms
+https://yume-ebon.vercel.app
+971 ms
+186 ms
+…chunks/turbopack-d050ad7153465ccd.js(yume-ebon.vercel.app)
+15,301 ms
+143 ms
+https://yume-ebon.vercel.app
+1,396 ms
+72 ms
+https://yume-ebon.vercel.app
+879 ms
+62 ms
+…chunks/70db4e7b5c9f93d1.js(yume-ebon.vercel.app)
+16,037 ms
+62 ms
+https://yume-ebon.vercel.app
+1,468 ms
+59 ms
+Unattributable
+431 ms
+chrome-extension://gabfmnliflodkdafenbcpjdlppllnemd/inject.js
+1,527 ms
+186 ms
+Unattributable
+1,855 ms
+140 ms
+Unattributable
+1,995 ms
+105 ms
+Video Downloader Pro Chrome Extension 
+239 ms
+chrome-extension://penndbmahnpapepljikkjmakcobdahne/js/content-script-vimeo.js
+1,157 ms
+239 ms
+Free VPN for Chrome - VPN Proxy VeePN Chrome Extension 
+121 ms
+chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/assets/main.tsx-G6OnOoYv.js
+1,734 ms
+121 ms
+More information about the performance of your application. These numbers don't directly affect the Performance score.
+Passed audits (16)
+Show
+85
+Accessibility
+These checks highlight opportunities to improve the accessibility of your web app. Automatic detection can only detect a subset of issues and does not guarantee the accessibility of your web app, so manual testing is also encouraged.
+Names and labels
+Buttons do not have an accessible name
+When a button doesn't have an accessible name, screen readers announce it as "button", making it unusable for users who rely on screen readers. Learn how to make buttons more accessible.
+Failing Elements
+nav.fixed > div.max-w-7xl > div.flex > button.lg:hidden
+<button class="lg:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center t…" tabindex="0">
+Links do not have a discernible name
+Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. Learn how to make links accessible.
+Failing Elements
+div.grid > div.col-span-2 > div.flex > a.w-11
+<a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-11 h-11 sm:w-10 sm:h-10 bg-[var(--yume-charcoal)] text-[var(--yume-warm-…" tabindex="0">
+div.grid > div.col-span-2 > div.flex > a.w-11
+<a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-11 h-11 sm:w-10 sm:h-10 bg-[var(--yume-charcoal)] text-[var(--yume-warm-…" tabindex="0">
+These are opportunities to improve the semantics of the controls in your application. This may enhance the experience for users of assistive technology, like a screen reader.
+Contrast
+Background and foreground colors do not have a sufficient contrast ratio.
+Low-contrast text is difficult or impossible for many users to read. Learn how to provide sufficient color contrast.
+Failing Elements
+Order Now
+<span class="relative z-10">
+Order Now
+<a href="/menu" class="relative inline-flex items-center justify-center font-medium transition-al…" tabindex="0">
+from 2,000+ reviews
+<span class="text-sm text-[var(--yume-miso)] font-body">
+夢 AUTHENTIC JAPANESE RAMEN A Bowl of Dreams Experience the art of traditional …
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-…">
+These are opportunities to improve the legibility of your content.
+Navigation
+Heading elements are not in a sequentially-descending order
+Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. Learn more about heading order.
+Failing Elements
+Sarah van den Berg
+<h4 class="font-bold text-[var(--yume-charcoal)] font-header">
+These are opportunities to improve keyboard navigation in your application.
+Additional items to manually check (10)
+Show
+These items address areas which an automated testing tool cannot cover. Learn more in our guide on conducting an accessibility review.
+Passed audits (20)
+Show
+Not applicable (36)
+Hide
+[accesskey] values are unique
+button, link, and menuitem elements have accessible names
+Elements with role="dialog" or role="alertdialog" have accessible names.
+ARIA input fields have accessible names
+ARIA meter elements have accessible names
+ARIA progressbar elements have accessible names
+Elements with an ARIA [role] that require children to contain a specific [role] have all required children.
+[role]s are contained by their required parent element
+Elements with the role=text attribute do not have focusable descendents.
+ARIA toggle fields have accessible names
+ARIA tooltip elements have accessible names
+ARIA treeitem elements have accessible names
+The page contains a heading, skip link, or landmark region
+<dl>'s contain only properly-ordered <dt> and <dd> groups, <script>, <template> or <div> elements.
+Definition list items are wrapped in <dl> elements
+ARIA IDs are unique
+No form fields have multiple labels
+<frame> or <iframe> elements have a title
+<html> element has an [xml:lang] attribute with the same base language as the [lang] attribute.
+Input buttons have discernible text.
+<input type="image"> elements have [alt] text
+Form elements have associated labels
+Links are distinguishable without relying on color.
+The document does not use <meta http-equiv="refresh">
+<object> elements have alternate text
+Select elements have associated label elements.
+Skip links are focusable.
+Cells in a <table> element that use the [headers] attribute refer to table cells within the same table.
+<th> elements and elements with [role="columnheader"/"rowheader"] have data cells they describe.
+[lang] attributes have a valid value
+<video> elements contain a <track> element with [kind="captions"]
+Tables have different content in the summary attribute and <caption>.
+All heading elements contain content.
+Uses ARIA roles only on compatible elements
+Image elements do not have [alt] attributes that are redundant text.
+Identical links have the same purpose.
+96
+Best Practices
+General
+Issues were logged in the Issues panel in Chrome Devtools
+Issues logged to the Issues panel in Chrome Devtools indicate unresolved problems. They can come from network request failures, insufficient security controls, and other browser concerns. Open up the Issues panel in Chrome DevTools for more details on each issue.
+Issue type
+Content security policy
+Trust and Safety
+Ensure CSP is effective against XSS attacks
+A strong Content Security Policy (CSP) significantly reduces the risk of cross-site scripting (XSS) attacks. Learn how to use a CSP to prevent XSSUnscored
+Description
+Directive
+Severity
+No CSP found in enforcement mode
+High
+Ensure proper origin isolation with COOP
+The Cross-Origin-Opener-Policy (COOP) can be used to isolate the top-level window from other documents such as pop-ups. Learn more about deploying the COOP header.Unscored
+Description
+Directive
+Severity
+No COOP header found
+High
+Mitigate clickjacking with XFO or CSP
+The X-Frame-Options (XFO) header or the frame-ancestors directive in the Content-Security-Policy (CSP) header control where a page can be embedded. These can mitigate clickjacking attacks by blocking some or all sites from embedding the page. Learn more about mitigating clickjacking.Unscored
+Description
+Severity
+No frame control policy found
+High
+Mitigate DOM-based XSS with Trusted Types
+The require-trusted-types-for directive in the Content-Security-Policy (CSP) header instructs user agents to control the data passed to DOM XSS sink functions. Learn more about mitigating DOM-based XSS with Trusted Types.Unscored
+Description
+Severity
+No `Content-Security-Policy` header with Trusted Types directive found
+High
+Passed audits (12)
+Show
+Not applicable (3)
+Hide
+Redirects HTTP traffic to HTTPS
+Make sure that you redirect all HTTP traffic to HTTPS in order to enable secure web features for all your users. Learn more.Unscored
+Use a strong HSTS policy
+Deployment of the HSTS header significantly reduces the risk of downgrading HTTP connections and eavesdropping attacks. A rollout in stages, starting with a low max-age is recommended. Learn more about using a strong HSTS policy.Unscored
+Detected JavaScript libraries
+All front-end JavaScript libraries detected on the page. Learn more about this JavaScript library detection diagnostic audit.Unscored
+100
+SEO
+These checks ensure that your page is following basic search engine optimization advice. There are many additional factors Lighthouse does not score here that may affect your search ranking, including performance on Core Web Vitals. Learn more about Google Search Essentials.
+Additional items to manually check (1)
+Hide
+Structured data is valid
+Run these additional validators on your site to check additional SEO best practices.
+Passed audits (8)
+Show
+Not applicable (2)
+Hide
+robots.txt is valid
+If your robots.txt file is malformed, crawlers may not be able to understand how you want your website to be crawled or indexed. Learn more about robots.txt.Unscored
+Document has a valid rel=canonical
+Canonical links suggest which URL to show in search results. Learn more about canonical links.Unscored
+Captured at Jan 28, 2026, 6:43 PM GMT+1
+Emulated Moto G Power with Lighthouse 13.0.1
+Single page session
+Initial page load
+Slow 4G throttling
+Using Chromium 144.0.0.0 with devtools
+Generated by Lighthouse 13.0.1 | File an issue

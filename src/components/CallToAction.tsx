@@ -15,9 +15,12 @@ export default function CallToAction() {
       <div className="absolute inset-0 opacity-10" style={{ filter: 'blur(5px)' }}>
         <Image
           src="/items/Tonkotsu.jpg"
-          alt="Ramen"
+          alt=""
           fill
           className="object-cover"
+          sizes="100vw"
+          loading="lazy"
+          aria-hidden="true"
         />
       </div>
 

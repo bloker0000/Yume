@@ -1,14 +1,30 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCart } from "@/context/CartContext";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import FeaturedMenu from "@/components/FeaturedMenu";
-import About from "@/components/About";
-import Testimonials from "@/components/Testimonials";
-import CallToAction from "@/components/CallToAction";
-import Footer from "@/components/Footer";
-import CartSidebar from "@/components/menu/CartSidebar";
+
+const About = dynamic(() => import("@/components/About"), {
+  loading: () => <div className="min-h-[600px] bg-[var(--yume-charcoal)]" />,
+});
+
+const Testimonials = dynamic(() => import("@/components/Testimonials"), {
+  loading: () => <div className="min-h-[600px] bg-[var(--yume-cream)]" />,
+});
+
+const CallToAction = dynamic(() => import("@/components/CallToAction"), {
+  loading: () => <div className="min-h-[400px] bg-[var(--yume-vermillion)]" />,
+});
+
+const Footer = dynamic(() => import("@/components/Footer"), {
+  loading: () => <div className="min-h-[300px] bg-[var(--yume-cream)]" />,
+});
+
+const CartSidebar = dynamic(() => import("@/components/menu/CartSidebar"), {
+  ssr: false,
+});
 
 export default function Home() {
   const { isCartOpen, setIsCartOpen } = useCart();

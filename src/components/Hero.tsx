@@ -105,7 +105,7 @@ export default function Hero() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-2xl font-bold text-[var(--yume-charcoal)] font-header">4.9</span>
-                <span className="text-sm text-[var(--yume-miso)] font-body">from 2,000+ reviews</span>
+                <span className="text-sm text-[var(--yume-ink)] font-body">from 2,000+ reviews</span>
               </div>
             </motion.div>
           </motion.div>
@@ -128,6 +128,8 @@ export default function Hero() {
                     className="object-cover"
                     style={{ objectPosition: '50% 40%' }}
                     priority
+                    fetchPriority="high"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--yume-charcoal)]/60 via-transparent to-transparent" />
                 </div>

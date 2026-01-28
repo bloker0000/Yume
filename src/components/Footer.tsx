@@ -95,8 +95,9 @@ export default function Footer() {
                     className="w-11 h-11 sm:w-10 sm:h-10 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] flex items-center justify-center hover:bg-[var(--yume-vermillion)] transition-colors"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
+                    aria-label={`Follow us on ${social.name}`}
                   >
-                    <social.icon size={18} />
+                    <social.icon size={18} aria-hidden="true" />
                   </motion.a>
                 ))}
               </div>
