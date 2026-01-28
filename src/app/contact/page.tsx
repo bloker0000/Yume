@@ -302,18 +302,13 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Right - Contact Cards Grid */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-2 gap-4"
-            >
+            <div className="grid grid-cols-2 gap-4">
               {contactMethods.map((method, index) => (
                 <motion.div
                   key={method.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.3 + index * 0.15 }}
                   className="group relative bg-[var(--yume-warm-white)] border border-[var(--yume-cream)] p-6 hover:border-[var(--yume-vermillion)] transition-all duration-300 hover:shadow-lg cursor-pointer"
                   onClick={() => {
                     if (method.title === "Visit Us") {
@@ -360,7 +355,7 @@ export default function ContactPage() {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
