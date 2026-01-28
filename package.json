@@ -5,7 +5,7 @@
   "description": "Authentic Japanese Ramen Delivery - A modern restaurant website with online ordering",
   "author": "Yume Ramen",
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS='--no-deprecation' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
