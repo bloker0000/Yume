@@ -76,6 +76,7 @@ export async function POST(request: Request) {
         orderType: order.orderType as "DELIVERY" | "PICKUP",
         estimatedTime,
         address,
+        orderId: order.id,
       });
     } else if (payment.status === "failed" || payment.status === "canceled" || payment.status === "expired") {
       newPaymentStatus = "FAILED";

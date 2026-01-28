@@ -31,6 +31,7 @@ interface OrderConfirmationEmailProps {
   orderType: "DELIVERY" | "PICKUP";
   estimatedTime: string;
   address?: string;
+  orderId?: string;
 }
 
 export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailProps) {
@@ -46,6 +47,7 @@ export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailPr
     orderType,
     estimatedTime,
     address,
+    orderId,
   } = props;
 
   const itemsHtml = items
@@ -78,6 +80,13 @@ export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailPr
     ? `<p style="margin: 10px 0 0 0; color: #666;"><strong>Delivery Address:</strong> ${address}</p>`
     : "";
 
+  const trackingUrl = orderId ? `${siteUrl}/track/${orderNumber}` : "";
+  const trackingButtonHtml = trackingUrl
+    ? `<div style="text-align: center; margin: 30px 0;">
+        <a href="${trackingUrl}" style="display: inline-block; background: #D64933; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">Track Your Order</a>
+      </div>`
+    : "";
+
   const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -94,12 +103,19 @@ export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailPr
     <div style="background: #ffffff; padding: 30px; border-radius: 0 0 12px 12px;">
       <h2 style="color: #1a1a2e; margin: 0 0 20px 0;">Thank you for your order, ${customerName}!</h2>
       
+      <div style="background: #22c55e; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+        <p style="margin: 0; font-weight: bold; font-size: 16px;">✓ Payment Confirmed</p>
+        <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Your order has been received and is being processed</p>
+      </div>
+      
       <div style="background: #f8f8f8; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
         <p style="margin: 0; color: #666;"><strong>Order Number:</strong> ${orderNumber}</p>
         <p style="margin: 10px 0 0 0; color: #666;"><strong>Order Type:</strong> ${orderType === "DELIVERY" ? "Delivery" : "Pickup"}</p>
         <p style="margin: 10px 0 0 0; color: #666;"><strong>Estimated Time:</strong> ${estimatedTime}</p>
         ${addressHtml}
       </div>
+      
+      ${trackingButtonHtml}
       
       <h3 style="color: #1a1a2e; margin: 0 0 15px 0;">Order Summary</h3>
       <table style="width: 100%; border-collapse: collapse;">
