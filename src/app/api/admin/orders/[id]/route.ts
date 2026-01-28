@@ -2,7 +2,14 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { sendOrderStatusUpdateEmail } from "@/lib/email";
+import { 
+  sendOrderStatusUpdateEmail, 
+  sendOrderOnItsWayEmail, 
+  sendFeedbackRequestEmail,
+  sendOrderReadyForPickupEmail
+} from "@/lib/email";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yume-ebon.vercel.app/";
 
 const statusMessages: Record<string, string> = {
   CONFIRMED: "Your order has been confirmed and will be prepared shortly.",
@@ -107,6 +114,40 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       status,
       message: statusMessages[status] || `Your order status has been updated to ${status}.`,
     });
+
+    if (status === "OUT_FOR_DELIVERY" && order.orderType === "DELIVERY") {
+      await sendOrderOnItsWayEmail({
+        orderNumber: order.orderNumber,
+        customerName: order.customerFirstName,
+        customerEmail: order.customerEmail,
+        estimatedMinutes: order.estimatedTime || 15,
+        trackingUrl: `${siteUrl}/track/${order.orderNumber}`,
+      });
+    }
+
+    if (status === "READY" && order.orderType === "PICKUP") {
+      await sendOrderReadyForPickupEmail({
+        orderNumber: order.orderNumber,
+        customerName: order.customerFirstName,
+        customerEmail: order.customerEmail,
+        pickupAddress: "Yume Ramen, Westerstraat 52, 1015 MN Amsterdam",
+      });
+    }
+
+    if (status === "DELIVERED" || status === "PICKED_UP") {
+      setTimeout(async () => {
+        try {
+          await sendFeedbackRequestEmail({
+            orderNumber: order.orderNumber,
+            customerName: order.customerFirstName,
+            customerEmail: order.customerEmail,
+            orderId: order.id,
+          });
+        } catch (err) {
+          console.error("Failed to send feedback request email:", err);
+        }
+      }, 30 * 60 * 1000);
+    }
 
     return NextResponse.json(updatedOrder);
   } catch (error) {

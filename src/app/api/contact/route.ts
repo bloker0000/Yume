@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient, Prisma } from "@prisma/client";
-import { Resend } from "resend";
+import { sendContactConfirmationEmail, sendContactNotificationEmail } from "@/lib/email";
 
 const prisma = new PrismaClient();
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 type ErrorCode = "VALIDATION_ERROR" | "DATABASE_ERROR" | "EMAIL_ERROR" | "RATE_LIMIT" | "UNKNOWN_ERROR";
 
@@ -89,27 +88,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (resend && submissionId) {
+    if (submissionId) {
       try {
-        await resend.emails.send({
-          from: "Yume Ramen Contact <noreply@yumeramen.nl>",
-          to: "hello@yumeramen.nl",
-          replyTo: email,
-          subject: `New Contact Form: ${inquiryType} - ${subject}`,
-          html: `
-            <h2>New Contact Form Submission</h2>
-            <p><strong>From:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ""}
-            <p><strong>Inquiry Type:</strong> ${inquiryType}</p>
-            <p><strong>Preferred Contact:</strong> ${preferredContact}</p>
-            <p><strong>Subject:</strong> ${subject}</p>
-            <hr>
-            <p><strong>Message:</strong></p>
-            <p>${message.replace(/\n/g, "<br>")}</p>
-            <hr>
-            <p><small>Submission ID: ${submissionId} | Time: ${new Date().toLocaleString()}</small></p>
-          `,
+        await sendContactNotificationEmail({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          phone: phone?.trim(),
+          inquiryType,
+          subject: subject.trim(),
+          message: message.trim(),
+          preferredContact: preferredContact || "email",
+          submissionId,
         });
         emailsSent.notification = true;
       } catch (notificationError) {
@@ -117,29 +106,13 @@ export async function POST(request: NextRequest) {
       }
 
       try {
-        await resend.emails.send({
-          from: "Yume Ramen <noreply@yumeramen.nl>",
-          to: email,
-          subject: "We received your message - Yume Ramen",
-          html: `
-            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #D64933;">Thank you for contacting Yume Ramen!</h2>
-              <p>Hi ${name},</p>
-              <p>We've received your message and will get back to you within 24 hours via ${preferredContact}.</p>
-              
-              <div style="background: #F5E6D3; padding: 20px; margin: 20px 0;">
-                <p><strong>Your message:</strong></p>
-                <p style="white-space: pre-wrap;">${message}</p>
-              </div>
-              
-              <p>If you need immediate assistance, feel free to call us at <a href="tel:+31201234567">+31 20 123 4567</a>.</p>
-              
-              <p>Best regards,<br>The Yume Ramen Team</p>
-              
-              <hr>
-              <p style="font-size: 12px; color: #666;">Reference ID: ${submissionId}</p>
-            </div>
-          `,
+        await sendContactConfirmationEmail({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          subject: subject.trim(),
+          message: message.trim(),
+          preferredContact: preferredContact || "email",
+          submissionId,
         });
         emailsSent.confirmation = true;
       } catch (confirmationError) {
