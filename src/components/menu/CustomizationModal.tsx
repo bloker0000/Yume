@@ -251,7 +251,7 @@ export default function CustomizationModal({
               </div>
             </div>
 
-            <div className="border-t border-[var(--yume-cream)] p-4 lg:p-6 bg-[var(--yume-warm-white)] pb-safe">
+            <div className="border-t border-[var(--yume-cream)] p-4 lg:p-6 pb-6 lg:pb-8 bg-[var(--yume-warm-white)]">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center border border-[var(--yume-cream)]">
