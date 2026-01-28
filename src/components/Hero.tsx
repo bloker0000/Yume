@@ -70,10 +70,10 @@ export default function Hero() {
               transition={{ delay: 0.4 }}
               className="flex flex-wrap gap-4"
             >
-              <Button variant="primary" size="lg">
+              <Button variant="primary" size="lg" href="/menu">
                 Order Now
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" href="/menu">
                 View Menu
               </Button>
             </motion.div>

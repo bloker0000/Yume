@@ -58,6 +58,7 @@ export default function CallToAction() {
               size="lg"
               cornerColor="var(--yume-charcoal)"
               className="bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] hover:bg-[var(--yume-warm-white)] hover:text-[var(--yume-charcoal)] px-8"
+              href="/menu"
             >
               <span className="flex items-center gap-2">
                 Order Now
