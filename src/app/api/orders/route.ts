@@ -198,9 +198,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}`
-      : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
+      || (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL 
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000");
 
     const payment = await mollieClient.payments.create({
       amount: {
