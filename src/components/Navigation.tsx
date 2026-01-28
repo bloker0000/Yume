@@ -61,12 +61,7 @@ export default function Navigation({ variant = "dark" }: NavigationProps) {
 
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link, index) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
+                <div key={link.name}>
                   <Link
                     href={link.href}
                     className={`relative text-sm font-medium transition-colors duration-300 group ${
@@ -80,7 +75,7 @@ export default function Navigation({ variant = "dark" }: NavigationProps) {
                       isLightText ? "bg-[var(--yume-gold)]" : "bg-[var(--yume-vermillion)]"
                     }`} />
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
 

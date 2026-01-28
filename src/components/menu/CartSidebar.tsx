@@ -61,7 +61,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[var(--yume-charcoal)]/80 backdrop-blur-sm z-40 lg:hidden"
+            className="fixed inset-0 bg-[var(--yume-charcoal)]/80 backdrop-blur-sm z-[60] lg:hidden"
           />
 
           <motion.div
@@ -69,7 +69,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-[var(--yume-warm-white)] shadow-2xl z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-[var(--yume-warm-white)] shadow-2xl z-[70] flex flex-col"
           >
             <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[var(--yume-vermillion)]" />
             <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[var(--yume-vermillion)]" />
@@ -130,7 +130,10 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     Add some delicious ramen to get started!
                   </p>
                   <button
-                    onClick={onClose}
+                    onClick={() => {
+                      onClose();
+                      router.push('/menu');
+                    }}
                     className="px-6 py-2 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body"
                   >
                     Browse Menu
