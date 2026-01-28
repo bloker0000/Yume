@@ -949,7 +949,7 @@ export default function TrackingPage({
             </a>
           </p>
           <button
-            onClick={fetchTracking}
+            onClick={() => fetchTracking(true)}
             className="flex items-center gap-2 text-xs sm:text-sm text-[var(--yume-vermillion)] font-medium font-body hover:underline"
           >
             <RefreshCw size={14} />
