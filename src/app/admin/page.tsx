@@ -4,6 +4,19 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import { 
+  Clock, 
+  CheckCircle, 
+  ChefHat, 
+  Package, 
+  Truck, 
+  Home, 
+  X, 
+  DollarSign,
+  BarChart3,
+  ClipboardList,
+  Settings as SettingsIcon
+} from "lucide-react";
 
 interface OrderItem {
   id: number;
@@ -100,16 +113,16 @@ const statusFlow: Record<string, string[]> = {
   REFUNDED: [],
 };
 
-const statusIcons: Record<string, string> = {
-  PENDING: "⏳",
-  CONFIRMED: "✓",
-  PREPARING: "👨‍🍳",
-  READY: "🍜",
-  OUT_FOR_DELIVERY: "🚗",
-  DELIVERED: "✅",
-  PICKED_UP: "✅",
-  CANCELLED: "❌",
-  REFUNDED: "💸",
+const statusIcons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  PENDING: Clock,
+  CONFIRMED: CheckCircle,
+  PREPARING: ChefHat,
+  READY: Package,
+  OUT_FOR_DELIVERY: Truck,
+  DELIVERED: Home,
+  PICKED_UP: Home,
+  CANCELLED: X,
+  REFUNDED: DollarSign,
 };
 
 export default function AdminDashboard() {
@@ -597,7 +610,10 @@ export default function AdminDashboard() {
                   className="p-4 flex items-center justify-between hover:bg-zinc-800/50 cursor-pointer transition"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{statusIcons[order.status]}</span>
+                    {(() => {
+                      const Icon = statusIcons[order.status];
+                      return Icon ? <Icon size={20} className={statusColors[order.status]?.text} /> : null;
+                    })()}
                     <div>
                       <p className="font-medium text-white">#{order.orderNumber}</p>
                       <p className="text-sm text-zinc-400">{order.customerFirstName} {order.customerLastName}</p>
@@ -847,13 +863,17 @@ export default function AdminDashboard() {
                         updateOrderStatus(order.id, nextStatus);
                       }}
                       disabled={updatingStatus}
-                      className={`flex-1 py-2 text-sm rounded-lg transition ${
+                      className={`flex-1 py-2 text-sm rounded-lg transition flex items-center justify-center gap-2 ${
                         nextStatus === "CANCELLED"
                           ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
                           : "bg-zinc-800 text-white hover:bg-zinc-700"
                       }`}
                     >
-                      {statusIcons[nextStatus]} {nextStatus.replace(/_/g, " ")}
+                      {(() => {
+                        const Icon = statusIcons[nextStatus];
+                        return Icon ? <Icon size={16} /> : null;
+                      })()}
+                      {nextStatus.replace(/_/g, " ")}
                     </button>
                   ))}
                 </div>
@@ -931,23 +951,26 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4">
           <nav className="flex gap-1">
             {[
-              { id: "dashboard" as TabType, label: "Dashboard", icon: "📊" },
-              { id: "orders" as TabType, label: "Orders", icon: "📋" },
-              { id: "settings" as TabType, label: "Settings", icon: "⚙️" },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-3 text-sm font-medium transition border-b-2 ${
-                  activeTab === tab.id
-                    ? "text-red-500 border-red-500"
-                    : "text-zinc-400 border-transparent hover:text-white"
-                }`}
-              >
-                <span className="mr-2">{tab.icon}</span>
-                {tab.label}
-              </button>
-            ))}
+              { id: "dashboard" as TabType, label: "Dashboard", icon: BarChart3 },
+              { id: "orders" as TabType, label: "Orders", icon: ClipboardList },
+              { id: "settings" as TabType, label: "Settings", icon: SettingsIcon },
+            ].map((tab) => {
+              const TabIcon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-3 text-sm font-medium transition border-b-2 flex items-center gap-2 ${
+                    activeTab === tab.id
+                      ? "text-red-500 border-red-500"
+                      : "text-zinc-400 border-transparent hover:text-white"
+                  }`}
+                >
+                  <TabIcon size={18} />
+                  {tab.label}
+                </button>
+              );
+            })}
           </nav>
         </div>
       </div>
@@ -1141,13 +1164,17 @@ export default function AdminDashboard() {
                           key={nextStatus}
                           onClick={() => updateOrderStatus(selectedOrder.id, nextStatus)}
                           disabled={updatingStatus}
-                          className={`py-3 text-sm rounded-xl transition font-medium ${
+                          className={`py-3 text-sm rounded-xl transition font-medium flex items-center justify-center gap-2 ${
                             nextStatus === "CANCELLED"
                               ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
                               : `${statusColors[nextStatus].bg} ${statusColors[nextStatus].text} hover:opacity-80`
                           }`}
                         >
-                          {statusIcons[nextStatus]} {nextStatus.replace(/_/g, " ")}
+                          {(() => {
+                            const Icon = statusIcons[nextStatus];
+                            return Icon ? <Icon size={16} /> : null;
+                          })()}
+                          {nextStatus.replace(/_/g, " ")}
                         </button>
                       ))}
                     </div>
@@ -1369,13 +1396,17 @@ export default function AdminDashboard() {
                         key={nextStatus}
                         onClick={() => updateOrderStatus(selectedOrder.id, nextStatus)}
                         disabled={updatingStatus}
-                        className={`py-3 text-sm rounded-xl transition font-medium ${
+                        className={`py-3 text-sm rounded-xl transition font-medium flex items-center justify-center gap-2 ${
                           nextStatus === "CANCELLED"
                             ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
                             : `${statusColors[nextStatus].bg} ${statusColors[nextStatus].text} hover:opacity-80`
                         }`}
                       >
-                        {statusIcons[nextStatus]} {nextStatus.replace(/_/g, " ")}
+                        {(() => {
+                          const Icon = statusIcons[nextStatus];
+                          return Icon ? <Icon size={16} /> : null;
+                        })()}
+                        {nextStatus.replace(/_/g, " ")}
                       </button>
                     ))}
                   </div>
@@ -1519,13 +1550,17 @@ export default function AdminDashboard() {
                   <button
                     key={s}
                     onClick={() => bulkUpdateStatus(s)}
-                    className={`py-3 text-sm rounded-xl transition font-medium ${
+                    className={`py-3 text-sm rounded-xl transition font-medium flex items-center justify-center gap-2 ${
                       s === "CANCELLED"
                         ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
                         : `${statusColors[s].bg} ${statusColors[s].text} hover:opacity-80`
                     }`}
                   >
-                    {statusIcons[s]} {s.replace(/_/g, " ")}
+                    {(() => {
+                      const Icon = statusIcons[s];
+                      return Icon ? <Icon size={16} /> : null;
+                    })()}
+                    {s.replace(/_/g, " ")}
                   </button>
                 ))}
               </div>
