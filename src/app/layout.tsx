@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Yume Ramen | Authentic Japanese Ramen",
@@ -16,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased" suppressHydrationWarning>
         <div className="noise-overlay" />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

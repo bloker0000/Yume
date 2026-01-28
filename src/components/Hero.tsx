@@ -107,12 +107,13 @@ export default function Hero() {
               <div className="relative aspect-[4/3] w-full">
                 <div className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl border border-[var(--yume-charcoal)]/10">
                   <Image
-                    src="/ramen/Tonkotsu.jpg"
+                    src="/items/Tonkotsu.jpg"
                     alt="Tonkotsu Ramen"
                     fill
                     className="object-cover"
                     style={{ objectPosition: '50% 40%' }}
                     priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--yume-charcoal)]/60 via-transparent to-transparent" />
                 </div>
@@ -127,7 +128,7 @@ export default function Hero() {
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[var(--yume-gold)]">
                         <Image
-                          src="/ramen/spicyMiso.jpg"
+                          src="/items/spicyMiso.jpg"
                           alt="Spicy Miso"
                           width={48}
                           height={48}
