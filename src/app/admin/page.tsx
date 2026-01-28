@@ -63,6 +63,15 @@ interface Stats {
   revenue: { today: number; week: number; month: number };
   active: { pending: number; preparing: number; delivery: number };
   statusCounts: Record<string, number>;
+  recentOrders?: Array<{
+    id: string;
+    orderNumber: string;
+    status: string;
+    total: number;
+    createdAt: string;
+    customerFirstName: string;
+    customerLastName: string;
+  }>;
 }
 
 type TabType = "dashboard" | "orders" | "settings";
