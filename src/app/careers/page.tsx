@@ -161,7 +161,7 @@ export default function CareersPage() {
                 <AnimatePresence>
                   {expandedJob === job.id && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                      <div className="p-6 pt-0 border-t border-[var(--yume-cream)]">
+                      <div className="p-6 pt-6 border-t border-[var(--yume-cream)]">
                         <p className="text-[var(--yume-ink)] mb-6 font-body">{job.description}</p>
                         <h4 className="text-sm font-bold text-[var(--yume-charcoal)] mb-3 font-header">Requirements:</h4>
                         <ul className="space-y-2 mb-6">

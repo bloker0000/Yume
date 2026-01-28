@@ -860,7 +860,7 @@ export default function ContactPage() {
                       transition={{ duration: 0.3 }}
                       className="overflow-hidden"
                     >
-                      <div className="bg-[var(--yume-warm-white)] px-5 pb-5 pt-0 ml-14">
+                      <div className="bg-[var(--yume-warm-white)] px-5 pb-5 pt-4 ml-14">
                         <p className="text-[var(--yume-miso)] font-body">
                           {item.answer}
                         </p>

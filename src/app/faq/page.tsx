@@ -115,7 +115,7 @@ export default function FAQPage() {
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                        <div className="px-6 pb-6 pl-16">
+                        <div className="px-6 pb-6 pt-4 pl-16">
                           <p className="text-[var(--yume-ink)] font-body">{item.a}</p>
                         </div>
                       </motion.div>
