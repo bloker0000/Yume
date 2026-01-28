@@ -944,11 +944,11 @@ export default function ContactPage() {
                   +31 20 123 4567 (Hotline)
                 </a>
                 <a 
-                  href="mailto:support@yumeramen.nl"
+                  href="mailto:support@yuumee.nl"
                   className="flex items-center gap-2 text-[var(--yume-gold)] font-body hover:underline"
                 >
                   <Mail size={16} />
-                  support@yumeramen.nl
+                  support@yuumee.nl
                 </a>
               </div>
               <p className="text-[var(--yume-warm-white)]/50 text-sm font-body mt-4">

@@ -83,7 +83,7 @@ While we strive to protect your information, no method of transmission over the 
 - Data portability
 - Withdraw consent at any time
 
-To exercise these rights, contact us at privacy@yumeramen.nl. We will respond within 30 days.`
+To exercise these rights, contact us at privacy@yuumee.nl. We will respond within 30 days.`
   },
   {
     icon: Trash2,
@@ -183,7 +183,7 @@ export default function PrivacyPage() {
             <div className="text-[var(--yume-warm-white)] mb-8 font-body">
               <p>Data Protection Officer</p>
               <p>Yume Ramen B.V.</p>
-              <a href="mailto:privacy@yumeramen.nl" className="text-[var(--yume-vermillion)] hover:text-[var(--yume-gold)]">privacy@yumeramen.nl</a>
+              <a href="mailto:privacy@yuumee.nl" className="text-[var(--yume-vermillion)] hover:text-[var(--yume-gold)]">privacy@yuumee.nl</a>
             </div>
             <Link href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-gold)] transition-colors font-body">
               <Mail size={18} />Contact Us

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendAbandonedCartEmail } from "@/lib/email";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yume-ebon.vercel.app/";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yuumee.nl/";
 const CRON_SECRET = process.env.CRON_SECRET;
 
 export async function GET(request: NextRequest) {

@@ -121,8 +121,8 @@ export default function PressPage() {
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
               <h2 className="text-3xl lg:text-4xl font-bold text-[var(--yume-warm-white)] mb-4 font-header">Media Inquiries</h2>
               <p className="text-[var(--yume-warm-white)]/80 mb-6 font-body">For press inquiries, interviews, or media requests, please contact our press team.</p>
-              <a href="mailto:press@yumeramen.nl" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-gold)] transition-colors font-body">
-                <Mail size={18} />press@yumeramen.nl
+              <a href="mailto:press@yuumee.nl" className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-gold)] transition-colors font-body">
+                <Mail size={18} />press@yuumee.nl
               </a>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-center p-8 bg-[var(--yume-ink)]">

@@ -9,7 +9,7 @@ import {
   sendOrderReadyForPickupEmail
 } from "@/lib/email";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yume-ebon.vercel.app/";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yuumee.nl/";
 
 const statusMessages: Record<string, string> = {
   CONFIRMED: "Your order has been confirmed and will be prepared shortly.",

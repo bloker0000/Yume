@@ -83,7 +83,7 @@ Westerstraat 187
 1015 MA Rotterdam
 Netherlands
 
-Email: legal@yumeramen.nl
+Email: legal@yuumee.nl
 Phone: +31 20 123 4567`
   }
 ];

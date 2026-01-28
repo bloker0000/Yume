@@ -171,7 +171,7 @@ export default function CareersPage() {
                             </li>
                           ))}
                         </ul>
-                        <a href={`mailto:careers@yumeramen.nl?subject=Application: ${job.title}`} className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-charcoal)] transition-colors font-body">
+                        <a href={`mailto:careers@yuumee.nl?subject=Application: ${job.title}`} className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-charcoal)] transition-colors font-body">
                           <Send size={18} />Apply Now
                         </a>
                       </div>
@@ -189,7 +189,7 @@ export default function CareersPage() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="text-3xl lg:text-4xl font-bold text-[var(--yume-warm-white)] mb-4 font-header">Don&apos;t See Your Role?</h2>
             <p className="text-[var(--yume-warm-white)]/80 mb-8 font-body">We&apos;re always looking for talented people. Send us your CV!</p>
-            <a href="mailto:careers@yumeramen.nl?subject=General Application" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-gold)] transition-colors font-body">
+            <a href="mailto:careers@yuumee.nl?subject=General Application" className="inline-flex items-center gap-2 px-8 py-4 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-gold)] transition-colors font-body">
               <Send size={18} />Send Your CV
             </a>
           </motion.div>

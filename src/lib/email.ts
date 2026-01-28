@@ -22,7 +22,7 @@ export const emailFrom = configuredFrom.includes("@gmail.com") || configuredFrom
   ? defaultFrom 
   : configuredFrom;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yume-ebon.vercel.app/";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yuumee.nl/";
 
 interface OrderEmailItem {
   name: string;
@@ -144,8 +144,8 @@ export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailPr
       </table>
       
       <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #999; font-size: 12px;">
-        <p>Questions about your order? Contact us at info@yumeramen.nl</p>
-        <p>Yume Ramen. All rights reserved.</p>
+        <p>Questions about your order? Contact us at info@yuumee.nl</p>
+        <p>Yuumee Ramen. All rights reserved.</p>
       </div>
     </div>
   </div>
@@ -339,7 +339,7 @@ export async function sendContactNotificationEmail(props: ContactNotificationEma
   }
 
   return resend.emails.send({
-    from: "Yume Ramen Contact <noreply@yumeramen.nl>",
+    from: "Yuumee Ramen Contact <noreply@yuumee.nl>",
     to: "bingbingchingcong@gmail.com",
     replyTo: email,
     subject: `New Contact Form: ${inquiryType} - ${subject}`,
