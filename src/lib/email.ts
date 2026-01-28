@@ -10,7 +10,18 @@ const getResendClient = () => {
 
 export const resend = getResendClient();
 
-export const emailFrom = process.env.EMAIL_FROM || "Yume Ramen <noreply@yumeramen.nl>";
+// Use Resend's test domain for development if EMAIL_FROM is not set or uses gmail
+const defaultFrom = "Yume <onboarding@resend.dev>";
+const configuredFrom = process.env.EMAIL_FROM || defaultFrom;
+// Warn if trying to use gmail or other public domains
+if (configuredFrom.includes("@gmail.com") || configuredFrom.includes("@yahoo.com") || configuredFrom.includes("@hotmail.com")) {
+  console.warn(`⚠️  EMAIL_FROM uses a public domain (${configuredFrom}). Resend requires verified domains. Using default: ${defaultFrom}`);
+  console.warn("To fix: Set EMAIL_FROM=onboarding@resend.dev for testing, or verify your domain at https://resend.com/domains");
+}
+export const emailFrom = configuredFrom.includes("@gmail.com") || configuredFrom.includes("@yahoo.com") || configuredFrom.includes("@hotmail.com") 
+  ? defaultFrom 
+  : configuredFrom;
+
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yume-ebon.vercel.app/";
 
 interface OrderEmailItem {

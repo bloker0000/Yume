@@ -107,31 +107,62 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       },
     });
 
-    await sendOrderStatusUpdateEmail({
-      orderNumber: order.orderNumber,
-      customerName: `${order.customerFirstName} ${order.customerLastName}`,
-      customerEmail: order.customerEmail,
-      status,
-      message: statusMessages[status] || `Your order status has been updated to ${status}.`,
-    });
+    // Send status update email
+    try {
+      const emailResult = await sendOrderStatusUpdateEmail({
+        orderNumber: order.orderNumber,
+        customerName: `${order.customerFirstName} ${order.customerLastName}`,
+        customerEmail: order.customerEmail,
+        status,
+        message: statusMessages[status] || `Your order status has been updated to ${status}.`,
+      });
+
+      if (emailResult?.error) {
+        console.error("❌ Failed to send order status update email:", emailResult.error);
+      } else {
+        console.log("✅ Order status update email sent to:", order.customerEmail);
+      }
+    } catch (emailError) {
+      console.error("❌ Exception while sending status update email:", emailError);
+    }
 
     if (status === "OUT_FOR_DELIVERY" && order.orderType === "DELIVERY") {
-      await sendOrderOnItsWayEmail({
-        orderNumber: order.orderNumber,
-        customerName: order.customerFirstName,
-        customerEmail: order.customerEmail,
-        estimatedMinutes: order.estimatedTime || 15,
-        trackingUrl: `${siteUrl}/track/${order.orderNumber}`,
-      });
+      try {
+        const emailResult = await sendOrderOnItsWayEmail({
+          orderNumber: order.orderNumber,
+          customerName: order.customerFirstName,
+          customerEmail: order.customerEmail,
+          estimatedMinutes: order.estimatedTime || 15,
+          trackingUrl: `${siteUrl}/track/${order.orderNumber}`,
+        });
+
+        if (emailResult?.error) {
+          console.error("❌ Failed to send 'on its way' email:", emailResult.error);
+        } else {
+          console.log("✅ 'On its way' email sent to:", order.customerEmail);
+        }
+      } catch (emailError) {
+        console.error("❌ Exception while sending 'on its way' email:", emailError);
+      }
     }
 
     if (status === "READY" && order.orderType === "PICKUP") {
-      await sendOrderReadyForPickupEmail({
-        orderNumber: order.orderNumber,
-        customerName: order.customerFirstName,
-        customerEmail: order.customerEmail,
-        pickupAddress: "Yume Ramen, Westerstraat 52, 1015 MN Amsterdam",
-      });
+      try {
+        const emailResult = await sendOrderReadyForPickupEmail({
+          orderNumber: order.orderNumber,
+          customerName: order.customerFirstName,
+          customerEmail: order.customerEmail,
+          pickupAddress: "Yume Ramen, Westerstraat 52, 1015 MN Amsterdam",
+        });
+
+        if (emailResult?.error) {
+          console.error("❌ Failed to send 'ready for pickup' email:", emailResult.error);
+        } else {
+          console.log("✅ 'Ready for pickup' email sent to:", order.customerEmail);
+        }
+      } catch (emailError) {
+        console.error("❌ Exception while sending 'ready for pickup' email:", emailError);
+      }
     }
 
     if (status === "DELIVERED" || status === "PICKED_UP") {

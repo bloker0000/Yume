@@ -64,20 +64,34 @@ export async function POST(request: Request) {
           ? `${order.deliveryStreet}${order.deliveryApartment ? `, ${order.deliveryApartment}` : ""}, ${order.deliveryPostalCode} ${order.deliveryCity}`
           : undefined;
 
-      await sendOrderConfirmationEmail({
-        orderNumber: order.orderNumber,
-        customerName: `${order.customerFirstName} ${order.customerLastName}`,
-        customerEmail: order.customerEmail,
-        items: emailItems,
-        subtotal: Number(order.subtotal),
-        deliveryFee: Number(order.deliveryFee),
-        discount: Number(order.discount),
-        total: Number(order.total),
-        orderType: order.orderType as "DELIVERY" | "PICKUP",
-        estimatedTime,
-        address,
-        orderId: order.id,
-      });
+      // Send order confirmation email
+      try {
+        const emailResult = await sendOrderConfirmationEmail({
+          orderNumber: order.orderNumber,
+          customerName: `${order.customerFirstName} ${order.customerLastName}`,
+          customerEmail: order.customerEmail,
+          items: emailItems,
+          subtotal: Number(order.subtotal),
+          deliveryFee: Number(order.deliveryFee),
+          discount: Number(order.discount),
+          total: Number(order.total),
+          orderType: order.orderType as "DELIVERY" | "PICKUP",
+          estimatedTime,
+          address,
+          orderId: order.id,
+        });
+
+        if (emailResult?.error) {
+          console.error("❌ Failed to send order confirmation email:", emailResult.error);
+          console.error("Order:", order.orderNumber, "Customer:", order.customerEmail);
+        } else {
+          console.log("✅ Order confirmation email sent successfully to:", order.customerEmail);
+        }
+      } catch (emailError) {
+        console.error("❌ Exception while sending order confirmation email:", emailError);
+        console.error("Order:", order.orderNumber, "Customer:", order.customerEmail);
+        // Don't fail the webhook if email fails - order is still confirmed
+      }
     } else if (payment.status === "failed" || payment.status === "canceled" || payment.status === "expired") {
       newPaymentStatus = "FAILED";
       newOrderStatus = "CANCELLED";
