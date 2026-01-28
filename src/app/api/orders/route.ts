@@ -222,9 +222,11 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({
-      orderId: order.id,
-      orderNumber,
-      checkoutUrl: payment.getCheckoutUrl(),
+      order: {
+        id: order.id,
+        orderNumber,
+      },
+      paymentUrl: payment.getCheckoutUrl(),
     });
   } catch (error) {
     console.error("Error creating order:", error);
