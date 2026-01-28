@@ -127,6 +127,8 @@ export default function TrackingPage({
   const [copied, setCopied] = useState(false);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [showRefreshSuccess, setShowRefreshSuccess] = useState(false);
 
   const [reviewRating, setReviewRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
@@ -137,7 +139,11 @@ export default function TrackingPage({
   const [reviewError, setReviewError] = useState<string | null>(null);
   const [existingReview, setExistingReview] = useState<{ rating: number; comment: string | null } | null>(null);
 
-  const fetchTracking = useCallback(async () => {
+  const fetchTracking = useCallback(async (isManualRefresh = false) => {
+    if (isManualRefresh) {
+      setRefreshing(true);
+    }
+    
     try {
       const storedPhone = sessionStorage.getItem(`track-phone-${orderNumber}`);
       const url = storedPhone
@@ -155,10 +161,18 @@ export default function TrackingPage({
       setTrackingData(data);
       setLastUpdated(new Date());
       setError(null);
+      
+      if (isManualRefresh) {
+        setShowRefreshSuccess(true);
+        setTimeout(() => setShowRefreshSuccess(false), 2000);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load tracking");
     } finally {
       setLoading(false);
+      if (isManualRefresh) {
+        setRefreshing(false);
+      }
     }
   }, [orderNumber]);
 
@@ -434,12 +448,29 @@ export default function TrackingPage({
             </div>
           </div>
 
-          {lastUpdated && (
-            <div className="flex items-center justify-end gap-1 mt-3 text-xs text-[var(--yume-miso)]">
-              <RefreshCw size={12} />
-              <span>Updated {lastUpdated.toLocaleTimeString()}</span>
-            </div>
-          )}
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-[var(--yume-cream)]">
+            {lastUpdated && (
+              <div className="text-xs text-[var(--yume-miso)] font-body">
+                Updated {lastUpdated.toLocaleTimeString()}
+              </div>
+            )}
+            <button
+              onClick={() => fetchTracking(true)}
+              disabled={refreshing}
+              className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-[var(--yume-vermillion)] hover:bg-[var(--yume-cream)] transition-colors rounded disabled:opacity-50 disabled:cursor-not-allowed font-body min-h-[36px]"
+            >
+              <RefreshCw 
+                size={14} 
+                className={refreshing ? "animate-spin" : ""}
+              />
+              {refreshing ? "Refreshing..." : showRefreshSuccess ? (
+                <span className="flex items-center gap-1">
+                  <Check size={14} className="text-[var(--yume-nori)]" />
+                  Updated!
+                </span>
+              ) : "Refresh"}
+            </button>
+          </div>
         </motion.div>
 
         {(isOutForDelivery || tracking.status === "READY") && tracking.driver && (

@@ -91,7 +91,7 @@ export async function sendOrderConfirmationEmail(props: OrderConfirmationEmailPr
     ? `<p style="margin: 10px 0 0 0; color: #666;"><strong>Delivery Address:</strong> ${address}</p>`
     : "";
 
-  const trackingUrl = orderId ? `${siteUrl}/track/${orderNumber}` : "";
+  const trackingUrl = orderId ? `${siteUrl}/track/${orderId}` : "";
   const trackingButtonHtml = trackingUrl
     ? `<div style="text-align: center; margin: 30px 0;">
         <a href="${trackingUrl}" style="display: inline-block; background: #D64933; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">Track Your Order</a>

@@ -133,7 +133,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
           customerName: order.customerFirstName,
           customerEmail: order.customerEmail,
           estimatedMinutes: order.estimatedTime || 15,
-          trackingUrl: `${siteUrl}/track/${order.orderNumber}`,
+          trackingUrl: `${siteUrl}/track/${order.id}`,
         });
 
         if (emailResult?.error) {
