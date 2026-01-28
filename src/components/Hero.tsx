@@ -112,7 +112,8 @@ export default function Hero() {
                     fill
                     className="object-cover"
                     style={{ objectPosition: '50% 40%' }}
-                    priority
+                    priority={true}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--yume-charcoal)]/60 via-transparent to-transparent" />
                 </div>
