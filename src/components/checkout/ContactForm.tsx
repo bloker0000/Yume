@@ -44,11 +44,14 @@ export default function ContactForm({ contactInfo, onContactInfoChange, onValida
           phone: true,
         });
         
-        setTimeout(() => {
-          ['firstName', 'lastName', 'email', 'phone'].forEach((field) => {
-            validateField(field, parsed[field] || '');
-          });
-        }, 0);
+        const hasFirstName = parsed.firstName?.trim();
+        const hasLastName = parsed.lastName?.trim();
+        const hasEmail = parsed.email?.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(parsed.email);
+        const hasPhone = parsed.phone?.replace(/\D/g, "").length >= 9;
+        
+        if (hasFirstName && hasLastName && hasEmail && hasPhone) {
+          onValidationChange(true);
+        }
       } catch (e) {
         console.error("Failed to load saved contact info");
       }
