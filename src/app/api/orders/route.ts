@@ -208,7 +208,7 @@ export async function POST(request: Request) {
         currency: "EUR",
       },
       description: `Yume Ramen - Order ${orderNumber}`,
-      redirectUrl: `${baseUrl}/order/confirmation?orderId=${order.id}`,
+      redirectUrl: `${baseUrl}/order/${order.id}/processing`,
       webhookUrl: `${baseUrl}/api/payments/webhook`,
       metadata: {
         orderId: order.id,

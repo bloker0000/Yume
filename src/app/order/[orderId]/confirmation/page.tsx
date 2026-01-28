@@ -108,7 +108,7 @@ export default function OrderConfirmationPage({
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`/api/orders?id=${orderId}`);
+        const response = await fetch(`/api/orders?orderId=${orderId}`);
         if (!response.ok) {
           const data = await response.json();
           throw new Error(data.error || "Order not found");
