@@ -103,6 +103,10 @@ model Order {
   
   notes           String?
   
+  reviewRating    Int?
+  reviewComment   String?     @db.Text
+  reviewedAt      DateTime?
+  
   items           OrderItem[]
   statusHistory   OrderStatusHistory[]
   trackingUpdates OrderTrackingUpdate[]

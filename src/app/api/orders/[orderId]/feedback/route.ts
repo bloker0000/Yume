@@ -10,7 +10,14 @@ export async function GET(
 
     const order = await prisma.order.findUnique({
       where: { id: orderId },
-      select: { orderNumber: true, customerFirstName: true },
+      select: {
+        orderNumber: true,
+        customerFirstName: true,
+        status: true,
+        reviewRating: true,
+        reviewComment: true,
+        reviewedAt: true,
+      },
     });
 
     if (!order) {
@@ -20,6 +27,15 @@ export async function GET(
     return NextResponse.json({
       orderNumber: order.orderNumber,
       customerName: order.customerFirstName,
+      status: order.status,
+      hasReview: order.reviewRating !== null,
+      review: order.reviewRating
+        ? {
+            rating: order.reviewRating,
+            comment: order.reviewComment,
+            reviewedAt: order.reviewedAt,
+          }
+        : null,
     });
   } catch (error) {
     console.error("Error fetching order for feedback:", error);
@@ -41,22 +57,44 @@ export async function POST(
 
     const order = await prisma.order.findUnique({
       where: { id: orderId },
+      select: {
+        id: true,
+        status: true,
+        reviewRating: true,
+      },
     });
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
+    if (order.status !== "DELIVERED" && order.status !== "PICKED_UP") {
+      return NextResponse.json(
+        { error: "Can only review completed orders" },
+        { status: 400 }
+      );
+    }
+
+    if (order.reviewRating !== null) {
+      return NextResponse.json(
+        { error: "You have already reviewed this order", alreadyReviewed: true },
+        { status: 400 }
+      );
+    }
+
     await prisma.order.update({
       where: { id: orderId },
       data: {
-        notes: order.notes
-          ? `${order.notes}\n\n[Customer Feedback] Rating: ${rating}/5${comment ? ` - "${comment}"` : ""}`
-          : `[Customer Feedback] Rating: ${rating}/5${comment ? ` - "${comment}"` : ""}`,
+        reviewRating: rating,
+        reviewComment: comment || null,
+        reviewedAt: new Date(),
       },
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      message: "Thank you for your feedback!",
+    });
   } catch (error) {
     console.error("Error saving feedback:", error);
     return NextResponse.json({ error: "Failed to save feedback" }, { status: 500 });

@@ -4,10 +4,16 @@ import { useState, useEffect, use } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Star, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Star, Send, CheckCircle, AlertCircle, Loader2, Gift } from "lucide-react";
 
 interface FeedbackPageProps {
   params: Promise<{ orderId: string }>;
+}
+
+interface ExistingReview {
+  rating: number;
+  comment: string | null;
+  reviewedAt: string;
 }
 
 export default function FeedbackPage({ params }: FeedbackPageProps) {
@@ -19,9 +25,11 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
   const [hoveredRating, setHoveredRating] = useState(0);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [existingReview, setExistingReview] = useState<ExistingReview | null>(null);
 
   useEffect(() => {
     async function fetchOrder() {
@@ -30,9 +38,16 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
         if (response.ok) {
           const data = await response.json();
           setOrderNumber(data.orderNumber);
+          if (data.hasReview && data.review) {
+            setExistingReview(data.review);
+            setRating(data.review.rating);
+            setSubmitted(true);
+          }
         }
       } catch {
         console.error("Failed to fetch order info");
+      } finally {
+        setInitialLoading(false);
       }
     }
     fetchOrder();
@@ -55,8 +70,16 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
         body: JSON.stringify({ rating, comment }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to submit feedback");
+        if (data.alreadyReviewed) {
+          setExistingReview({ rating, comment, reviewedAt: new Date().toISOString() });
+          setSubmitted(true);
+        } else {
+          throw new Error(data.error || "Failed to submit feedback");
+        }
+        return;
       }
 
       setSubmitted(true);
@@ -66,6 +89,17 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
       setLoading(false);
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="min-h-screen bg-[var(--yume-warm-white)] flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="animate-spin text-[var(--yume-vermillion)] mx-auto mb-4" size={40} />
+          <p className="text-[var(--yume-miso)] font-body">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (submitted) {
     return (
@@ -79,12 +113,38 @@ export default function FeedbackPage({ params }: FeedbackPageProps) {
             <CheckCircle size={40} className="text-white" />
           </div>
           <h1 className="text-2xl font-bold text-[var(--yume-charcoal)] mb-4 font-header">
-            Thank You!
+            {existingReview ? "You've Already Reviewed!" : "Thank You!"}
           </h1>
-          <p className="text-[var(--yume-miso)] font-body mb-6">
-            Your feedback helps us keep making delicious ramen. We appreciate you taking the time!
+          <p className="text-[var(--yume-miso)] font-body mb-4">
+            {existingReview
+              ? "You've already submitted feedback for this order."
+              : "Your feedback helps us keep making delicious ramen. We appreciate you taking the time!"}
           </p>
+          <div className="flex justify-center gap-1 mb-6">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star
+                key={star}
+                size={28}
+                className={`${
+                  star <= (existingReview?.rating || rating)
+                    ? "text-[var(--yume-gold)] fill-[var(--yume-gold)]"
+                    : "text-[var(--yume-cream)]"
+                }`}
+              />
+            ))}
+          </div>
+          {(existingReview?.comment || comment) && (
+            <p className="text-sm text-[var(--yume-miso)] font-body italic mb-6">
+              &ldquo;{existingReview?.comment || comment}&rdquo;
+            </p>
+          )}
           <div className="bg-[var(--yume-gold)]/20 p-4 rounded-lg mb-6">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Gift size={18} className="text-[var(--yume-vermillion)]" />
+              <span className="text-sm font-medium text-[var(--yume-charcoal)]">
+                Thanks for reviewing!
+              </span>
+            </div>
             <p className="text-sm font-medium text-[var(--yume-charcoal)]">
               Use code <span className="font-bold text-[var(--yume-vermillion)]">THANKS10</span> for 10% off your next order!
             </p>

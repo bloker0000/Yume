@@ -26,6 +26,8 @@ import {
   ArrowRight,
   ChevronDown,
   ChevronUp,
+  Send,
+  Gift,
 } from "lucide-react";
 
 interface OrderItem {
@@ -126,6 +128,15 @@ export default function TrackingPage({
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
+  const [reviewRating, setReviewRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewExpanded, setReviewExpanded] = useState(false);
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [reviewError, setReviewError] = useState<string | null>(null);
+  const [existingReview, setExistingReview] = useState<{ rating: number; comment: string | null } | null>(null);
+
   const fetchTracking = useCallback(async () => {
     try {
       const storedPhone = sessionStorage.getItem(`track-phone-${orderNumber}`);
@@ -181,6 +192,81 @@ export default function TrackingPage({
     } else {
       copyLink();
     }
+  };
+
+  const fetchExistingReview = useCallback(async (orderId: string) => {
+    try {
+      const response = await fetch(`/api/orders/${orderId}/feedback`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.hasReview && data.review) {
+          setExistingReview({
+            rating: data.review.rating,
+            comment: data.review.comment,
+          });
+          setReviewRating(data.review.rating);
+          setReviewSubmitted(true);
+        }
+      }
+    } catch {
+      console.error("Failed to fetch existing review");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (trackingData?.order.id && trackingData.tracking.status === "DELIVERED") {
+      fetchExistingReview(trackingData.order.id);
+    }
+  }, [trackingData?.order.id, trackingData?.tracking.status, fetchExistingReview]);
+
+  const handleStarClick = (rating: number) => {
+    if (reviewSubmitted || existingReview) return;
+    setReviewRating(rating);
+    setReviewExpanded(true);
+    setReviewError(null);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!trackingData?.order.id || reviewRating === 0) return;
+
+    setReviewSubmitting(true);
+    setReviewError(null);
+
+    try {
+      const response = await fetch(`/api/orders/${trackingData.order.id}/feedback`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          rating: reviewRating,
+          comment: reviewComment.trim() || null,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.alreadyReviewed) {
+          setExistingReview({ rating: reviewRating, comment: reviewComment });
+          setReviewSubmitted(true);
+        } else {
+          throw new Error(data.error || "Failed to submit review");
+        }
+        return;
+      }
+
+      setReviewSubmitted(true);
+      setExistingReview({ rating: reviewRating, comment: reviewComment || null });
+    } catch (err) {
+      setReviewError(err instanceof Error ? err.message : "Failed to submit review");
+    } finally {
+      setReviewSubmitting(false);
+    }
+  };
+
+  const handleSkipReview = () => {
+    setReviewExpanded(false);
+    setReviewRating(0);
+    setReviewComment("");
   };
 
   if (loading) {
@@ -636,30 +722,163 @@ export default function TrackingPage({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-[var(--yume-nori)]/10 border border-[var(--yume-nori)]/20 p-4 sm:p-6 mb-6"
+            className="bg-[var(--yume-nori)]/10 border border-[var(--yume-nori)]/20 p-4 sm:p-6 mb-6 overflow-hidden"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <CheckCircle size={24} className="text-[var(--yume-nori)]" />
-              <h2 className="font-bold text-[var(--yume-charcoal)] font-header">
-                Order Delivered!
-              </h2>
-            </div>
-            <p className="text-sm text-[var(--yume-miso)] font-body mb-4">
-              We hope you enjoy your meal! How was your experience?
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {[1, 2, 3, 4, 5].map((rating) => (
-                <button
-                  key={rating}
-                  className="p-2 hover:bg-white transition-colors rounded"
-                >
-                  <Star
-                    size={28}
-                    className="text-[var(--yume-gold)] hover:fill-[var(--yume-gold)] transition-colors"
-                  />
-                </button>
-              ))}
-            </div>
+            {reviewSubmitted || existingReview ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 bg-[var(--yume-nori)] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle size={32} className="text-white" />
+                </div>
+                <h2 className="font-bold text-[var(--yume-charcoal)] font-header text-lg mb-2">
+                  Thank You for Your Feedback!
+                </h2>
+                <p className="text-sm text-[var(--yume-miso)] font-body mb-4">
+                  Your rating helps us improve our service.
+                </p>
+                <div className="flex justify-center gap-1 mb-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      size={24}
+                      className={`${
+                        star <= (existingReview?.rating || reviewRating)
+                          ? "text-[var(--yume-gold)] fill-[var(--yume-gold)]"
+                          : "text-[var(--yume-cream)]"
+                      }`}
+                    />
+                  ))}
+                </div>
+                {(existingReview?.comment || reviewComment) && (
+                  <p className="text-sm text-[var(--yume-miso)] font-body italic">
+                    &ldquo;{existingReview?.comment || reviewComment}&rdquo;
+                  </p>
+                )}
+                <div className="mt-6 bg-[var(--yume-gold)]/20 p-4 rounded-lg">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Gift size={18} className="text-[var(--yume-vermillion)]" />
+                    <span className="text-sm font-medium text-[var(--yume-charcoal)]">
+                      Thanks for reviewing!
+                    </span>
+                  </div>
+                  <p className="text-sm text-[var(--yume-charcoal)]">
+                    Use code <span className="font-bold text-[var(--yume-vermillion)]">THANKS10</span> for 10% off your next order!
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 mb-4">
+                  <CheckCircle size={24} className="text-[var(--yume-nori)]" />
+                  <h2 className="font-bold text-[var(--yume-charcoal)] font-header">
+                    Order Delivered!
+                  </h2>
+                </div>
+                <p className="text-sm text-[var(--yume-miso)] font-body mb-4">
+                  We hope you enjoy your meal! How was your experience?
+                </p>
+                
+                <div className="flex flex-wrap gap-1 sm:gap-2 mb-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => handleStarClick(star)}
+                      onMouseEnter={() => setHoveredRating(star)}
+                      onMouseLeave={() => setHoveredRating(0)}
+                      className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-white transition-all rounded hover:scale-110"
+                      aria-label={`Rate ${star} star${star > 1 ? "s" : ""}`}
+                    >
+                      <Star
+                        size={32}
+                        className={`transition-colors ${
+                          star <= (hoveredRating || reviewRating)
+                            ? "text-[var(--yume-gold)] fill-[var(--yume-gold)]"
+                            : "text-[var(--yume-cream)] hover:text-[var(--yume-gold)]"
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {reviewRating > 0 && (
+                  <p className="text-sm text-[var(--yume-miso)] font-body mb-2">
+                    {reviewRating === 5 && "Excellent! We're so glad you enjoyed it!"}
+                    {reviewRating === 4 && "Great! Thanks for the positive feedback!"}
+                    {reviewRating === 3 && "Good to hear. How can we do better?"}
+                    {reviewRating === 2 && "We're sorry. Please tell us what went wrong."}
+                    {reviewRating === 1 && "We apologize. Please share your experience."}
+                  </p>
+                )}
+
+                <AnimatePresence>
+                  {reviewExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pt-4 space-y-4">
+                        <div>
+                          <label
+                            htmlFor="review-comment"
+                            className="block text-sm font-medium text-[var(--yume-charcoal)] mb-2 font-body"
+                          >
+                            Tell us more (optional)
+                          </label>
+                          <textarea
+                            id="review-comment"
+                            value={reviewComment}
+                            onChange={(e) => setReviewComment(e.target.value)}
+                            rows={3}
+                            placeholder="What did you love? What can we improve?"
+                            className="w-full px-4 py-3 border border-[var(--yume-cream)] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--yume-vermillion)] focus:border-transparent font-body resize-none text-[var(--yume-charcoal)] placeholder:text-[var(--yume-miso)]/50"
+                          />
+                        </div>
+
+                        {reviewError && (
+                          <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-700">
+                            <AlertCircle size={18} />
+                            <span className="text-sm font-body">{reviewError}</span>
+                          </div>
+                        )}
+
+                        <div className="flex gap-3">
+                          <button
+                            onClick={handleSubmitReview}
+                            disabled={reviewSubmitting || reviewRating === 0}
+                            className="flex-1 py-3 bg-[var(--yume-vermillion)] text-white font-bold hover:bg-[var(--yume-vermillion)]/90 transition-colors font-body flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+                          >
+                            {reviewSubmitting ? (
+                              <>
+                                <Loader2 size={18} className="animate-spin" />
+                                Submitting...
+                              </>
+                            ) : (
+                              <>
+                                <Send size={18} />
+                                Submit Feedback
+                              </>
+                            )}
+                          </button>
+                          <button
+                            onClick={handleSkipReview}
+                            disabled={reviewSubmitting}
+                            className="px-4 py-3 border-2 border-[var(--yume-miso)]/30 text-[var(--yume-miso)] font-medium hover:border-[var(--yume-charcoal)] hover:text-[var(--yume-charcoal)] transition-colors font-body min-h-[48px]"
+                          >
+                            Skip
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
           </motion.div>
         )}
 

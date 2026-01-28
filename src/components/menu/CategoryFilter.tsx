@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { categories } from "@/data/menuData";
-import { Search, Leaf, Flame, X, ChevronDown } from "lucide-react";
+import { Search, Leaf, Flame, X } from "lucide-react";
+import CustomDropdown from "./CustomDropdown";
 
 interface CategoryFilterProps {
   activeCategory: string;
@@ -91,23 +92,18 @@ export default function CategoryFilter({
                 <span className="hidden sm:inline">Spicy</span>
               </button>
 
-              <div className="relative flex-shrink-0">
-                <select
-                  value={sortBy}
-                  onChange={(e) => onSortChange(e.target.value)}
-                  className="appearance-none pl-4 pr-10 py-3 min-h-[48px] bg-[var(--yume-cream)] text-[var(--yume-charcoal)] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[var(--yume-vermillion)] cursor-pointer font-body hover:bg-[var(--yume-cream)]/80 transition-colors"
-                >
-                  <option value="popular">Most Popular</option>
-                  <option value="rating">Highest Rated</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="newest">Newest</option>
-                </select>
-                <ChevronDown 
-                  size={16} 
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--yume-charcoal)] pointer-events-none"
-                />
-              </div>
+              <CustomDropdown
+                value={sortBy}
+                onChange={onSortChange}
+                options={[
+                  { value: "popular", label: "Most Popular" },
+                  { value: "rating", label: "Highest Rated" },
+                  { value: "price-low", label: "Price: Low to High" },
+                  { value: "price-high", label: "Price: High to Low" },
+                  { value: "newest", label: "Newest" },
+                ]}
+                className="flex-shrink-0"
+              />
 
               {hasActiveFilters && (
                 <button
