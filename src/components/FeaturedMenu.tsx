@@ -160,14 +160,15 @@ export default function FeaturedMenu() {
                 {item.description}
               </p>
 
-              <motion.button
+              <motion.a
+                href="/menu"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors duration-300 font-body"
               >
                 <Plus size={16} />
                 Add to Order
-              </motion.button>
+              </motion.a>
             </div>
             </motion.div>
           ))}
