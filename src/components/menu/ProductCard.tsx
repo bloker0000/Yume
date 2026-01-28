@@ -51,7 +51,7 @@ export default function ProductCard({ item, onCustomize }: ProductCardProps) {
         <div className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2 border-[var(--yume-vermillion)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
         <div className="absolute bottom-0 right-0 w-12 h-12 border-b-2 border-r-2 border-[var(--yume-vermillion)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
-        <div className="relative h-48 w-full overflow-hidden">
+        <div className="relative h-40 sm:h-48 w-full overflow-hidden">
           <Image
             src={item.image}
             alt={item.name}
@@ -89,9 +89,9 @@ export default function ProductCard({ item, onCustomize }: ProductCardProps) {
           </div>
         </div>
 
-        <div className="p-5">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-2xl font-bold text-[var(--yume-vermillion)] font-header">
+        <div className="p-4 sm:p-5">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
+            <span className="text-xl sm:text-2xl font-bold text-[var(--yume-vermillion)] font-header">
               €{item.price.toFixed(2)}
             </span>
             <div className="flex items-center gap-3">
@@ -111,11 +111,11 @@ export default function ProductCard({ item, onCustomize }: ProductCardProps) {
             </div>
           </div>
 
-          <p className="text-sm text-[var(--yume-ink)] mb-4 line-clamp-2 font-body">
+          <p className="text-sm text-[var(--yume-ink)] mb-3 sm:mb-4 line-clamp-2 font-body">
             {item.description}
           </p>
 
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div className="flex items-center gap-1 text-[var(--yume-miso)]">
               <Clock size={14} />
               <span className="text-xs font-body">{item.prepTime} min</span>
@@ -128,13 +128,14 @@ export default function ProductCard({ item, onCustomize }: ProductCardProps) {
           <div className="flex gap-2">
             <button
               onClick={handleQuickAdd}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body"
+              className="flex-1 flex items-center justify-center gap-2 px-3 sm:px-4 py-3 min-h-[48px] bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body active:scale-95"
             >
               <Plus size={16} />
-              {item.customizable ? "Customize" : "Add to Order"}
+              <span className="hidden xs:inline">{item.customizable ? "Customize" : "Add to Order"}</span>
+              <span className="xs:hidden">{item.customizable ? "Add" : "Add"}</span>
             </button>
             <span
-              className="flex items-center justify-center px-3 py-2.5 border border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] text-sm font-medium group-hover:bg-[var(--yume-charcoal)] group-hover:text-[var(--yume-warm-white)] transition-colors"
+              className="flex items-center justify-center px-3 py-3 min-h-[48px] min-w-[48px] border border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] text-sm font-medium group-hover:bg-[var(--yume-charcoal)] group-hover:text-[var(--yume-warm-white)] transition-colors"
             >
               <ChevronRight size={18} />
             </span>

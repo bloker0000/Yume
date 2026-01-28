@@ -48,7 +48,7 @@ export default function StickyAddToCart({
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
         >
-          <div className="bg-[var(--yume-warm-white)] border-t border-[var(--yume-cream)] shadow-lg px-4 py-3 safe-area-bottom">
+          <div className="bg-[var(--yume-warm-white)] border-t border-[var(--yume-cream)] shadow-lg px-4 py-3 pb-safe">
             <div className="flex items-center gap-3">
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-[var(--yume-charcoal)] truncate font-header text-sm">
@@ -62,24 +62,24 @@ export default function StickyAddToCart({
               <div className="flex items-center border border-[var(--yume-cream)]">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 hover:bg-[var(--yume-cream)] transition-colors"
+                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
                 >
-                  <Minus size={16} />
+                  <Minus size={18} />
                 </button>
-                <span className="w-8 text-center font-bold text-[var(--yume-charcoal)] font-header text-sm">
+                <span className="w-10 text-center font-bold text-[var(--yume-charcoal)] font-header text-sm">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 hover:bg-[var(--yume-cream)] transition-colors"
+                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
                 >
-                  <Plus size={16} />
+                  <Plus size={18} />
                 </button>
               </div>
 
               <motion.button
                 onClick={handleAddToCart}
-                className={`px-4 py-3 font-medium transition-colors font-body text-sm flex items-center gap-2 ${
+                className={`px-4 py-3 min-h-[48px] font-medium transition-colors font-body text-sm flex items-center gap-2 ${
                   isAdded
                     ? "bg-[var(--yume-nori)] text-[var(--yume-warm-white)]"
                     : "bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)]"

@@ -37,7 +37,19 @@ function MenuContent() {
   const [showSpicy, setShowSpicy] = useState(false);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [isCustomizationOpen, setIsCustomizationOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { isCartOpen, setIsCartOpen, totalItems } = useCart();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      setIsMobile(isTouch || isSmallScreen);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const category = searchParams.get('category');
@@ -118,7 +130,7 @@ function MenuContent() {
             backgroundImage: "url('/bg's/circles2bg1.svg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundAttachment: "fixed",
+            backgroundAttachment: isMobile ? "scroll" : "fixed",
           }}
         />
 
@@ -165,7 +177,7 @@ function MenuContent() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                   {filteredAndSortedItems.map((item) => (
                     <ProductCard
                       key={item.id}

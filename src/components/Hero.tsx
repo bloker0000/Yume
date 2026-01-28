@@ -1,21 +1,35 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Button from "./Button";
 import { Star } from "lucide-react";
 
 export default function Hero() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      setIsMobile(isTouch || isSmallScreen);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--yume-cream)]">
       <div 
         className="absolute inset-0 opacity-70"
         style={{
-          backgroundImage: "url('/bg\\'s/circlesBG0.svg')",
+          backgroundImage: "url('/bg\'s/circlesBG0.svg')",
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'left bottom',
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed',
         }}
       />
       
@@ -44,7 +58,7 @@ export default function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
-                className="text-5xl lg:text-6xl xl:text-7xl font-bold leading-[0.95] text-[var(--yume-charcoal)] font-header"
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-[0.95] text-[var(--yume-charcoal)] font-header"
               >
                 A Bowl of
                 <br />
@@ -68,12 +82,12 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-col sm:flex-row gap-4"
             >
-              <Button variant="primary" size="lg" href="/menu">
+              <Button variant="primary" size="lg" href="/menu" className="w-full sm:w-auto min-h-[48px]">
                 Order Now
               </Button>
-              <Button variant="outline" size="lg" href="/menu">
+              <Button variant="outline" size="lg" href="/menu" className="w-full sm:w-auto min-h-[48px]">
                 View Menu
               </Button>
             </motion.div>

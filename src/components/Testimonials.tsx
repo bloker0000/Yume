@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { SeigaihaPattern } from "./JapanesePatterns";
+import { useState, useEffect } from "react";
 
 const testimonials = [
   {
@@ -35,8 +36,22 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      setIsMobile(isTouchDevice || isSmallScreen);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
-    <section className="relative py-24 lg:py-32 bg-[var(--yume-cream)] overflow-hidden">
+    <section className="relative py-16 sm:py-24 lg:py-32 bg-[var(--yume-cream)] overflow-hidden">
       <div 
         className="absolute inset-0 opacity-30"
         style={{
@@ -44,11 +59,11 @@ export default function Testimonials() {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed',
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -75,7 +90,7 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
@@ -84,7 +99,7 @@ export default function Testimonials() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <div className="relative bg-[var(--yume-warm-white)] p-8 h-full shadow-sm border border-[var(--yume-cream)]">
+              <div className="relative bg-[var(--yume-warm-white)] p-5 sm:p-8 h-full shadow-sm border border-[var(--yume-cream)]">
                 <Quote
                   size={40}
                   className="absolute top-4 right-4 text-[var(--yume-vermillion)]/10"

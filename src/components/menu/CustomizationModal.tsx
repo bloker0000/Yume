@@ -98,7 +98,7 @@ export default function CustomizationModal({
 
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] hover:bg-[var(--yume-vermillion)] transition-colors"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] hover:bg-[var(--yume-vermillion)] transition-colors"
             >
               <X size={20} />
             </button>
@@ -136,7 +136,7 @@ export default function CustomizationModal({
                         <button
                           key={option.id}
                           onClick={() => setSelectedBroth(option.id)}
-                          className={`flex-1 py-3 px-4 text-sm font-medium transition-all ${
+                          className={`flex-1 py-3 px-2 sm:px-4 text-sm font-medium transition-all min-h-[56px] ${
                             selectedBroth === option.id
                               ? "bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)]"
                               : "bg-[var(--yume-cream)] text-[var(--yume-charcoal)] hover:bg-[var(--yume-charcoal)] hover:text-[var(--yume-warm-white)]"
@@ -160,7 +160,7 @@ export default function CustomizationModal({
                         <button
                           key={option.id}
                           onClick={() => setSelectedNoodle(option.id)}
-                          className={`flex-1 py-3 px-4 text-sm font-medium transition-all ${
+                          className={`flex-1 py-3 px-2 sm:px-4 text-sm font-medium transition-all min-h-[56px] ${
                             selectedNoodle === option.id
                               ? "bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)]"
                               : "bg-[var(--yume-cream)] text-[var(--yume-charcoal)] hover:bg-[var(--yume-charcoal)] hover:text-[var(--yume-warm-white)]"
@@ -179,12 +179,12 @@ export default function CustomizationModal({
                     <h3 className="text-sm font-bold text-[var(--yume-charcoal)] uppercase tracking-wide mb-3 font-body">
                       Spice Level <span className="font-japanese text-[var(--yume-miso)]">辛さ</span>
                     </h3>
-                    <div className="flex gap-2">
+                    <div className="grid grid-cols-2 sm:flex gap-2">
                       {spiceLevels.map((level) => (
                         <button
                           key={level.id}
                           onClick={() => setSelectedSpice(level.id)}
-                          className={`flex-1 py-3 px-4 text-sm font-medium transition-all ${
+                          className={`flex-1 py-3 px-2 sm:px-4 text-sm font-medium transition-all min-h-[56px] ${
                             selectedSpice === level.id
                               ? "bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)]"
                               : "bg-[var(--yume-cream)] text-[var(--yume-charcoal)] hover:bg-[var(--yume-charcoal)] hover:text-[var(--yume-warm-white)]"
@@ -203,12 +203,12 @@ export default function CustomizationModal({
                     <h3 className="text-sm font-bold text-[var(--yume-charcoal)] uppercase tracking-wide mb-3 font-body">
                       Extra Toppings <span className="font-japanese text-[var(--yume-miso)]">トッピング</span>
                     </h3>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {toppings.map((topping) => (
                         <button
                           key={topping.id}
                           onClick={() => toggleTopping(topping.id)}
-                          className={`flex items-center justify-between p-3 text-sm transition-all ${
+                          className={`flex items-center justify-between p-3 min-h-[52px] text-sm transition-all ${
                             selectedToppings.includes(topping.id)
                               ? "bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)]"
                               : "bg-[var(--yume-cream)] text-[var(--yume-charcoal)] hover:bg-[var(--yume-charcoal)] hover:text-[var(--yume-warm-white)]"
@@ -251,13 +251,13 @@ export default function CustomizationModal({
               </div>
             </div>
 
-            <div className="border-t border-[var(--yume-cream)] p-4 lg:p-6 bg-[var(--yume-warm-white)]">
-              <div className="flex items-center justify-between gap-4">
+            <div className="border-t border-[var(--yume-cream)] p-4 lg:p-6 bg-[var(--yume-warm-white)] pb-safe">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center border border-[var(--yume-cream)]">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="p-3 hover:bg-[var(--yume-cream)] transition-colors"
+                      className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
                     >
                       <Minus size={18} />
                     </button>
@@ -266,14 +266,14 @@ export default function CustomizationModal({
                     </span>
                     <button
                       onClick={() => setQuantity(quantity + 1)}
-                      className="p-3 hover:bg-[var(--yume-cream)] transition-colors"
+                      className="p-3 min-w-[48px] min-h-[48px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
                     >
                       <Plus size={18} />
                     </button>
                   </div>
                   <div>
                     <p className="text-sm text-[var(--yume-miso)] font-body">Total</p>
-                    <p className="text-2xl font-bold text-[var(--yume-vermillion)] font-header">
+                    <p className="text-xl sm:text-2xl font-bold text-[var(--yume-vermillion)] font-header">
                       €{totalPrice.toFixed(2)}
                     </p>
                   </div>
@@ -281,7 +281,7 @@ export default function CustomizationModal({
 
                 <button
                   onClick={handleAddToCart}
-                  className="px-8 py-4 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body"
+                  className="w-full sm:w-auto px-8 py-4 min-h-[56px] bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body"
                 >
                   Add to Order
                 </button>

@@ -33,27 +33,27 @@ const features = [
 
 export default function About() {
   return (
-    <section className="relative py-24 lg:py-32 bg-[var(--yume-charcoal)] overflow-hidden">
+    <section className="relative py-16 sm:py-24 lg:py-32 bg-[var(--yume-charcoal)] overflow-hidden">
       <CirclePattern className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] text-[var(--yume-warm-white)] opacity-5" />
       
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 0.05 }}
         viewport={{ once: true }}
-        className="absolute top-10 right-10 text-[12rem] font-bold text-[var(--yume-warm-white)] font-japanese leading-none"
+        className="absolute top-10 right-10 text-[8rem] sm:text-[12rem] font-bold text-[var(--yume-warm-white)] font-japanese leading-none"
       >
         夢
       </motion.div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-4xl lg:text-6xl font-bold text-[var(--yume-warm-white)] mb-6 font-header">
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-[var(--yume-warm-white)] mb-6 font-header">
               The Art of
               <br />
               <span className="text-[var(--yume-gold)]">Ramen</span>
@@ -113,7 +113,7 @@ export default function About() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid grid-cols-2 gap-4"
+            className="grid grid-cols-2 gap-3 sm:gap-4"
           >
             {features.map((feature, index) => (
               <motion.div
@@ -122,21 +122,21 @@ export default function About() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: index * 0.08 + 0.3 }}
-                className="relative bg-[var(--yume-ink)] p-6"
-              >
-                <div className="absolute top-0 right-0 text-4xl opacity-10 font-japanese text-[var(--yume-warm-white)]">
+                className="relative bg-[var(--yume-ink)] p-4 sm:p-6">
+                <div className="absolute top-0 right-0 text-2xl sm:text-4xl opacity-10 font-japanese text-[var(--yume-warm-white)]">
                   {feature.japanese}
                 </div>
                 
-                <div className="w-12 h-12 bg-[var(--yume-vermillion)] flex items-center justify-center mb-4">
-                  <feature.icon size={24} className="text-[var(--yume-warm-white)]" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[var(--yume-vermillion)] flex items-center justify-center mb-3 sm:mb-4">
+                  <feature.icon size={20} className="text-[var(--yume-warm-white)] sm:hidden" />
+                  <feature.icon size={24} className="text-[var(--yume-warm-white)] hidden sm:block" />
                 </div>
                 
-                <h3 className="text-base font-bold text-[var(--yume-warm-white)] mb-2 font-header">
+                <h3 className="text-sm sm:text-base font-bold text-[var(--yume-warm-white)] mb-1 sm:mb-2 font-header">
                   {feature.title}
                 </h3>
                 
-                <p className="text-base text-[var(--yume-warm-white)]/70 font-body">
+                <p className="text-xs sm:text-base text-[var(--yume-warm-white)]/70 font-body line-clamp-3 sm:line-clamp-none">
                   {feature.description}
                 </p>
               </motion.div>
@@ -149,41 +149,41 @@ export default function About() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.5 }}
-          className="mt-24 text-center"
+          className="mt-16 sm:mt-24 text-center"
         >
-          <div className="inline-flex items-center gap-8 px-8 py-4 bg-[var(--yume-ink)] border border-[var(--yume-miso)]/20">
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">
+          <div className="inline-flex flex-wrap items-center justify-center gap-4 sm:gap-8 px-4 sm:px-8 py-4 bg-[var(--yume-ink)] border border-[var(--yume-miso)]/20">
+            <div className="text-center px-2">
+              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-vermillion)] font-header">
                 2019
               </span>
-              <span className="text-sm text-[var(--yume-warm-white)]/60 font-body">
+              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
                 Founded
               </span>
             </div>
-            <div className="w-[1px] h-16 bg-[var(--yume-miso)]/20" />
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[var(--yume-gold)] font-header">
+            <div className="hidden sm:block w-[1px] h-16 bg-[var(--yume-miso)]/20" />
+            <div className="text-center px-2">
+              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-gold)] font-header">
                 50K+
               </span>
-              <span className="text-sm text-[var(--yume-warm-white)]/60 font-body">
+              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
                 Bowls Served
               </span>
             </div>
-            <div className="w-[1px] h-16 bg-[var(--yume-miso)]/20" />
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[var(--yume-warm-white)] font-header">
+            <div className="hidden sm:block w-[1px] h-16 bg-[var(--yume-miso)]/20" />
+            <div className="text-center px-2">
+              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-warm-white)] font-header">
                 4.9
               </span>
-              <span className="text-sm text-[var(--yume-warm-white)]/60 font-body">
+              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
                 Average Rating
               </span>
             </div>
-            <div className="w-[1px] h-16 bg-[var(--yume-miso)]/20" />
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">
+            <div className="hidden sm:block w-[1px] h-16 bg-[var(--yume-miso)]/20" />
+            <div className="text-center px-2">
+              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-vermillion)] font-header">
                 12
               </span>
-              <span className="text-sm text-[var(--yume-warm-white)]/60 font-body">
+              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
                 Signature Bowls
               </span>
             </div>

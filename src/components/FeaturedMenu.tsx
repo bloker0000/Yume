@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Plus, Star } from "lucide-react";
 import Image from "next/image";
 import { AsanohaPattern } from "./JapanesePatterns";
+import { useState, useEffect } from "react";
 
 const menuItems = [
   {
@@ -53,8 +54,22 @@ const menuItems = [
 ];
 
 export default function FeaturedMenu() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      setIsMobile(isTouchDevice || isSmallScreen);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
-    <section className="relative py-24 lg:py-32 bg-[var(--yume-warm-white)] overflow-hidden">
+    <section className="relative py-16 sm:py-24 lg:py-32 bg-[var(--yume-warm-white)] overflow-hidden">
       <div 
         className="absolute inset-0 opacity-20 blur-xkjuy6,hngxl"
         style={{
@@ -62,13 +77,13 @@ export default function FeaturedMenu() {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed',
         }}
       />
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[var(--yume-warm-white)] to-transparent" />
 
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -95,7 +110,7 @@ export default function FeaturedMenu() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           {menuItems.map((item, index) => (
             <motion.div
               key={item.id}
@@ -140,7 +155,7 @@ export default function FeaturedMenu() {
                 </div>
               </div>
 
-              <div className="p-6 lg:p-8">
+              <div className="p-5 sm:p-6 lg:p-8">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-3xl font-bold text-[var(--yume-vermillion)] font-header">
                     €{item.price}
@@ -164,7 +179,7 @@ export default function FeaturedMenu() {
                 href="/menu"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors duration-300 font-body"
+                className="w-full flex items-center justify-center gap-2 px-4 py-4 min-h-[48px] bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors duration-300 font-body"
               >
                 <Plus size={16} />
                 Add to Order

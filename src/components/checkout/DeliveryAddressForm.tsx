@@ -160,7 +160,7 @@ export default function DeliveryAddressForm({
   };
 
   const inputClass = (field: keyof FieldError) =>
-    `w-full px-4 py-3 bg-[var(--yume-warm-white)] border transition-all font-body text-[var(--yume-charcoal)] focus:outline-none focus:ring-2 ${
+    `w-full px-4 py-3 min-h-[48px] bg-[var(--yume-warm-white)] border transition-all font-body text-[var(--yume-charcoal)] text-base focus:outline-none focus:ring-2 ${
       errors[field]
         ? "border-red-400 focus:ring-red-200"
         : touched[field] && !errors[field] && address[field]

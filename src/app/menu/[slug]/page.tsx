@@ -55,7 +55,7 @@ export default function ProductDetailPage() {
       <Navigation variant="dark" />
 
       <div className="pt-20 lg:pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <Breadcrumb
             items={[
               { label: "Menu", href: "/menu" },
@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -90,11 +90,11 @@ export default function ProductDetailPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="flex flex-col"
             >
-              <div className="mb-6">
-                <p className="text-[var(--yume-gold)] font-japanese text-xl mb-2">
+              <div className="mb-4 sm:mb-6">
+                <p className="text-[var(--yume-gold)] font-japanese text-lg sm:text-xl mb-2">
                   {item.japanese}
                 </p>
-                <h1 className="text-3xl lg:text-4xl font-bold text-[var(--yume-charcoal)] mb-4 font-header">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--yume-charcoal)] mb-3 sm:mb-4 font-header">
                   {item.name}
                 </h1>
 
@@ -120,15 +120,15 @@ export default function ProductDetailPage() {
                   </span>
                 </div>
 
-                <p className="text-3xl font-bold text-[var(--yume-vermillion)] mb-4 font-header">
+                <p className="text-2xl sm:text-3xl font-bold text-[var(--yume-vermillion)] mb-3 sm:mb-4 font-header">
                   €{item.price.toFixed(2)}
                 </p>
 
-                <p className="text-[var(--yume-charcoal)] mb-6 font-body leading-relaxed">
+                <p className="text-[var(--yume-charcoal)] mb-4 sm:mb-6 font-body leading-relaxed text-sm sm:text-base">
                   {item.description}
                 </p>
 
-                <div className="flex flex-wrap gap-4 mb-6">
+                <div className="flex flex-wrap gap-3 sm:gap-4 mb-4 sm:mb-6">
                   <div className="flex items-center gap-2 text-sm text-[var(--yume-miso)]">
                     <Clock size={16} />
                     <span>{item.prepTime} mins prep</span>

@@ -218,23 +218,23 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-[var(--yume-warm-white)]">
       <header className="bg-white border-b border-[var(--yume-cream)] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             <Link
               href="/menu"
-              className="flex items-center gap-2 text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors font-body"
+              className="flex items-center gap-2 text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors font-body p-2 -ml-2 min-h-[44px]"
             >
               <ArrowLeft size={20} />
               <span className="hidden sm:inline">Back to Menu</span>
             </Link>
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-[var(--yume-vermillion)] font-header">YUME</span>
+              <span className="text-xl sm:text-2xl font-bold text-[var(--yume-vermillion)] font-header">YUME</span>
             </Link>
-            <div className="w-24" />
+            <div className="w-16 sm:w-24" />
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-32 lg:pb-8">
         <CheckoutProgress currentStep={step} steps={CHECKOUT_STEPS} />
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -248,11 +248,11 @@ export default function CheckoutPage() {
                   exit={{ opacity: 0, x: 20 }}
                   className="space-y-6"
                 >
-                  <div className="bg-white border border-[var(--yume-cream)] p-6">
+                  <div className="bg-white border border-[var(--yume-cream)] p-4 sm:p-6">
                     <OrderTypeSelector orderType={orderType} onOrderTypeChange={setOrderType} />
                   </div>
 
-                  <div className="bg-white border border-[var(--yume-cream)] p-6">
+                  <div className="bg-white border border-[var(--yume-cream)] p-4 sm:p-6">
                     <ContactForm
                       contactInfo={contactInfo}
                       onContactInfoChange={setContactInfo}
@@ -265,7 +265,7 @@ export default function CheckoutPage() {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="bg-white border border-[var(--yume-cream)] p-6"
+                      className="bg-white border border-[var(--yume-cream)] p-4 sm:p-6"
                     >
                       <DeliveryAddressForm
                         address={address}
@@ -276,7 +276,7 @@ export default function CheckoutPage() {
                     </motion.div>
                   )}
 
-                  <div className="bg-white border border-[var(--yume-cream)] p-6">
+                  <div className="bg-white border border-[var(--yume-cream)] p-4 sm:p-6">
                     <DeliveryTimeSelector
                       deliveryTime={deliveryTimeType}
                       scheduledDate={scheduledDate}
@@ -295,7 +295,7 @@ export default function CheckoutPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="bg-white border border-[var(--yume-cream)] p-6"
+                  className="bg-white border border-[var(--yume-cream)] p-4 sm:p-6"
                 >
                   <PaymentMethodSelector
                     paymentInfo={paymentInfo}
@@ -305,7 +305,7 @@ export default function CheckoutPage() {
                   />
                   <button
                     onClick={() => setStep(1)}
-                    className="mt-4 text-[var(--yume-miso)] hover:text-[var(--yume-charcoal)] transition-colors font-body text-sm flex items-center gap-1"
+                    className="mt-4 text-[var(--yume-miso)] hover:text-[var(--yume-charcoal)] transition-colors font-body text-sm flex items-center gap-1 p-2 -ml-2 min-h-[44px]"
                   >
                     <ArrowLeft size={14} />
                     Back to Details
@@ -319,9 +319,9 @@ export default function CheckoutPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="bg-white border border-[var(--yume-cream)] p-6"
+                  className="bg-white border border-[var(--yume-cream)] p-4 sm:p-6"
                 >
-                  <h2 className="text-xl font-bold text-[var(--yume-charcoal)] mb-6 font-header">
+                  <h2 className="text-lg sm:text-xl font-bold text-[var(--yume-charcoal)] mb-4 sm:mb-6 font-header">
                     Review Your Order
                   </h2>
                   <div className="space-y-4">
@@ -366,16 +366,16 @@ export default function CheckoutPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex gap-3 mt-6">
+                  <div className="flex flex-col sm:flex-row gap-3 mt-6">
                     <button
                       onClick={() => setStep(2)}
-                      className="flex-1 py-3 border-2 border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] font-bold hover:bg-[var(--yume-charcoal)] hover:text-white transition-colors font-body"
+                      className="flex-1 py-3 min-h-[48px] border-2 border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] font-bold hover:bg-[var(--yume-charcoal)] hover:text-white transition-colors font-body"
                     >
                       Back
                     </button>
                     <button
                       onClick={() => setStep(1)}
-                      className="text-[var(--yume-miso)] hover:text-[var(--yume-charcoal)] transition-colors font-body text-sm px-4"
+                      className="text-[var(--yume-miso)] hover:text-[var(--yume-charcoal)] transition-colors font-body text-sm px-4 py-3 min-h-[48px]"
                     >
                       Edit Details
                     </button>
@@ -389,15 +389,15 @@ export default function CheckoutPage() {
             <div className="bg-white border border-[var(--yume-cream)] sticky top-24">
               <button
                 onClick={() => setOrderSummaryExpanded(!orderSummaryExpanded)}
-                className="w-full flex items-center justify-between p-4 border-b border-[var(--yume-cream)] lg:cursor-default"
+                className="w-full flex items-center justify-between p-4 min-h-[56px] border-b border-[var(--yume-cream)] lg:cursor-default"
               >
                 <div className="flex items-center gap-2">
                   <ShoppingBag size={20} className="text-[var(--yume-vermillion)]" />
-                  <h2 className="text-lg font-bold text-[var(--yume-charcoal)] font-header">Order Summary</h2>
+                  <h2 className="text-base sm:text-lg font-bold text-[var(--yume-charcoal)] font-header">Order Summary</h2>
                 </div>
                 <div className="flex items-center gap-2 lg:hidden">
-                  <span className="text-[var(--yume-vermillion)] font-bold font-body">EUR {total.toFixed(2)}</span>
-                  {orderSummaryExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  <span className="text-[var(--yume-vermillion)] font-bold font-body text-sm sm:text-base">EUR {total.toFixed(2)}</span>
+                  {orderSummaryExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}}
                 </div>
               </button>
 
@@ -504,7 +504,7 @@ export default function CheckoutPage() {
                         whileTap={{ scale: 0.98 }}
                         onClick={step === 3 ? handlePlaceOrder : handleNextStep}
                         disabled={isProcessing || (step === 1 && !canProceedToStep2) || (step === 2 && !paymentValid)}
-                        className="w-full mt-4 py-4 bg-[var(--yume-vermillion)] text-white font-bold text-lg hover:bg-[var(--yume-vermillion)]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-body flex items-center justify-center gap-2"
+                        className="w-full mt-4 py-4 min-h-[56px] bg-[var(--yume-vermillion)] text-white font-bold text-base sm:text-lg hover:bg-[var(--yume-vermillion)]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-body flex items-center justify-center gap-2"
                       >
                         {isProcessing ? (
                           <>

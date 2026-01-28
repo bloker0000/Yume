@@ -69,7 +69,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-[var(--yume-warm-white)] shadow-2xl z-[70] flex flex-col"
+            className="fixed right-0 top-0 h-full w-full sm:max-w-md bg-[var(--yume-warm-white)] shadow-2xl z-[70] flex flex-col"
           >
             <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[var(--yume-vermillion)]" />
             <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[var(--yume-vermillion)]" />
@@ -88,7 +88,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               </div>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-[var(--yume-cream)] transition-colors"
+                className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
               >
                 <X size={20} />
               </button>
@@ -212,25 +212,25 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                             <div className="flex items-center border border-[var(--yume-warm-white)]">
                               <button
                                 onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                className="p-1 hover:bg-[var(--yume-warm-white)] transition-colors"
+                                className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center hover:bg-[var(--yume-warm-white)] transition-colors"
                               >
-                                <Minus size={14} />
+                                <Minus size={16} />
                               </button>
-                              <span className="w-8 text-center text-sm font-medium">
+                              <span className="w-10 text-center text-sm font-medium">
                                 {item.quantity}
                               </span>
                               <button
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="p-1 hover:bg-[var(--yume-warm-white)] transition-colors"
+                                className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center hover:bg-[var(--yume-warm-white)] transition-colors"
                               >
-                                <Plus size={14} />
+                                <Plus size={16} />
                               </button>
                             </div>
                             <button
                               onClick={() => removeItem(item.id)}
-                              className="p-1 text-[var(--yume-miso)] hover:text-[var(--yume-vermillion)] transition-colors"
+                              className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center text-[var(--yume-miso)] hover:text-[var(--yume-vermillion)] transition-colors"
                             >
-                              <Trash2 size={16} />
+                              <Trash2 size={18} />
                             </button>
                           </div>
                           <p className="font-bold text-[var(--yume-vermillion)] font-header">
@@ -245,7 +245,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             </div>
 
             {items.length > 0 && (
-              <div className="border-t border-[var(--yume-cream)] p-4 bg-[var(--yume-warm-white)]">
+              <div className="border-t border-[var(--yume-cream)] p-4 pb-safe bg-[var(--yume-warm-white)]">
                 <div className="flex items-center gap-4 mb-4 p-3 bg-[var(--yume-cream)]">
                   <Clock size={18} className="text-[var(--yume-miso)]" />
                   <div>
@@ -278,7 +278,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
                 <button
                   onClick={handleCheckout}
-                  className="w-full py-4 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body flex items-center justify-center gap-2"
+                  className="w-full py-4 min-h-[56px] bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] font-medium hover:bg-[var(--yume-vermillion)] transition-colors font-body flex items-center justify-center gap-2"
                 >
                   Checkout
                   <ArrowRight size={18} />
@@ -304,7 +304,7 @@ export function FloatingCartButton({ onClick }: { onClick: () => void }) {
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: 100, opacity: 0 }}
       onClick={onClick}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden flex items-center gap-4 px-6 py-4 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] shadow-2xl"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden flex items-center gap-4 px-6 py-4 min-h-[56px] bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] shadow-2xl mb-safe"
     >
       <div className="relative">
         <ShoppingBag size={24} />

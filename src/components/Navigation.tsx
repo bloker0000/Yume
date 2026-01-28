@@ -110,7 +110,7 @@ export default function Navigation({ variant = "dark" }: NavigationProps) {
             </div>
 
             <motion.button
-              className={`lg:hidden p-2 ${
+              className={`lg:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                 isLightText ? "text-[var(--yume-warm-white)]" : "text-[var(--yume-charcoal)]"
               }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -136,12 +136,12 @@ export default function Navigation({ variant = "dark" }: NavigationProps) {
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
-              className="absolute right-0 top-0 bottom-0 w-80 bg-[var(--yume-warm-white)] shadow-2xl"
+              className="absolute right-0 top-0 bottom-0 w-[85vw] max-w-sm bg-[var(--yume-warm-white)] shadow-2xl"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
             >
-              <div className="p-8 pt-24">
+              <div className="p-8 pt-24 pb-safe">
                 <div className="flex flex-col gap-6">
                   {navLinks.map((link, index) => (
                     <motion.div
