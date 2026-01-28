@@ -4,19 +4,26 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import Button from "./Button";
+import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Menu", href: "/menu" },
-  { name: "Order", href: "/order" },
+  { name: "Track Order", href: "/track" },
   { name: "Our Story", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 
-export default function Navigation() {
+interface NavigationProps {
+  variant?: "dark" | "light";
+}
+
+export default function Navigation({ variant = "dark" }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { totalItems, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,12 +33,12 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isLightText = variant === "light" && !isScrolled;
+
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        initial={{ y: 0, opacity: 1 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
             ? "bg-[var(--yume-warm-white)]/95 backdrop-blur-md shadow-sm"
@@ -40,57 +47,77 @@ export default function Navigation() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <motion.a
-              href="/"
-              className="flex items-center gap-3 group"
-              whileHover={{ scale: 1.02 }}
-            >
-              <Image
-                src="/logo.svg"
-                alt="Yume Ramen"
-                width={120}
-                height={48}
-                className="h-12 w-auto"
-                priority
-              />
-            </motion.a>
+            <motion.div>
+              <Link href="/" className="flex items-center gap-3 group">
+                <Image
+                  src={isLightText ? "/logoLight.svg" : "/logoDark.svg"}
+                  alt="Yume Ramen"
+                  width={120}
+                  height={48}
+                  className="h-12 w-auto"
+                  priority
+                />
+              </Link>
+            </motion.div>
 
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link, index) => (
-                <motion.a
-                  key={link.name}
-                  href={link.href}
-                  className="relative text-sm font-medium text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors duration-300 group"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--yume-vermillion)] transition-all duration-300 group-hover:w-full" />
-                </motion.a>
+                <div key={link.name}>
+                  <Link
+                    href={link.href}
+                    className={`relative text-sm font-medium transition-colors duration-300 group ${
+                      isLightText
+                        ? "text-[var(--yume-warm-white)] hover:text-[var(--yume-gold)]"
+                        : "text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)]"
+                    }`}
+                  >
+                    {link.name}
+                    <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                      isLightText ? "bg-[var(--yume-gold)]" : "bg-[var(--yume-vermillion)]"
+                    }`} />
+                  </Link>
+                </div>
               ))}
             </div>
 
             <div className="hidden lg:flex items-center gap-4">
               <motion.button
-                className="relative p-2 text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors"
+                onClick={() => setIsCartOpen(true)}
+                className={`relative p-2 transition-colors ${
+                  isLightText
+                    ? "text-[var(--yume-warm-white)] hover:text-[var(--yume-gold)]"
+                    : "text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)]"
+                }`}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
                 <ShoppingBag size={20} />
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] text-xs flex items-center justify-center rounded-full">
-                  0
-                </span>
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--yume-vermillion)] text-[var(--yume-warm-white)] text-xs flex items-center justify-center rounded-full">
+                    {totalItems}
+                  </span>
+                )}
               </motion.button>
-              <Button variant="primary" size="sm">
-                Order Now
-              </Button>
+              <Link href="/menu">
+                <Button 
+                  variant={isLightText ? "outline" : "primary"} 
+                  size="sm"
+                  className={isLightText ? "border-[var(--yume-warm-white)] text-[var(--yume-warm-white)] hover:bg-[var(--yume-warm-white)] hover:!text-[var(--yume-charcoal)]" : ""}
+                  showCorners={false}
+                >
+                  Order Now
+                </Button>
+              </Link>
             </div>
 
             <motion.button
-              className="lg:hidden p-2 text-[var(--yume-charcoal)]"
+              className={`lg:hidden p-3 min-w-[44px] min-h-[44px] flex items-center justify-center ${
+                isLightText ? "text-[var(--yume-warm-white)]" : "text-[var(--yume-charcoal)]"
+              }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               whileTap={{ scale: 0.9 }}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </motion.button>
@@ -112,31 +139,36 @@ export default function Navigation() {
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
-              className="absolute right-0 top-0 bottom-0 w-80 bg-[var(--yume-warm-white)] shadow-2xl"
+              className="absolute right-0 top-0 bottom-0 w-[85vw] max-w-sm bg-[var(--yume-warm-white)] shadow-2xl"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
             >
-              <div className="p-8 pt-24">
+              <div className="p-8 pt-24 pb-safe">
                 <div className="flex flex-col gap-6">
                   {navLinks.map((link, index) => (
-                    <motion.a
+                    <motion.div
                       key={link.name}
-                      href={link.href}
-                      className="text-2xl font-medium text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors"
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      {link.name}
-                    </motion.a>
+                      <Link
+                        href={link.href}
+                        className="text-2xl font-medium text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
                 <div className="mt-8 pt-8 border-t border-[var(--yume-cream)]">
-                  <Button variant="primary" size="lg" className="w-full">
-                    Order Now
-                  </Button>
+                  <Link href="/menu" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Button variant="primary" size="lg" className="w-full">
+                      Order Now
+                    </Button>
+                  </Link>
                 </div>
                 <div className="mt-8 flex items-center gap-4 text-[var(--yume-miso)]">
                   <span className="text-2xl font-japanese">夢</span>

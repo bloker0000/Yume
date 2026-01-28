@@ -1,0 +1,115 @@
+GLR — Yume Ramen 1
+Briefing – Yume Ramen
+Restaurant
+Datum (Startdatum van het project)
+Projecttitel Yume Ramen Restaurant bezorgapp
+Projectnummer 2024#008
+Opdrachtgever Yume Ramen
+Contactpersoon
+1. Achtergrond
+De opkomst van Japanse noodle restaurants in Nederland is de afgelopen jaren sterk
+toegenomen, met name in grote steden zoals Amsterdam, Rotterdam en Utrecht. Ramen,
+een traditioneel Japans noedelgerecht, is wereldwijd populair geworden vanwege de rijke
+bouillon, verse ingrediënten en de variëteit aan smaken. Yume Ramen wil zich
+onderscheiden door een bezorg- en afhaalapp te lanceren die de Japanse sfeer volledig
+omarmt.
+Yume Ramen wil een bezorgapp ontwikkelen die gebruikers
+onderdompelt in Japanse sferen en hen in staat stelt snel en
+eenvoudig ramen te bestellen en te laten bezorgen.
+GLR — Yume Ramen 2
+GLR — Yume Ramen 3
+
+Link 1 https://www.youtube.com/watch?v=Q2blfrQBH1g&t=6s
+Link 2 https://www.youtube.com/watch?v=Gu6SC8vABgk
+GLR — Yume Ramen 4
+2. Wat is de vraag aan jou?
+Je gaat een op maat gemaakte, sfeervolle bezorgapp ontwerpen voor Yume Ramen, het
+Japanse afhaal- en bezorgrestaurant. De app moet visueel aantrekkelijk zijn met een
+duidelijke link naar de Japanse cultuur en optimaal functioneren. Gebruikers moeten snel
+en gemakkelijk een keuze kunnen maken uit het menu en de ramen thuis laten bezorgen.
+Creër een sfeervolle en optimaal functionerende bezorg app voor
+Yume Ramen, hét Japanse afhaal- en bezorg restaurant voor Ramen
+Noodles.
+3. Wie is de doelgroep?
+De doelgroep bestaat uit:
+- Mensen die van Japanse Ramen Noodles houden
+- Mensen die graag eten laten of willen laten bezorgen
+- Jong en oud, zowel ramenliefhebbers als nieuwe klanten
+4. Wat is het doel?
+Het doel van de app is om een optimale gebruikerservaring te bieden waarmee klanten snel
+en eenvoudig ramen kunnen bestellen voor thuisbezorging. De app moet een sfeervolle en
+Japanse uitstraling hebben, en de functionaliteit moet soepel en gebruiksvriendelijk zijn.
+Het creëren van een sfeervolle en optimale functionerende bezorg
+app voor Japanse Ramen Noodles. 
+GLR — Yume Ramen 5
+5. Wat zijn de deliverables & specs?
+- 5 inspiratiebronnen van bezorgapps
+- 10 inspiratiebronnen met betrekking tot Japan
+- Technisch ontwerp van de app
+- Visueel en interface ontwerp van de app
+- Minimaal 2 werkende prototypes
+6. Wat is de projectfasering?
+Fase 1 — Onderzoek
+In de eerste fase ga je onderzoek doen naar bestaande bezorgapps en naar Japanse
+culturele elementen. Je kijkt hierbij naar hoe bezorgapps werken, hoe ze hun
+gebruikersinterface hebben opgezet en welke functies ze aanbieden om bestellingen
+eenvoudig en snel te laten verlopen. Daarnaast ga je je verdiepen in Japanse esthetiek,
+zoals kleuren, symbolen, en designstijlen, zodat je inspiratie kunt opdoen voor het
+visuele aspect van de app. Het doel is om te begrijpen wat er nodig is om zowel de
+functionaliteit als de Japanse sfeer op een goede manier in de app te verwerken.
+Je doet onderzoek naar bezorgapps en naar Japanse culturele
+elementen om inspiratie op te doen voor het ontwerp van de app,
+zowel technisch als visueel.
+Fase 2 — Prototyping
+Na je onderzoek begin je met het ontwikkelen van minimaal twee verschillende
+prototypes van de app. Je experimenteert met hoe de app eruit kan zien en hoe de
+Japanse sfeer het beste tot uiting komt, bijvoorbeeld door het gebruik van kleuren,
+patronen en typografie die typisch zijn voor Japan. Daarnaast is het belangrijk dat de app
+technisch soepel werkt, zodat gebruikers makkelijk ramen kunnen bestellen. Je test deze
+prototypes met echte gebruikers om feedback te verzamelen over hoe de app aanvoelt
+en of de Japanse sfeer goed overkomt. Deze feedback helpt je om de beste elementen
+te kiezen voor het definitieve ontwerp.
+Je ontwikkelt en test verschillende prototypes van de app, met de
+focus op een goede gebruikerservaring en het overbrengen van de
+Japanse sfeer.
+GLR — Yume Ramen 6
+Fase 3 — Ontwerp
+Op basis van de feedback uit de vorige fase kies je het beste prototype en werk je dit
+verder uit tot een definitief ontwerp. Hierbij zorg je ervoor dat het visuele ontwerp
+aantrekkelijk en sfeervol is voor de doelgroep. De Japanse esthetiek moet goed naar
+voren komen in het ontwerp, bijvoorbeeld door gebruik te maken van rustgevende
+kleuren en iconische Japanse stijlelementen. Daarnaast zorg je ervoor dat de interface
+intuïtief en functioneel is, zodat gebruikers makkelijk door de app kunnen navigeren en
+snel hun ramen kunnen bestellen.
+Je werkt het visuele en technische ontwerp van de app verder uit,
+met een focus op gebruiksvriendelijkheid en het creëren van een
+sfeervolle Japanse uitstraling.
+Fase 4 — Implementatie
+In deze fase ga je het definitieve ontwerp omzetten in een volledig werkende app. Je
+zorgt ervoor dat alle functies goed werken, zoals het kiezen van ramen, het plaatsen van
+bestellingen en de betaling. De app moet soepel en probleemloos functioneren, zodat
+gebruikers zonder moeite ramen kunnen bestellen voor thuisbezorging. Daarnaast test je
+de app uitvoerig op verschillende apparaten (smartphones en tablets) om er zeker van te
+zijn dat de bestelfunctie optimaal werkt en dat de Japanse sfeer behouden blijft,
+ongeacht welk apparaat de gebruiker gebruikt.
+Je implementeert de bezorgapp en test deze grondig om er zeker
+van te zijn dat het bestellen van ramen soepel verloopt en de
+Japanse sfeer goed tot uiting komt.
+Fase 5 — Recap
+In deze laatste fase kijk je terug op het hele project. Je bespreekt met je docent en
+opdrachtgever wat goed ging en wat beter had gekund. Je verzamelt feedback van
+gebruikers en gebruikt deze om eventuele verbeteringen door te voeren. Deze stap is
+belangrijk om het project af te ronden en om ervoor te zorgen dat je leert van je ervaring
+voor toekomstige projecten.
+Je reflecteert op het project, bespreekt feedback en voert
+eventuele verbeteringen door om de app te optimaliseren.
+GLR — Yume Ramen 7
+7. Wanneer moet wat af zijn?
+Maak (i.s.m. het GLR) een realistische planning om ervoor te zorgen dat het project op tijd
+wordt voltooid.
+Fase Doorlooptijd Activiteit Uitkomst
+1 — Onderzoek X weken
+2 — Prototyping X weken
+3 — Ontwerp X weken
+4 — Implementatie X week
+5 — Recap X week

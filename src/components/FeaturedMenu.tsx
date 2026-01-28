@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Plus, Star } from "lucide-react";
 import Image from "next/image";
 import { AsanohaPattern } from "./JapanesePatterns";
+import { useState, useEffect } from "react";
 
 const menuItems = [
   {
@@ -15,7 +16,7 @@ const menuItems = [
     rating: 4.9,
     bestseller: true,
     spicy: false,
-    image: "/ramen/Tonkotsu.jpg",
+    image: "/items/Tonkotsu.jpg",
   },
   {
     id: 2,
@@ -26,7 +27,7 @@ const menuItems = [
     rating: 4.8,
     bestseller: false,
     spicy: true,
-    image: "/ramen/spicyMiso.jpg",
+    image: "/items/spicyMiso.jpg",
   },
   {
     id: 3,
@@ -37,7 +38,7 @@ const menuItems = [
     rating: 4.7,
     bestseller: false,
     spicy: false,
-    image: "/ramen/shoyu.jpg",
+    image: "/items/shoyu.jpg",
   },
   {
     id: 4,
@@ -48,23 +49,46 @@ const menuItems = [
     rating: 4.9,
     bestseller: true,
     spicy: true,
-    image: "/ramen/tantanmen.jpg",
+    image: "/items/tantanmen.jpg",
   },
 ];
 
 export default function FeaturedMenu() {
-  return (
-    <section className="relative py-24 lg:py-32 bg-[var(--yume-warm-white)] overflow-hidden">
-      <AsanohaPattern className="absolute inset-0 w-full h-full text-[var(--yume-charcoal)] opacity-5" />
-      
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[var(--yume-cream)] to-transparent" />
+  const [isMobile, setIsMobile] = useState(false);
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      setIsMobile(isTouchDevice || isSmallScreen);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return (
+    <section className="relative py-16 sm:py-24 lg:py-32 bg-[var(--yume-warm-white)] overflow-hidden">
+      <div 
+        className="absolute inset-0 opacity-20 blur-xkjuy6,hngxl"
+        style={{
+          backgroundImage: "url('/bg\\'s/circles2bg1.svg')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed',
+        }}
+      />
+      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-[var(--yume-warm-white)] to-transparent" />
+
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
@@ -86,14 +110,14 @@ export default function FeaturedMenu() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
           {menuItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
               className="group relative bg-[var(--yume-warm-white)] border border-[var(--yume-cream)] hover:shadow-2xl transition-all duration-500 overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[var(--yume-vermillion)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
@@ -105,6 +129,8 @@ export default function FeaturedMenu() {
                   alt={item.name}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 432px"
+                  loading={index < 2 ? "eager" : "lazy"}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--yume-charcoal)]/60 to-transparent" />
                 
@@ -131,7 +157,7 @@ export default function FeaturedMenu() {
                 </div>
               </div>
 
-              <div className="p-6 lg:p-8">
+              <div className="p-5 sm:p-6 lg:p-8">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-3xl font-bold text-[var(--yume-vermillion)] font-header">
                     €{item.price}
@@ -151,24 +177,25 @@ export default function FeaturedMenu() {
                 {item.description}
               </p>
 
-              <motion.button
+              <motion.a
+                href="/menu"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors duration-300 font-body"
+                className="w-full flex items-center justify-center gap-2 px-4 py-4 min-h-[48px] bg-[var(--yume-charcoal)] text-[var(--yume-warm-white)] text-sm font-medium hover:bg-[var(--yume-vermillion)] transition-colors duration-300 font-body"
               >
                 <Plus size={16} />
                 Add to Order
-              </motion.button>
+              </motion.a>
             </div>
             </motion.div>
           ))}
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
           className="text-center mt-12"
         >
           <motion.a

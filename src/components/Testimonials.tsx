@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { SeigaihaPattern } from "./JapanesePatterns";
+import { useState, useEffect } from "react";
 
 const testimonials = [
   {
@@ -35,16 +36,39 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  return (
-    <section className="relative py-24 lg:py-32 bg-[var(--yume-cream)] overflow-hidden">
-      <SeigaihaPattern className="absolute inset-0 w-full h-full text-[var(--yume-miso)] opacity-10" />
+  const [isMobile, setIsMobile] = useState(false);
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+  useEffect(() => {
+    const checkMobile = () => {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth < 1024;
+      setIsMobile(isTouchDevice || isSmallScreen);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return (
+    <section className="relative py-16 sm:py-24 lg:py-32 bg-[var(--yume-cream)] overflow-hidden">
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          backgroundImage: "url('/bg\\'s/snowflakesbg0.svg')",
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed',
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-4 mb-6">
@@ -66,16 +90,16 @@ export default function Testimonials() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
             >
-              <div className="relative bg-[var(--yume-warm-white)] p-8 h-full shadow-sm border border-[var(--yume-cream)]">
+              <div className="relative bg-[var(--yume-warm-white)] p-5 sm:p-8 h-full shadow-sm border border-[var(--yume-cream)]">
                 <Quote
                   size={40}
                   className="absolute top-4 right-4 text-[var(--yume-vermillion)]/10"
@@ -86,9 +110,9 @@ export default function Testimonials() {
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <h4 className="font-bold text-[var(--yume-charcoal)] font-header">
+                    <h3 className="font-bold text-[var(--yume-charcoal)] font-header text-base">
                       {testimonial.name}
-                    </h4>
+                    </h3>
                     <p className="text-base text-[var(--yume-miso)] font-body">
                       {testimonial.location}
                     </p>
@@ -142,7 +166,7 @@ export default function Testimonials() {
             <span className="text-[var(--yume-charcoal)] font-medium">
               4.9 out of 5
             </span>
-            <span className="text-[var(--yume-miso)]">
+            <span className="text-[var(--yume-ink)]">
               based on 2,000+ reviews
             </span>
           </div>
