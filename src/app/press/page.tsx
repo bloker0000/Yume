@@ -127,10 +127,10 @@ export default function PressPage() {
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="text-center p-8 bg-[var(--yume-ink)]">
               <Download size={40} className="mx-auto text-[var(--yume-gold)] mb-4" />
-              <h3 className="text-xl font-bold text-[var(--yume-warm-white)] mb-2 font-header">Press Kit</h3>
+              <h3 className="text-xl font-bold text-[var(--yume-warm-white)] mb-2 font-header">Media Resource Center</h3>
               <p className="text-sm text-[var(--yume-warm-white)]/70 mb-4 font-body">Download logos, photos, and brand guidelines.</p>
-              <a href="/press-kit.zip" className="inline-flex items-center gap-2 text-[var(--yume-vermillion)] hover:text-[var(--yume-gold)] font-body">
-                <Download size={16} />Download Press Kit
+              <a href="/press/media-kit" className="inline-flex items-center gap-2 text-[var(--yume-vermillion)] hover:text-[var(--yume-gold)] font-body">
+                <ExternalLink size={16} />Browse Media Kit
               </a>
             </motion.div>
           </div>
