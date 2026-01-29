@@ -40,6 +40,17 @@ const menuItems = [
     spicy: true,
     image: "/items/tantanmen.jpg",
   },
+  {
+    id: 2,
+    name: "Spicy Miso Ramen",
+    japanese: "辛味噌ラーメン",
+    description: "Bold miso broth with a spicy kick, topped with corn, butter, and bean sprouts",
+    price: 15.99,
+    rating: 4.8,
+    bestseller: false,
+    spicy: true,
+    image: "/items/spicyMiso.jpg",
+  },
 ];
 
 export default function FeaturedMenu() {
