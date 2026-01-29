@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   title: "Yume Ramen | Authentic Japanese Ramen",
   description: "Experience the art of authentic Japanese ramen. Fresh ingredients, rich broths, and traditional recipes delivered to your door.",
   keywords: ["ramen", "japanese food", "noodles", "delivery", "restaurant"],
+  icons: {
+    icon: [
+      { url: '/logoDark.svg', type: 'image/svg+xml' }
+    ],
+    shortcut: '/logoDark.svg',
+    apple: '/logoDark.svg',
+  },
 };
 
 export default function RootLayout({
