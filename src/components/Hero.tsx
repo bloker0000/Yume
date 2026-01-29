@@ -98,7 +98,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
             className="lg:col-span-7 relative"
           >
             <div className="relative w-full max-w-2xl mx-auto">
@@ -119,34 +119,9 @@ export default function Hero() {
                 </div>
 
                 <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
-                  className="absolute -left-4 lg:-left-8 top-1/2 -translate-y-1/2"
-                >
-                  <div className="bg-[var(--yume-warm-white)] p-4 shadow-xl border border-[var(--yume-cream)]">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-[var(--yume-gold)]">
-                        <Image
-                          src="/items/spicyMiso.jpg"
-                          alt="Spicy Miso"
-                          width={48}
-                          height={48}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-xs text-[var(--yume-miso)] font-body">Also try</p>
-                        <p className="text-sm font-bold text-[var(--yume-charcoal)] font-header">Spicy Miso</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.4, type: "spring", stiffness: 100 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
                   className="absolute -bottom-6 right-4 lg:right-8"
                 >
                   <div className="relative bg-[var(--yume-charcoal)] p-5 shadow-2xl">
@@ -177,34 +152,6 @@ export default function Hero() {
                   <p className="text-sm font-bold text-[var(--yume-charcoal)] font-header">€14.99</p>
                 </motion.div>
               </div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.6 }}
-                className="absolute right-0 translate-x-full top-1/2 -translate-y-1/2 hidden lg:block pl-8"
-              >
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">12+</span>
-                    <span className="text-xs text-[var(--yume-miso)] font-body uppercase tracking-wide">Ramen</span>
-                  </div>
-                  
-                  <div className="w-8 h-[1px] bg-[var(--yume-miso)]/30 mx-auto" />
-                  
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">30</span>
-                    <span className="text-xs text-[var(--yume-miso)] font-body uppercase tracking-wide">Min</span>
-                  </div>
-                  
-                  <div className="w-8 h-[1px] bg-[var(--yume-miso)]/30 mx-auto" />
-                  
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold text-[var(--yume-vermillion)] font-header">50K+</span>
-                    <span className="text-xs text-[var(--yume-miso)] font-body uppercase tracking-wide">Served</span>
-                  </div>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         </div>
