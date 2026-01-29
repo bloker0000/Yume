@@ -143,52 +143,6 @@ export default function About() {
             ))}
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.5 }}
-          className="mt-16 sm:mt-24 text-center"
-        >
-          <div className="inline-flex flex-wrap items-center justify-center gap-4 sm:gap-8 px-4 sm:px-8 py-4 bg-[var(--yume-ink)] border border-[var(--yume-miso)]/20">
-            <div className="text-center px-2">
-              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-vermillion)] font-header">
-                2019
-              </span>
-              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
-                Founded
-              </span>
-            </div>
-            <div className="hidden sm:block w-[1px] h-16 bg-[var(--yume-miso)]/20" />
-            <div className="text-center px-2">
-              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-gold)] font-header">
-                50K+
-              </span>
-              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
-                Bowls Served
-              </span>
-            </div>
-            <div className="hidden sm:block w-[1px] h-16 bg-[var(--yume-miso)]/20" />
-            <div className="text-center px-2">
-              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-warm-white)] font-header">
-                4.9
-              </span>
-              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
-                Average Rating
-              </span>
-            </div>
-            <div className="hidden sm:block w-[1px] h-16 bg-[var(--yume-miso)]/20" />
-            <div className="text-center px-2">
-              <span className="block text-xl sm:text-3xl font-bold text-[var(--yume-vermillion)] font-header">
-                12
-              </span>
-              <span className="text-xs sm:text-sm text-[var(--yume-warm-white)]/60 font-body">
-                Signature Bowls
-              </span>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

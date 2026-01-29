@@ -19,17 +19,6 @@ const menuItems = [
     image: "/items/Tonkotsu.jpg",
   },
   {
-    id: 2,
-    name: "Spicy Miso Ramen",
-    japanese: "辛味噌ラーメン",
-    description: "Fermented soybean paste broth with ground pork, corn, butter, and spicy chili oil",
-    price: 15.99,
-    rating: 4.8,
-    bestseller: false,
-    spicy: true,
-    image: "/items/spicyMiso.jpg",
-  },
-  {
     id: 3,
     name: "Shoyu Ramen",
     japanese: "醤油ラーメン",

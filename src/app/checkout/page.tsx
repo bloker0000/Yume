@@ -218,10 +218,10 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-[var(--yume-warm-white)]">
       <header className="bg-white border-b border-[var(--yume-cream)] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="relative flex items-center justify-center h-16 sm:h-20">
             <Link
               href="/menu"
-              className="flex items-center gap-2 text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors font-body p-2 -ml-2 min-h-[44px]"
+              className="absolute left-0 flex items-center gap-2 text-[var(--yume-charcoal)] hover:text-[var(--yume-vermillion)] transition-colors font-body p-2 -ml-2 min-h-[44px]"
             >
               <ArrowLeft size={20} />
               <span className="hidden sm:inline">Back to Menu</span>
@@ -229,7 +229,6 @@ export default function CheckoutPage() {
             <Link href="/" className="flex items-center gap-2">
               <span className="text-xl sm:text-2xl font-bold text-[var(--yume-vermillion)] font-header">YUME</span>
             </Link>
-            <div className="w-16 sm:w-24" />
           </div>
         </div>
       </header>
@@ -414,7 +413,7 @@ export default function CheckoutPage() {
                             <div className="flex items-start justify-between gap-2">
                               <h3 className="font-bold text-[var(--yume-charcoal)] text-sm truncate font-body">{item.menuItem.name}</h3>
                               <Link
-                                href={"/menu/" + item.menuItem.id}
+                                href={"/menu/" + item.menuItem.slug}
                                 className="text-[var(--yume-miso)] hover:text-[var(--yume-vermillion)] transition-colors flex-shrink-0"
                               >
                                 <Edit2 size={14} />

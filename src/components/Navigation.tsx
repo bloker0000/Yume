@@ -46,8 +46,8 @@ export default function Navigation({ variant = "dark" }: NavigationProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <motion.div>
+          <div className="relative flex items-center justify-between h-20">
+            <motion.div className="flex-shrink-0">
               <Link href="/" className="flex items-center gap-3 group">
                 <Image
                   src={isLightText ? "/logoLight.svg" : "/logoDark.svg"}
@@ -60,7 +60,7 @@ export default function Navigation({ variant = "dark" }: NavigationProps) {
               </Link>
             </motion.div>
 
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
               {navLinks.map((link, index) => (
                 <div key={link.name}>
                   <Link
