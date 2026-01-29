@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 interface ProcessingPageProps {
   params: Promise<{ orderId: string }>;
@@ -11,8 +12,10 @@ interface ProcessingPageProps {
 
 export default function OrderProcessingPage({ params }: ProcessingPageProps) {
   const router = useRouter();
+  const { clearCart } = useCart();
   const [orderId, setOrderId] = useState<string>("");
   const [status, setStatus] = useState<"checking" | "confirmed" | "failed">("checking");
+  const [progress, setProgress] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const maxAttempts = 30;
 
@@ -20,52 +23,83 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
     params.then(p => setOrderId(p.orderId));
   }, [params]);
 
+  // Clear cart when landing on this page (after payment redirect)
+  useEffect(() => {
+    clearCart();
+  }, [clearCart]);
+
   useEffect(() => {
     if (!orderId) return;
+    
+    let intervalId: NodeJS.Timeout | null = null;
+    let isChecking = true;
 
     const checkOrderStatus = async () => {
+      if (!isChecking) return;
+      
       try {
         const response = await fetch(`/api/orders?orderId=${orderId}`);
         
         if (!response.ok) {
           if (attempts >= maxAttempts) {
             setStatus("failed");
+            if (intervalId) clearInterval(intervalId);
             return;
           }
           setAttempts(prev => prev + 1);
+          setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
           return;
         }
 
         const order = await response.json();
 
         if (order.paymentStatus === "PAID" && order.status === "CONFIRMED") {
-          setStatus("confirmed");
+          // Stop checking and complete the progress bar
+          if (intervalId) clearInterval(intervalId);
+          isChecking = false;
+          
+          // Smoothly complete the progress bar
+          setProgress(100);
+          
+          // Wait for progress bar to visually complete
           setTimeout(() => {
-            router.push(`/order/${orderId}/confirmation`);
-          }, 1500);
+            setStatus("confirmed");
+            // Then redirect after showing confirmed status
+            setTimeout(() => {
+              router.push(`/order/${orderId}/confirmation`);
+            }, 1500);
+          }, 500);
         } else if (order.paymentStatus === "FAILED" || order.status === "CANCELLED") {
+          if (intervalId) clearInterval(intervalId);
           setStatus("failed");
         } else {
           if (attempts >= maxAttempts) {
+            if (intervalId) clearInterval(intervalId);
             router.push(`/order/${orderId}/confirmation`);
           } else {
             setAttempts(prev => prev + 1);
+            setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
           }
         }
       } catch (error) {
         console.error("Error checking order status:", error);
         if (attempts >= maxAttempts) {
+          if (intervalId) clearInterval(intervalId);
           setStatus("failed");
         } else {
           setAttempts(prev => prev + 1);
+          setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
         }
       }
     };
 
-    const interval = setInterval(checkOrderStatus, 2000);
+    intervalId = setInterval(checkOrderStatus, 2000);
     checkOrderStatus();
 
-    return () => clearInterval(interval);
+    return () => {
+      isChecking = false;
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [orderId, attempts, router]);
 
   return (
@@ -94,7 +128,7 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
               <motion.div
                 className="h-full bg-[var(--yume-vermillion)]"
                 initial={{ width: "0%" }}
-                animate={{ width: `${(attempts / maxAttempts) * 100}%` }}
+                animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.5 }}
               />
             </div>

@@ -16,12 +16,14 @@ interface CustomizationPanelProps {
   item: MenuItem;
   onAddedToCart?: () => void;
   initialCustomization?: CartItemCustomization;
+  onCustomizationChange?: (state: { quantity: number; toppingsPrice: number }) => void;
 }
 
 export default function CustomizationPanel({
   item,
   onAddedToCart,
   initialCustomization,
+  onCustomizationChange,
 }: CustomizationPanelProps) {
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
@@ -55,6 +57,10 @@ export default function CustomizationPanel({
   }, 0);
 
   const totalPrice = (item.price + toppingsPrice) * quantity;
+
+  useEffect(() => {
+    onCustomizationChange?.({ quantity, toppingsPrice });
+  }, [quantity, toppingsPrice, onCustomizationChange]);
 
   const toggleTopping = (toppingId: string) => {
     setSelectedToppings((prev) =>

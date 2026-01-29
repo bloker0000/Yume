@@ -124,6 +124,7 @@ export default function AboutPage() {
   const { isCartOpen, setIsCartOpen } = useCart();
   const [activeTimeline, setActiveTimeline] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const timelineIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -134,11 +135,32 @@ export default function AboutPage() {
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
   const textY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const startTimelineInterval = (delay = 5000) => {
+    if (timelineIntervalRef.current) {
+      clearInterval(timelineIntervalRef.current);
+    }
+    timelineIntervalRef.current = setInterval(() => {
       setActiveTimeline((prev) => (prev + 1) % timelineEvents.length);
-    }, 5000);
-    return () => clearInterval(interval);
+    }, delay);
+  };
+
+  const handleTimelineClick = (index: number) => {
+    setActiveTimeline(index);
+    // Reset timer and wait 10 seconds (5 seconds longer) before auto-advancing
+    startTimelineInterval(10000);
+    // After the first 10-second interval, return to normal 5-second intervals
+    setTimeout(() => {
+      startTimelineInterval(5000);
+    }, 10000);
+  };
+
+  useEffect(() => {
+    startTimelineInterval(5000);
+    return () => {
+      if (timelineIntervalRef.current) {
+        clearInterval(timelineIntervalRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -255,7 +277,7 @@ export default function AboutPage() {
                   className={`relative pl-8 cursor-pointer transition-all duration-500 ${
                     activeTimeline === index ? "opacity-100" : "opacity-40 hover:opacity-70"
                   }`}
-                  onClick={() => setActiveTimeline(index)}
+                  onClick={() => handleTimelineClick(index)}
                 >
                   {/* Timeline Line */}
                   <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[var(--yume-cream)]">
@@ -328,7 +350,7 @@ export default function AboutPage() {
                 {timelineEvents.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setActiveTimeline(index)}
+                    onClick={() => handleTimelineClick(index)}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${
                       activeTimeline === index 
                         ? "bg-[var(--yume-vermillion)] w-8" 

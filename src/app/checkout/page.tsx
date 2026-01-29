@@ -77,10 +77,10 @@ export default function CheckoutPage() {
   const [paymentValid, setPaymentValid] = useState(false);
 
   useEffect(() => {
-    if (items.length === 0) {
+    if (items.length === 0 && !isProcessing) {
       router.push("/menu");
     }
-  }, [items, router]);
+  }, [items, router, isProcessing]);
 
   const tax = useMemo(() => (subtotal - discount) * 0.09, [subtotal, discount]);
   const total = useMemo(() => {
@@ -193,7 +193,7 @@ export default function CheckoutPage() {
       }
 
       if (data.paymentUrl) {
-        clearCart();
+        // Don't clear cart until after navigation to prevent redirect to menu
         window.location.href = data.paymentUrl;
       } else {
         clearCart();

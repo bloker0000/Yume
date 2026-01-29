@@ -26,6 +26,10 @@ export default function ProductDetailPage() {
   const item = getMenuItemBySlug(slug);
   const { isCartOpen, setIsCartOpen } = useCart();
   const [initialCustomization, setInitialCustomization] = useState<any>(null);
+  const [currentCustomization, setCurrentCustomization] = useState<{
+    quantity: number;
+    toppingsPrice: number;
+  }>({ quantity: 1, toppingsPrice: 0 });
 
   useEffect(() => {
     const stored = sessionStorage.getItem(`yume-preview-customization-${slug}`);
@@ -152,7 +156,11 @@ export default function ProductDetailPage() {
               </div>
 
               <div className="border border-[var(--yume-cream)] mb-6">
-                <CustomizationPanel item={item} initialCustomization={initialCustomization} />
+                <CustomizationPanel 
+                  item={item} 
+                  initialCustomization={initialCustomization}
+                  onCustomizationChange={setCurrentCustomization}
+                />
               </div>
 
               <NutritionFacts
@@ -171,7 +179,7 @@ export default function ProductDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative"
+            className="relative mx-4 sm:mx-0"
           >
             <div className="absolute -top-4 -left-4 w-16 h-16 border-t-2 border-l-2 border-[var(--yume-gold)]" />
             <div className="absolute -bottom-4 -right-4 w-16 h-16 border-b-2 border-r-2 border-[var(--yume-gold)]" />
@@ -225,7 +233,11 @@ export default function ProductDetailPage() {
 
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <FloatingCartButton onClick={() => setIsCartOpen(true)} />
-      <StickyAddToCart item={item} />
+      <StickyAddToCart 
+        item={item} 
+        currentQuantity={currentCustomization.quantity}
+        toppingsPrice={currentCustomization.toppingsPrice}
+      />
     </main>
   );
 }

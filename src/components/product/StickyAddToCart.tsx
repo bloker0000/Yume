@@ -9,15 +9,18 @@ import { useCart } from "@/context/CartContext";
 interface StickyAddToCartProps {
   item: MenuItem;
   showAfterScroll?: number;
+  currentQuantity?: number;
+  toppingsPrice?: number;
 }
 
 export default function StickyAddToCart({
   item,
   showAfterScroll = 400,
+  currentQuantity = 1,
+  toppingsPrice = 0,
 }: StickyAddToCartProps) {
   const { addItem } = useCart();
   const [isVisible, setIsVisible] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
@@ -29,12 +32,13 @@ export default function StickyAddToCart({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [showAfterScroll]);
 
+  const totalPrice = (item.price + toppingsPrice) * currentQuantity;
+
   const handleAddToCart = () => {
-    addItem(item, quantity);
+    addItem(item, currentQuantity);
     setIsAdded(true);
     setTimeout(() => {
       setIsAdded(false);
-      setQuantity(1);
     }, 2000);
   };
 
@@ -48,33 +52,23 @@ export default function StickyAddToCart({
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
         >
-          <div className="bg-[var(--yume-warm-white)] border-t border-[var(--yume-cream)] shadow-lg px-4 py-3 pb-safe">
+          <div className="bg-[var(--yume-warm-white)] border-t border-[var(--yume-cream)] shadow-lg px-2 py-2">
             <div className="flex items-center gap-3">
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-[var(--yume-charcoal)] truncate font-header text-sm">
                   {item.name}
+                  {currentQuantity > 1 && (
+                    <span className="text-[var(--yume-miso)] font-normal ml-1">x{currentQuantity}</span>
+                  )}
                 </p>
                 <p className="text-[var(--yume-vermillion)] font-bold font-header">
-                  €{(item.price * quantity).toFixed(2)}
+                  €{totalPrice.toFixed(2)}
                 </p>
-              </div>
-
-              <div className="flex items-center border border-[var(--yume-cream)]">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
-                >
-                  <Minus size={18} />
-                </button>
-                <span className="w-10 text-center font-bold text-[var(--yume-charcoal)] font-header text-sm">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-[var(--yume-cream)] transition-colors"
-                >
-                  <Plus size={18} />
-                </button>
+                {toppingsPrice > 0 && (
+                  <p className="text-xs text-[var(--yume-miso)] font-body">
+                    +€{toppingsPrice.toFixed(2)} extras
+                  </p>
+                )}
               </div>
 
               <motion.button

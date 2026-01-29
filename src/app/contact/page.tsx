@@ -302,7 +302,7 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Right - Contact Cards Grid */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {contactMethods.map((method, index) => (
                 <motion.div
                   key={method.title}
@@ -342,7 +342,7 @@ export default function ContactPage() {
                   <h3 className="font-bold text-[var(--yume-charcoal)] font-header mb-1">
                     {method.title}
                   </h3>
-                  <p className="text-sm font-medium text-[var(--yume-charcoal)] font-body mb-1">
+                  <p className="text-sm font-medium text-[var(--yume-charcoal)] font-body mb-1 break-words">
                     {method.primary}
                   </p>
                   <p className="text-xs text-[var(--yume-miso)] font-body mb-4">
