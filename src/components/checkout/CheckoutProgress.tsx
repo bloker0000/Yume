@@ -16,7 +16,7 @@ export default function CheckoutProgress({ currentStep, steps }: CheckoutProgres
           const isCompleted = currentStep > step.id;
           const isCurrent = currentStep === step.id;
           return (
-            <div key={step.id} className="flex items-center">
+            <div key={step.id} className="flex items-start">
               <div className="flex flex-col items-center">
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
@@ -45,7 +45,7 @@ export default function CheckoutProgress({ currentStep, steps }: CheckoutProgres
                 </span>
               </div>
               {index < steps.length - 1 && (
-                <div className="w-16 sm:w-24 mx-2 sm:mx-4">
+                <div className="w-16 sm:w-24 mx-2 sm:mx-4 pt-5">
                   <div className="h-0.5 bg-[var(--yume-cream)] relative overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
