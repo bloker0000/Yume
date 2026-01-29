@@ -894,8 +894,8 @@ export default function MediaKitPage() {
       <AnimatePresence>
         {selectedAssets.length > 0 && (
           <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-0 left-0 right-0 z-40 p-4 pb-6 md:pb-8 bg-[var(--yume-charcoal)] border-t border-[var(--yume-gold)]/20 shadow-lg safe-area-bottom">
-            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            className="fixed bottom-0 left-0 right-0 z-40 bg-[var(--yume-charcoal)] border-t border-[var(--yume-gold)]/20 shadow-lg">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[var(--yume-vermillion)] rounded-full flex items-center justify-center text-white font-bold">{selectedAssets.length}</div>
                 <div className="hidden sm:block">
