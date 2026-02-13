@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, RefreshCw } from "lucide-react";
@@ -16,7 +16,7 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
   const [orderId, setOrderId] = useState<string>("");
   const [status, setStatus] = useState<"checking" | "confirmed" | "failed">("checking");
   const [progress, setProgress] = useState(0);
-  const [attempts, setAttempts] = useState(0);
+  const attemptsRef = useRef(0);
   const maxAttempts = 30;
 
   useEffect(() => {
@@ -28,66 +28,72 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
     clearCart();
   }, [clearCart]);
 
+  const handleRedirect = useCallback((id: string) => {
+    setProgress(100);
+    setTimeout(() => {
+      setStatus("confirmed");
+      setTimeout(() => {
+        router.replace(`/order/${id}/confirmation`);
+      }, 1500);
+    }, 500);
+  }, [router]);
+
   useEffect(() => {
     if (!orderId) return;
     
     let intervalId: NodeJS.Timeout | null = null;
-    let isChecking = true;
+    let cancelled = false;
 
     const checkOrderStatus = async () => {
-      if (!isChecking) return;
+      if (cancelled) return;
       
       try {
-        const response = await fetch(`/api/orders?orderId=${orderId}`);
+        const response = await fetch(`/api/orders?orderId=${orderId}`, {
+          cache: "no-store",
+          headers: { "Cache-Control": "no-cache" },
+        });
         
+        if (cancelled) return;
+
         if (!response.ok) {
-          if (attempts >= maxAttempts) {
+          if (attemptsRef.current >= maxAttempts) {
             setStatus("failed");
             if (intervalId) clearInterval(intervalId);
             return;
           }
-          setAttempts(prev => prev + 1);
+          attemptsRef.current += 1;
           setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
           return;
         }
 
         const order = await response.json();
+        if (cancelled) return;
 
         if (order.paymentStatus === "PAID" && order.status === "CONFIRMED") {
-          // Stop checking and complete the progress bar
           if (intervalId) clearInterval(intervalId);
-          isChecking = false;
-          
-          // Smoothly complete the progress bar
-          setProgress(100);
-          
-          // Wait for progress bar to visually complete
-          setTimeout(() => {
-            setStatus("confirmed");
-            // Then redirect after showing confirmed status
-            setTimeout(() => {
-              router.push(`/order/${orderId}/confirmation`);
-            }, 1500);
-          }, 500);
+          cancelled = true;
+          handleRedirect(orderId);
         } else if (order.paymentStatus === "FAILED" || order.status === "CANCELLED") {
           if (intervalId) clearInterval(intervalId);
           setStatus("failed");
         } else {
-          if (attempts >= maxAttempts) {
+          if (attemptsRef.current >= maxAttempts) {
             if (intervalId) clearInterval(intervalId);
-            router.push(`/order/${orderId}/confirmation`);
+            // After max attempts, redirect to confirmation page anyway
+            router.replace(`/order/${orderId}/confirmation`);
           } else {
-            setAttempts(prev => prev + 1);
+            attemptsRef.current += 1;
             setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
           }
         }
       } catch (error) {
         console.error("Error checking order status:", error);
-        if (attempts >= maxAttempts) {
+        if (cancelled) return;
+        if (attemptsRef.current >= maxAttempts) {
           if (intervalId) clearInterval(intervalId);
           setStatus("failed");
         } else {
-          setAttempts(prev => prev + 1);
+          attemptsRef.current += 1;
           setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
         }
       }
@@ -97,10 +103,10 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
     checkOrderStatus();
 
     return () => {
-      isChecking = false;
+      cancelled = true;
       if (intervalId) clearInterval(intervalId);
     };
-  }, [orderId, attempts, router]);
+  }, [orderId, handleRedirect, router]);
 
   return (
     <div className="min-h-screen bg-[var(--yume-warm-white)] flex items-center justify-center p-6">
@@ -170,7 +176,8 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
               <button
                 onClick={() => {
                   setStatus("checking");
-                  setAttempts(0);
+                  setProgress(0);
+                  attemptsRef.current = 0;
                 }}
                 className="flex items-center justify-center gap-2 px-6 py-3 bg-[var(--yume-vermillion)] text-white font-bold font-body hover:bg-[var(--yume-charcoal)] transition-colors"
               >
