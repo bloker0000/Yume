@@ -1,0 +1,452 @@
+User: give me a full prompt that i can put into an ai erd generator so it can make the erd
+
+GitHub Copilot: Searched codebase for "give me a full prompt that i can put into an ai erd generator so it can make the erd", 7 results
+
+I'll read your Prisma schema to create a comprehensive ERD prompt for you. 
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/prisma/schema.prisma#1-1), lines 1 to 200
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/prisma/schema.prisma#200-200), lines 200 to 324
+
+Based on your Prisma schema, here's a comprehensive prompt for an AI ERD generator:
+
+---
+
+**Create an Entity Relationship Diagram (ERD) for a Japanese Ramen Restaurant E-commerce System with the following structure:**
+
+## Entities and Attributes:
+
+### MenuItem
+- **Primary Key:** id (INT, auto-increment)
+- slug (STRING, unique)
+- name (STRING)
+- japanese (STRING) 
+- description (STRING)
+- longDescription (TEXT)
+- price (DECIMAL 10,2)
+- rating (DECIMAL 2,1)
+- reviewCount (INT, default: 0)
+- image (STRING)
+- images (STRING ARRAY)
+- category (STRING)
+- bestseller (BOOLEAN, default: false)
+- isNew (BOOLEAN, default: false)
+- spicy (INT, default: 0)
+- vegetarian (BOOLEAN, default: false)
+- vegan (BOOLEAN, default: false)
+- glutenFree (BOOLEAN, default: false)
+- prepTime (INT)
+- calories (INT)
+- customizable (BOOLEAN, default: false)
+- serves (INT, default: 1)
+- ingredients (STRING ARRAY)
+- allergens (STRING ARRAY)
+- nutrition (JSON)
+- pairings (INT ARRAY)
+- reviews (JSON)
+- available (BOOLEAN, default: true)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### Topping
+- **Primary Key:** id (INT, auto-increment)
+- toppingId (STRING, unique)
+- name (STRING)
+- japanese (STRING)
+- price (DECIMAL 10,2)
+- available (BOOLEAN, default: true)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### Order
+- **Primary Key:** id (STRING, CUID)
+- orderNumber (STRING, unique)
+- status (ENUM: OrderStatus, default: PENDING)
+- orderType (ENUM: OrderType)
+- customerFirstName (STRING)
+- customerLastName (STRING)
+- customerEmail (STRING)
+- customerPhone (STRING)
+- deliveryStreet (STRING, nullable)
+- deliveryApartment (STRING, nullable)
+- deliveryCity (STRING, nullable)
+- deliveryPostalCode (STRING, nullable)
+- deliveryInstructions (STRING, nullable)
+- deliveryLat (FLOAT, nullable)
+- deliveryLng (FLOAT, nullable)
+- deliveryTimeType (STRING)
+- scheduledDate (STRING, nullable)
+- scheduledTime (STRING, nullable)
+- paymentMethod (STRING)
+- paymentStatus (ENUM: PaymentStatus, default: PENDING)
+- paymentId (STRING, nullable)
+- subtotal (DECIMAL 10,2)
+- deliveryFee (DECIMAL 10,2, default: 0)
+- discount (DECIMAL 10,2, default: 0)
+- tax (DECIMAL 10,2)
+- total (DECIMAL 10,2)
+- promoCode (STRING, nullable)
+- estimatedTime (INT, nullable)
+- actualDeliveryTime (DATETIME, nullable)
+- driverId (STRING, nullable)
+- driverAssignedAt (DATETIME, nullable)
+- driverLat (FLOAT, nullable)
+- driverLng (FLOAT, nullable)
+- driverUpdatedAt (DATETIME, nullable)
+- notes (STRING, nullable)
+- reviewRating (INT, nullable)
+- reviewComment (TEXT, nullable)
+- reviewedAt (DATETIME, nullable)
+- deletedAt (DATETIME, nullable)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### OrderItem
+- **Primary Key:** id (INT, auto-increment)
+- **Foreign Key:** orderId (STRING) → references Order.id (CASCADE DELETE)
+- **Foreign Key:** menuItemId (INT) → references MenuItem.id
+- name (STRING)
+- price (DECIMAL 10,2)
+- quantity (INT)
+- toppings (JSON, nullable)
+- brothRichness (STRING, nullable)
+- noodleFirmness (STRING, nullable)
+- spiceLevel (INT, nullable)
+- specialInstructions (STRING, nullable)
+- createdAt (DATETIME)
+
+### OrderStatusHistory
+- **Primary Key:** id (INT, auto-increment)
+- **Foreign Key:** orderId (STRING) → references Order.id (CASCADE DELETE)
+- status (ENUM: OrderStatus)
+- note (STRING, nullable)
+- createdAt (DATETIME)
+
+### OrderTrackingUpdate
+- **Primary Key:** id (INT, auto-increment)
+- **Foreign Key:** orderId (STRING) → references Order.id (CASCADE DELETE)
+- driverLat (FLOAT, nullable)
+- driverLng (FLOAT, nullable)
+- estimatedMinutes (INT, nullable)
+- message (STRING, nullable)
+- createdAt (DATETIME)
+
+### Driver
+- **Primary Key:** id (STRING, CUID)
+- name (STRING)
+- photo (STRING)
+- phone (STRING)
+- vehicle (STRING)
+- vehicleColor (STRING)
+- licensePlate (STRING)
+- rating (DECIMAL 2,1)
+- totalDeliveries (INT, default: 0)
+- available (BOOLEAN, default: true)
+- currentLat (FLOAT, nullable)
+- currentLng (FLOAT, nullable)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### OrderNote
+- **Primary Key:** id (INT, auto-increment)
+- **Foreign Key:** orderId (STRING) → references Order.id (CASCADE DELETE)
+- content (TEXT)
+- createdBy (STRING)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### PromoCode
+- **Primary Key:** id (INT, auto-increment)
+- code (STRING, unique)
+- discountType (ENUM: DiscountType)
+- discountValue (DECIMAL 10,2)
+- description (STRING)
+- minOrder (DECIMAL 10,2, nullable)
+- maxDiscount (DECIMAL 10,2, nullable)
+- usageLimit (INT, nullable)
+- usageCount (INT, default: 0)
+- validFrom (DATETIME)
+- validUntil (DATETIME, nullable)
+- active (BOOLEAN, default: true)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### DeliveryZone
+- **Primary Key:** id (INT, auto-increment)
+- postalCode (STRING, unique)
+- fee (DECIMAL 10,2)
+- minOrder (DECIMAL 10,2, nullable)
+- estimatedTime (INT)
+- active (BOOLEAN, default: true)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### AdminUser
+- **Primary Key:** id (INT, auto-increment)
+- email (STRING, unique)
+- password (STRING)
+- name (STRING, nullable)
+- role (ENUM: AdminRole, default: STAFF)
+- lastLogin (DATETIME, nullable)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### ContactSubmission
+- **Primary Key:** id (INT, auto-increment)
+- name (STRING)
+- email (STRING)
+- phone (STRING, nullable)
+- inquiryType (STRING)
+- subject (STRING)
+- message (TEXT)
+- preferredContact (STRING)
+- status (ENUM: ContactStatus, default: NEW)
+- respondedAt (DATETIME, nullable)
+- notes (TEXT, nullable)
+- createdAt (DATETIME)
+- updatedAt (DATETIME)
+
+### AbandonedCart
+- **Primary Key:** id (STRING, CUID)
+- sessionId (STRING, unique)
+- customerEmail (STRING, nullable, indexed)
+- customerName (STRING, nullable)
+- items (JSON)
+- subtotal (DECIMAL 10,2)
+- emailSent (BOOLEAN, default: false, indexed)
+- emailSentAt (DATETIME, nullable)
+- recovered (BOOLEAN, default: false)
+- recoveredAt (DATETIME, nullable)
+- unsubscribed (BOOLEAN, default: false)
+- createdAt (DATETIME, indexed)
+- updatedAt (DATETIME)
+
+## Enumerations:
+
+**OrderStatus:** PENDING, CONFIRMED, PREPARING, READY, OUT_FOR_DELIVERY, DELIVERED, PICKED_UP, CANCELLED, REFUNDED
+
+**PaymentStatus:** PENDING, PAID, FAILED, REFUNDED
+
+**OrderType:** DELIVERY, PICKUP
+
+**DiscountType:** PERCENT, FIXED, FREE_DELIVERY
+
+**AdminRole:** ADMIN, STAFF
+
+**ContactStatus:** NEW, IN_PROGRESS, RESPONDED, CLOSED
+
+## Relationships:
+
+1. **Order → OrderItem**: One-to-Many (One order has many order items)
+2. **MenuItem → OrderItem**: One-to-Many (One menu item can be in many order items)
+3. **Order → OrderStatusHistory**: One-to-Many (One order has many status history entries)
+4. **Order → OrderTrackingUpdate**: One-to-Many (One order has many tracking updates)
+5. **Order → OrderNote**: One-to-Many (One order has many internal notes)
+
+All relationships from Order to its related tables (OrderItem, OrderStatusHistory, OrderTrackingUpdate, OrderNote) have CASCADE DELETE behavior.
+
+---
+
+This prompt includes all entities, their complete attribute definitions, data types, constraints, enumerations, and relationships with cardinality and cascade behaviors.
+
+User: First I need you to fix this:
+
+2026-02-13 09:00:08.837 [error] ❌ Failed to send order confirmation email: {
+  statusCode: 422,
+  name: 'validation_error',
+  message: 'Invalid `from` field. The email address needs to follow the `email@example.com` or `Name <email@example.com>` format.'
+}
+2026-02-13 09:00:08.837 [error] Order: YUM-MLKNPQCC-D6XG Customer: noahlinker1@gmail.com
+
+
+
+Then I noticed you don't get redirected to the order tdetails page after ordering, it just gets stuck on this popup:
+
+Payment Confirmed!
+Redirecting to your order details...
+
+GitHub Copilot: Searched codebase for "First I need you to fix this:
+
+2026-02-13 09:00:08.837 [error] ❌ Failed to send order confirmation email: {
+  statusCode: 422,
+  name: 'validation_error',
+  message: 'Invalid `from` field. The email address needs to follow the `email@example.com` or `Name <email@example.com>` format.'
+}
+2026-02-13 09:00:08.837 [error] Order: YUM-MLKNPQCC-D6XG Customer: noahlinker1@gmail.com
+
+
+
+Then I noticed you don't get redirected to the order tdetails page after ordering, it just gets stuck on this popup:
+
+Payment Confirmed!
+Redirecting to your order details...", 16 results
+
+
+
+  
+
+Created 2 todos
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/lib/email.ts#1-1), lines 1 to 100
+
+Search complete: Find payment redirect code
+
+Searched for text `Payment Confirmed`, 2 results
+
+Searched for text `Redirecting to your order`, 1 result
+
+Searched for regex `payment confirmed redirect`, no results
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/order/%5BorderId%5D/processing/page.tsx)
+
+Searched for regex `processing|/order/.*processing` (`**/src/app/**/checkout/**`), 9 results
+
+Searched for regex `redirect.*processing|return_url.*processing`, 1 result
+
+Searched for regex `order.*processing` (`**/src/app/api/**"`), no results
+
+Searched for regex `Payment Confirmed|Redirecting to your order`, 3 results
+
+Searched for text `sendOrderConfirmationEmail`, 3 results
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/order/%5BorderId%5D/processing/page.tsx)
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/api/payments/webhook/route.ts#1-1), lines 1 to 120
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/lib/email.ts#95-95), lines 95 to 200
+
+Searched for text `EMAIL_FROM` (`**/.env*`), 2 results
+
+Searched for regex `/api/orders\?orderId`, 2 results
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/.env#1-1), lines 1 to 20
+
+Searched for regex `orderId|paymentStatus|GET` (`**/src/app/api/orders/**`), 20 results
+
+Searched for files matching `**/src/app/api/orders/**/route.ts`, 3 matches
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/api/orders/route.ts#1-1), lines 1 to 100
+
+Searched for regex `GET|orderId.*searchParams|findUnique|findFirst` (`**/src/app/api/orders/route.ts`), 8 results
+
+Read [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/api/orders/route.ts#242-242), lines 242 to 277
+
+Now I have full context on both issues. Let me fix them.
+
+**Issue 1:** The `EMAIL_FROM` is set to `Yume <noreply@yuumee.nl>` but the `yuumee.nl` domain isn't verified in Resend, causing a 422 validation error.
+
+**Issue 2:** The polling `useEffect` in the processing page has `attempts` in its dependency array, which causes the effect to re-run on every poll cycle—creating race conditions where the redirect timeout can get clobbered by new effect invocations. Additionally, the fetch has no cache-busting, so the browser may serve stale responses. 
+
+Updated todo list
+
+Replacing 5 lines with 5 lines in [](file:///Users/noah/Documents/projects/sites/Yume-1/.env)
+
+
+```
+
+```
+
+
+Starting: *Fix post-payment redirect* (2/2)
+
+Now fix the processing page — rewrite the polling to use refs instead of putting `attempts` in the dependency array, add `cache: 'no-store'` to the fetch, and ensure the redirect fires reliably: 
+
+Replacing 103 lines with 109 lines in [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/order/%5BorderId%5D/processing/page.tsx)
+
+
+```
+
+```
+Now update the retry button to reset the ref too: 
+
+Replacing 4 lines with 5 lines in [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/order/%5BorderId%5D/processing/page.tsx)
+
+
+```
+
+```
+
+
+Checked [](file:///Users/noah/Documents/projects/sites/Yume-1/src/app/order/%5BorderId%5D/processing/page.tsx), no problems found
+
+Completed: *Fix post-payment redirect* (2/2)
+
+Both issues are fixed:
+
+**Email fix** — Changed `EMAIL_FROM` in .env from `noreply@yuumee.nl` (unverified domain) to `onboarding@resend.dev` (Resend's test domain). The `yuumee.nl` domain isn't verified in Resend yet, so it was rejecting the sender address. Once you verify your domain at https://resend.com/domains, you can switch it back.
+
+**Redirect fix** — Rewrote the polling logic in processing/page.tsx:
+1. **Replaced `attempts` state with a `useRef`** — the old code had `attempts` in the `useEffect` dependency array, which meant every poll cycle destroyed and recreated the interval, causing race conditions where redirect timeouts got lost
+2. **Added `cache: 'no-store'` and `Cache-Control: no-cache` headers** to the fetch call — prevents the browser from serving stale cached responses showing PENDING status
+3. **Changed `router.push` to `router.replace`** — avoids leaving the processing page in browser history
+4. **Extracted redirect logic into a stable `useCallback`** — ensures the timeout chain runs cleanly without being affected by effect re-runs
+
+Made changes.
+
+User: help me choose these options for the erd ai gen:
+
+1. What level of detail do you want for the diagram regarding the nested JSON and array attributes within entities?
+
+
+Include detailed attributes inside JSON and arrays as separate entities or attributes
+Represent JSON and arrays as single attributes without further decomposition
+Other
+2. Which additional business rules or constraints should be explicitly represented in the ERD if any?
+
+
+Unique constraints beyond primary keys (e.g., slug in MenuItem, toppingId in Topping)
+Default values for attributes
+Nullable vs mandatory attributes
+Cascade delete behaviors beyond those specified
+Enumerations and their allowed values
+Other
+3. Are there any specific interactions or workflows between entities (such as order processing, delivery tracking, or promo code usage) that you want to highlight in the diagram?
+
+Enter your response...
+4. Should driver location updates and order tracking updates be modeled as separate entities or combined within a single tracking-related entity?
+
+
+Keep as separate entities (OrderTrackingUpdate and Driver)
+Combine into one tracking entity for simplicity
+Other
+5. Are there any external systems, integrations, or data flows that should be reflected in the ERD to provide context for this e-commerce system?
+
+Enter your response...
+
+
+GitHub Copilot: Based on your Prisma schema, here are my recommendations for each option:
+
+## 1. JSON/Array Detail Level
+**Recommend:** **Represent JSON and arrays as single attributes without further decomposition**
+
+Your JSON fields (`nutrition`, `reviews`, `toppings` in OrderItem) and arrays (`images`, `ingredients`, `allergens`, `pairings`) are mostly unstructured or simple lists. Decomposing them would clutter the ERD without adding clarity. Keep them as typed attributes (e.g., `nutrition: JSON`, `images: STRING[]`).
+
+## 2. Business Rules and Constraints
+**Recommend:** **Select ALL of these:**
+- ✅ **Unique constraints** - Critical ones: `slug` (MenuItem), `toppingId` (Topping), `code` (PromoCode), `postalCode` (DeliveryZone), `email` (AdminUser), `sessionId` (AbandonedCart), `orderNumber` (Order)
+- ✅ **Default values** - Many impact business logic (e.g., `available: true`, `usageCount: 0`, `status: PENDING`)
+- ✅ **Nullable vs mandatory** - Essential for understanding required data (e.g., delivery fields nullable, customer fields mandatory)
+- ✅ **Cascade delete behaviors** - Critical: OrderItem, OrderStatusHistory, OrderTrackingUpdate, and OrderNote all CASCADE DELETE with Order
+- ✅ **Enumerations** - Define valid system states (OrderStatus, PaymentStatus, OrderType, DiscountType, AdminRole, ContactStatus)
+
+## 3. Key Workflows to Highlight
+Suggest entering:
+```
+Order lifecycle: PENDING → CONFIRMED → PREPARING → READY → OUT_FOR_DELIVERY → DELIVERED. Payment webhook updates trigger order confirmation. Driver assignment for deliveries with real-time tracking updates. Promo codes track usage count and enforce limits. Abandoned cart recovery workflow for incomplete checkouts.
+```
+
+## 4. Driver and Tracking Entities
+**Recommend:** **Keep as separate entities (OrderTrackingUpdate and Driver)**
+
+They serve different purposes:
+- **Driver**: Standalone entity representing driver profiles (name, vehicle, rating, availability)
+- **OrderTrackingUpdate**: Tracks time-series location data per order
+- Order references Driver by `driverId` string (loose coupling)
+
+Keeping them separate maintains proper entity separation.
+
+## 5. External Systems
+Suggest entering:
+```
+Mollie API for payment processing (webhooks), Resend for transactional emails, PostgreSQL (Neon) for database, potential geocoding API for delivery addresses. Order includes paymentId for Mollie payment reference.
+```
