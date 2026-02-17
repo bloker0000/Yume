@@ -139,20 +139,51 @@ export async function POST(request: Request) {
     const total = subtotal + deliveryFee - discount + tax;
     const orderNumber = generateOrderNumber();
 
-    const slugs = items.filter((item) => item.slug).map((item) => item.slug!);
-    const dbMenuItems = slugs.length > 0
-      ? await prisma.menuItem.findMany({ where: { slug: { in: slugs } }, select: { id: true, slug: true } })
-      : [];
-    const slugToDbId = new Map(dbMenuItems.map((m) => [m.slug, m.id]));
+    const allDbMenuItems = await prisma.menuItem.findMany({
+      select: { id: true, slug: true },
+    });
+    const slugToDbId = new Map(allDbMenuItems.map((m) => [m.slug, m.id]));
+    const validDbIds = new Set(allDbMenuItems.map((m) => m.id));
 
-    const orderItemsData = items.map((item) => ({
-      menuItemId: item.slug ? (slugToDbId.get(item.slug) ?? item.menuItemId) : item.menuItemId,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      toppings: item.toppings || [],
-      specialInstructions: item.specialInstructions,
-    }));
+    const orderItemsData = items.map((item) => {
+      if (item.slug && slugToDbId.has(item.slug)) {
+        return {
+          menuItemId: slugToDbId.get(item.slug)!,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          toppings: item.toppings || [],
+          specialInstructions: item.specialInstructions,
+        };
+      }
+
+      if (validDbIds.has(item.menuItemId)) {
+        return {
+          menuItemId: item.menuItemId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          toppings: item.toppings || [],
+          specialInstructions: item.specialInstructions,
+        };
+      }
+
+      const fallback = allDbMenuItems.find(
+        (m) => m.slug === item.name.toLowerCase().replace(/\s+/g, "-")
+      );
+      if (fallback) {
+        return {
+          menuItemId: fallback.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          toppings: item.toppings || [],
+          specialInstructions: item.specialInstructions,
+        };
+      }
+
+      throw new Error(`Menu item not found: ${item.name}`);
+    });
 
     const order = await prisma.order.create({
       data: {
