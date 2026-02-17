@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, CheckCircle, XCircle, RefreshCw } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -11,7 +10,6 @@ interface ProcessingPageProps {
 }
 
 export default function OrderProcessingPage({ params }: ProcessingPageProps) {
-  const router = useRouter();
   const { clearCart } = useCart();
   const [orderId, setOrderId] = useState<string>("");
   const [status, setStatus] = useState<"checking" | "confirmed" | "failed">("checking");
@@ -33,10 +31,10 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
     setTimeout(() => {
       setStatus("confirmed");
       setTimeout(() => {
-        router.replace(`/order/${id}/confirmation`);
+        window.location.href = `/order/${id}/confirmation`;
       }, 1500);
     }, 500);
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     if (!orderId) return;
@@ -79,8 +77,7 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
         } else {
           if (attemptsRef.current >= maxAttempts) {
             if (intervalId) clearInterval(intervalId);
-            // After max attempts, redirect to confirmation page anyway
-            router.replace(`/order/${orderId}/confirmation`);
+            window.location.href = `/order/${orderId}/confirmation`;
           } else {
             attemptsRef.current += 1;
             setProgress(prev => Math.min(prev + (100 / maxAttempts), 95));
@@ -106,7 +103,7 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
       cancelled = true;
       if (intervalId) clearInterval(intervalId);
     };
-  }, [orderId, handleRedirect, router]);
+  }, [orderId, handleRedirect]);
 
   return (
     <div className="min-h-screen bg-[var(--yume-warm-white)] flex items-center justify-center p-6">
@@ -185,7 +182,7 @@ export default function OrderProcessingPage({ params }: ProcessingPageProps) {
                 Try Again
               </button>
               <button
-                onClick={() => router.push(`/order/${orderId}/confirmation`)}
+                onClick={() => { window.location.href = `/order/${orderId}/confirmation`; }}
                 className="px-6 py-3 border-2 border-[var(--yume-charcoal)] text-[var(--yume-charcoal)] font-bold font-body hover:bg-[var(--yume-charcoal)] hover:text-white transition-colors"
               >
                 View Order Details
