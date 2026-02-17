@@ -11,6 +11,7 @@ function generateOrderNumber(): string {
 
 interface OrderItemInput {
   menuItemId: number;
+  slug?: string;
   name: string;
   price: number;
   quantity: number;
@@ -138,8 +139,14 @@ export async function POST(request: Request) {
     const total = subtotal + deliveryFee - discount + tax;
     const orderNumber = generateOrderNumber();
 
+    const slugs = items.filter((item) => item.slug).map((item) => item.slug!);
+    const dbMenuItems = slugs.length > 0
+      ? await prisma.menuItem.findMany({ where: { slug: { in: slugs } }, select: { id: true, slug: true } })
+      : [];
+    const slugToDbId = new Map(dbMenuItems.map((m) => [m.slug, m.id]));
+
     const orderItemsData = items.map((item) => ({
-      menuItemId: item.menuItemId,
+      menuItemId: item.slug ? (slugToDbId.get(item.slug) ?? item.menuItemId) : item.menuItemId,
       name: item.name,
       price: item.price,
       quantity: item.quantity,

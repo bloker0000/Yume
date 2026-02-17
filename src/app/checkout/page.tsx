@@ -172,6 +172,7 @@ export default function CheckoutPage() {
         paymentMethod: paymentInfo.method,
         items: items.map((item) => ({
           menuItemId: item.menuItem.id,
+          slug: item.menuItem.slug,
           name: item.menuItem.name,
           price: item.totalPrice / item.quantity,
           quantity: item.quantity,
